@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Firebug Command Line 的使用技巧 - Cocowool - 博客园</title>
+<meta property="og:description" content="Commandlinie是Firebug中总有用的一个特性。如果你有Microsoft Visual Studio的使用经验，你就会知道&#8220;Immediate Window&#8221;和&" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2009/05/23/1487569.html">Firebug Command Line 的使用技巧</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body">Commandlinie是Firebug中总有用的一个特性。如果你有Microsoft Visual Studio的使用经验，你就会知道&#8220;Immediate Window&#8221;<br />
+和&#8220;Watch Window&#8221;的作用，我倒是想起了AutoCAD中的Commandline，通过快速的输入命令来完成操作。<br />
+<br />
+Firebug中的命令行更像&#8220;Immediate Window&#8221;，你能够在任何时候检测代码中的值，firebug命令行的一个好处就是可以在&#8221;设计时&#8220;<br />
+就查看代码。另外还有一个优点就是你可以在命令行写js语句并且让他们立刻执行。<br />
+<br />
+firebug commandline的详细的api可以在官方的地址中看到：http://getfirebug.com/commandline.html<br />
+<br />
+下面来详细的介绍一下：<br />
+<br />
+命令行的类型。firebug中有两种类型的命令行：1、单行模式；2、多行模式；<br />
+<br />
+1、单行模式。单行模式是firebug的默认命令行模式，它允许我们一次输入一行代码。单行模式的优点是支持自动完成。<br />
+&nbsp;&nbsp; &nbsp;这个很强大的，就像在终端中一样，你还可以使用上下键来调入最近使用过的命令。<br />
+2、多行模式。多行模式是单行模式的加强版，它允许我们一次输入多行代码并且马上执行。<br />
+这两种模式都有各自的优势，大家可以根据自己的情况选择适合的模式。<br />
+<br />
+Commandline API使用示例。<br />
+<br />
+在使用之前，需要在提醒一下尽管这些API在运行时和DEBUG时都可以使用，但是他们在DEBUG时尤其有用，下面我们就来看看为什么。<br />
+<br />
+API列表：<br />
+<br />
+1、$(id)；<br />
+2、$$(selector);<br />
+3、$x(path);<br />
+4、dir(object);<br />
+5、dirxml(node);<br />
+6、cd(window);<br />
+7、clear();<br />
+8、inspect(object [,tagname]);<br />
+9、key(object);<br />
+10、values(object);<br />
+11、debug(fn) &amp; undebug(fn);<br />
+12、monitor(fn) &amp; unmonitor(fn);<br />
+13、monitorEvents(object [, tagname]) &amp; unmonitorEvents(object [, tagName]);<br />
+14、profile(title) &amp; profileEnd();<br />
+<br />
+1、$(id)。<br />
+&nbsp;&nbsp; &nbsp;使用过Prototype的同学看到这个一定很亲切。<br />
+&nbsp;&nbsp; &nbsp;对了，他的用法就和Prototype中的$一样，在单行模式中，命令会将选择的元素打印到console中<br />
+&nbsp;&nbsp; &nbsp;在多行模式中，你就完全可以像在Prototype中那样使用它了。<br />
+&nbsp;&nbsp; &nbsp;对于Prototype不熟悉的同学可以查看参考资料中的连接了解更多的情况。<br />
+<br />
+2、$$()。<br />
+&nbsp;&nbsp; &nbsp;返回给定CSS选择器选中的元素数组。<br />
+&nbsp;&nbsp; &nbsp;关于CSS Selector（选择器），相信了解一些CSS的人都有一些印象，Jqueyr将Css Selector发扬的很光大。<br />
+&nbsp;&nbsp; &nbsp;我在console中试验了几个jquery中的常用写法，看来支持的还是不够好。<br />
+&nbsp;&nbsp; &nbsp;<br />
+3、$x(xpath)。<br />
+&nbsp;&nbsp; &nbsp;返回给定xpath下的元素数组。<br />
+&nbsp;&nbsp; &nbsp;例如在一个包含多个p的div中，我们可以用下面的代码获得每个p。<br />
+&nbsp;&nbsp; &nbsp;var obj = $x('html/body/div/p');<br />
+&nbsp;&nbsp; &nbsp;console.log(obj[0].id);<br />
+&nbsp;&nbsp; &nbsp;console.log(obj[1].id);<br />
+&nbsp;&nbsp; &nbsp;console.log(obj[2].id);<br />
+<br />
+4、dir(object)。<br />
+&nbsp;&nbsp; &nbsp;打印一个对象的所有属性，结果形式和在DOM标签中看到的一样。<br />
+&nbsp;&nbsp; &nbsp;其实这个用法和console.dir()是一样的。<br />
+&nbsp;&nbsp; &nbsp;var obj = $x('html/body/div/p');<br />
+&nbsp;&nbsp; &nbsp;dir(obj);<br />
+&nbsp;&nbsp; &nbsp;<br />
+5、dirxml(note)。<br />
+&nbsp;&nbsp; &nbsp;打印xml或HTML元素的树形结构。打印的结果就像在HTML标签中看到的一样。<br />
+&nbsp;&nbsp; &nbsp;之前我们也接触过console.dirxml()的用法，这两个方法是一样的。<br />
+<br />
+6、cd(window)。<br />
+&nbsp;&nbsp; &nbsp;cd是用来在框架布局的不同窗口间切换，不过据说还不是很完善。<br />
+&nbsp;&nbsp; &nbsp;<br />
+7、clear()。<br />
+&nbsp;&nbsp; &nbsp;清除控制台的内容，就像在Javascript中使用Console.clear()一样。<br />
+&nbsp;&nbsp; &nbsp;<br />
+8、inspect(object [,TabName])。<br />
+&nbsp;&nbsp; &nbsp;在最适合的标签中检测一个元素，也可以通过TabName指定需要打开的标签。<br />
+&nbsp;&nbsp; &nbsp;例如：<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inspect($('txt1'),'html');<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;就会打开HTML标签，并且选中id为txt1的元素。<br />
+<br />
+9、keys(boject)。<br />
+&nbsp;&nbsp; &nbsp;返回指定名称的对象的所有属性的名称数组。指定的名称可以是Javascript对象，也可以是HTML的DOM元素。<br />
+&nbsp;&nbsp; &nbsp;function Car(){ &nbsp;<br />
+&nbsp;&nbsp; &nbsp; this.Model = "Old Model"; &nbsp;<br />
+&nbsp;&nbsp; &nbsp; this.getManufactor = new function(){ &nbsp;<br />
+&nbsp;&nbsp; &nbsp; return "Toyota"; &nbsp;<br />
+&nbsp;&nbsp; &nbsp; } &nbsp;<br />
+&nbsp;&nbsp; &nbsp;}<br />
+&nbsp;&nbsp; &nbsp;var o = new car()<br />
+&nbsp;&nbsp; &nbsp;我们可以用keys(o)获得car对象的所有属性。<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp; &nbsp;还可以获得HTML元素的所有属性名称，比如 keys($('txt5'));<br />
+<br />
+10、values(object)。<br />
+&nbsp;&nbsp; &nbsp;返回对象包含的属性值的数组。<br />
+&nbsp;&nbsp; &nbsp;像keys一样，我们既可以用在javascript上，也可以用在html元素上。<br />
+&nbsp;&nbsp; &nbsp;<br />
+11、debug(fn)和undebug(fn)。<br />
+&nbsp;&nbsp; &nbsp;在程序的开始处添加或删除断点。<br />
+&nbsp;&nbsp; &nbsp;<br />
+12、monitor(FunctionName)和unmonitor(FunctionName)。<br />
+&nbsp;&nbsp; &nbsp;打开或关闭函数调用的记录。<br />
+&nbsp;&nbsp; &nbsp;通常，如果我们想知道一个函数是否被执行，我们会加入一个alert()或者console.log()来记录。<br />
+&nbsp;&nbsp; &nbsp;这实在是一个累人的工作，特别是如果编辑一个很大的script文件的时候，我们需要找到这个函数，加入alert,console.log<br />
+&nbsp;&nbsp; &nbsp;保存然后再运行，我们需要不断地保存、修改、运行来检查函数在那里被执行了。<br />
+&nbsp;&nbsp; &nbsp;有了firebug你就不再需要这么累了，你只需要知道这个函数，然后你就可以跟踪它，只要他被执行了，执行情况就会打印在<br />
+&nbsp;&nbsp; &nbsp;console窗口中。另外，console还会提供一个指向这个函数的连接。<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp; &nbsp;使用方法&nbsp;&nbsp; &nbsp;monitor(func1); 找到问题的原因后，我们还可以通过 unmonitor(func1)里解除对于函数的追踪。<br />
+&nbsp;&nbsp; &nbsp;<br />
+13、monitorEvent(object [,types])和 unmonitorEvent(object [,types])。<br />
+&nbsp;&nbsp; &nbsp;打开或关闭对于对象动作的记录。<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp; &nbsp;types表示的我们要追踪的事件类型，最常用的就是'mouse'和'key'<br />
+&nbsp;&nbsp; &nbsp;完整的参数类型包括：&#8220;composition&#8221;, &#8220;contextmenu&#8221;, &#8220;drag&#8221;, &#8220;focus&#8221;, &#8220;form&#8221;, &#8220;key&#8221;, &#8220;load&#8221;, &#8220;mouse&#8221;, &#8220;mutation&#8221;, &#8220;paint&#8221;, &#8220;scroll&#8221;, &#8220;text&#8221;, &#8220;ui&#8221;, and &#8220;xul&#8221;<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp; &nbsp;不过不幸的是，这个API工作地不是很好，希望作者能够在后继的版本中完善一下。&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;<br />
+<br />
+14、profile([title])和profileEnd([title])<br />
+&nbsp;&nbsp; &nbsp;对于这个命令，我想看过上一篇的同学应该比较熟悉。这个就和console.profile()是一样的，用来记录页面中js的执行情况<br />
+&nbsp;&nbsp; &nbsp;并在结束后给出分析报告。<br />
+&nbsp;&nbsp; &nbsp;<br />
+最后，希望每一位使用firebug来开发的同学，能够提高自己的开发效率。<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />
+[参考资料]<br />
+1、firebug commandline&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;http://michaelsync.net/2007/09/15/firebug-tutorial-commandline-api<br />
+2、prototype&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;http://www.prototypejs.org/<br />
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2009-05-23 11:15</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1487569" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1487569);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1487569,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2009/5/23 11:15:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

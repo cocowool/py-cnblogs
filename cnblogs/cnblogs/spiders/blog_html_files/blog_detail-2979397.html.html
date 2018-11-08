@@ -1,0 +1,458 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>设备尺寸杂谈:响应性Web设计中的尺寸问题 - Cocowool - 博客园</title>
+<meta property="og:description" content="目前在为移动设备设计界面时，最头疼的问题莫过于尺寸的问题。我们无法使用固定的尺寸来进行设计，因为不同设备的大小千变万化。但是如果我们了解了设备的物理特性后，这将有助于我们进行更好的设计。不同的设备可能" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2013/03/24/2979397.html">设备尺寸杂谈:响应性Web设计中的尺寸问题</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p><!--?xml version="1.0" encoding="UTF-8" standalone="no"?--></p>
+<div>目前在为移动设备设计界面时，最头疼的问题莫过于尺寸的问题。我们无法使用固定的尺寸来进行设计，因为不同设备的大小千变万化。但是如果我们了解了设备的物理特性后，这将有助于我们进行更好的设计。</div>
+<div>&nbsp;</div>
+<p><img src="https://images0.cnblogs.com/blog/39469/201303/24174446-a22117a0073d4411b864a5d6b6d1b571.png" alt="" /></p>
+<div>&nbsp;</div>
+<div>不同的设备可能具有相同的屏幕分辨率，但是他们的物理特性差别却非常大。一代iPad的屏幕尺寸是9.7寸，分辨率为1024*768、132dpi。Kindle Kyeboard 3G的物理尺寸只有6寸，同样是768*1024的分辨率，像素却是212dpi。</div>
+<div>&nbsp;</div>
+<div>获取屏幕的尺寸有很多种办法，包括" Resolution Media Query "，这种办法作为 Media Queries的规范已经存在很长时间，但是在还没有正式发布之前，不是所有的浏览器都支持。但是很幸运，WebKit在这方面已经迈出了重要一步，下面是基本的用法：</div>
+<div>&nbsp;</div>
+<div>@media ( min-resolution: 250dpi ){</div>
+<div>&nbsp; &nbsp; &nbsp;</div>
+<div>}</div>
+<div>&nbsp;</div>
+<div>这句话可以将低分辨率图片过滤掉，只保留高分辨率的图片。</div>
+<div>&nbsp;</div>
+<div>实际上对于设计师来说，他们对分辨率并不是那么感兴趣。因为他们是为人类而设计，所以最好有 width: 1寸，这样的单位。可惜的是，当今的社会是电子化的社会，物理的尺寸和电子像素不完全一致，做为设计师，我们需要来填补这两个不同之间的鸿沟。</div>
+<div>&nbsp;</div>
+<div>来比较一下下面的两段代码：</div>
+<div>&nbsp;</div>
+<div>@media (min-resolution:341dpi) and (min-width: 767px) &gt; {</div>
+<div>&nbsp;</div>
+<div>}</div>
+<div>&nbsp;</div>
+<div>@media (max-resolution:131dpi) and (min-width: 767px) &gt; {</div>
+<div>&nbsp;</div>
+<div>}</div>
+<div>&nbsp;</div>
+<div>粗看上去，这两段代码非常相似，实际上是用来区分不同设备的，第一个适用于 HTC Windows Phone 8X，第二个适用于 iPad2。通过使用 Resolution Query，可以将小设备同大设备区分开。两个设备的的宽度都是768px，物理尺寸一个是10英寸（iPad），一个却是4.3英寸（HTC）。更重要的是，iPad的分辨率比较低（1024*768），而HTC的分辨率比较高（1280*768）。通过 Resolution Media Query 和 Width Query 的配合使用，我们能够将具有同样宽度的不同大小的设备区分开，从而来相应的调整设计中的元素布局。</div>
+<div>&nbsp;</div>
+<div>之前说过，实际上我们对于各个设备的分辨率并不是很关心，我们更加关心的是，这个界面是显示在一个（物理尺寸上）较大的设备还是较小的设备上。那么，我们又该如何定义大设备和小设备呢？实际上并没有明确的分割，我们必须从每个项目的实际出发，这个设备在这个项目中是小设备，但在另外一个项目中，可能被归类为大设备。</div>
+<div>&nbsp;</div>
+<div><strong>The Physical Size Inquiry Non-Exhaustive Theorem</strong></div>
+<div>&nbsp;</div>
+<div>理论：在一个组合的查询中，如果 分辨率 Resolution 与 宽度和高度中的较小的一个的比值大于5，那么基本上可以归属为大设备，如果小于5，基本上可以归属为小设备。如果得分接近于5，那么是一个中等的设备，物理上的尺寸接近于1张A4纸的大小（21*29.7cm）。</div>
+<div>&nbsp;</div>
+<div>下面是一个验证这个理论的表格：</div>
+<div>&nbsp;</div>
+<div>
+<table style="width: 100%;" border="1" cellspacing="0" cellpadding="2">
+<tbody>
+<tr>
+<td valign="top">设备名称</td>
+<td valign="top">对角线尺寸（inches)</td>
+<td valign="top">分辨率</td>
+<td valign="top">PPI</td>
+<td valign="top">PSINET得分</td>
+</tr>
+<tr>
+<td valign="top">Apple iMac</td>
+<td valign="top">27</td>
+<td valign="top">2560*1440</td>
+<td valign="top">109</td>
+<td valign="top">13.00</td>
+</tr>
+<tr>
+<td valign="top">Sony Vaio F</td>
+<td valign="top">16.4</td>
+<td valign="top">1920*1080</td>
+<td valign="top">134</td>
+<td valign="top">8.05</td>
+</tr>
+<tr>
+<td valign="top">Apple MacBook Pro RD</td>
+<td valign="top">13</td>
+<td valign="top">2560*1600</td>
+<td valign="top">227</td>
+<td valign="top">7.04</td>
+</tr>
+<tr>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+</tr>
+<tr>
+<td valign="top">Sony PSP</td>
+<td valign="top">4.3</td>
+<td valign="top">480*272</td>
+<td valign="top">128</td>
+<td valign="top">3.75</td>
+</tr>
+<tr>
+<td valign="top">Kindle Keyboard 3G</td>
+<td valign="top">6</td>
+<td valign="top">768*1024</td>
+<td valign="top">212</td>
+<td valign="top">3.62</td>
+</tr>
+<tr>
+<td valign="top">Kindle Fire</td>
+<td valign="top">7</td>
+<td valign="top">1024*600</td>
+<td valign="top">169</td>
+<td valign="top">3.55</td>
+</tr>
+<tr>
+<td valign="top">Samsung Galaxy S</td>
+<td valign="top">4</td>
+<td valign="top">480*800</td>
+<td valign="top">160</td>
+<td valign="top">3.00</td>
+</tr>
+<tr>
+<td valign="top">Samsung Galaxy Note II</td>
+<td valign="top">5.5</td>
+<td valign="top">720*1280</td>
+<td valign="top">267</td>
+<td valign="top">2.69</td>
+</tr>
+<tr>
+<td valign="top">Samsung Galaxy S IV</td>
+<td valign="top">5</td>
+<td valign="top">1080*1920</td>
+<td valign="top">441</td>
+<td valign="top">2.62</td>
+</tr>
+<tr>
+<td valign="top">HTC Butterfly</td>
+<td valign="top">5</td>
+<td valign="top">1080*1920</td>
+<td valign="top">441</td>
+<td valign="top">2.62</td>
+</tr>
+<tr>
+<td valign="top">Samsung Galaxy Grand I9082</td>
+<td valign="top">5</td>
+<td valign="top">480*800</td>
+<td valign="top">187</td>
+<td valign="top">2.56</td>
+</tr>
+<tr>
+<td valign="top">Palm Pre</td>
+<td valign="top">3.1</td>
+<td valign="top">480*320</td>
+<td valign="top">186</td>
+<td valign="top">2.5</td>
+</tr>
+<tr>
+<td valign="top">Sony Xperia Z</td>
+<td valign="top">5</td>
+<td valign="top">1920*1080</td>
+<td valign="top">443</td>
+<td valign="top">2.43</td>
+</tr>
+<tr>
+<td valign="top">Samsung Galaxy S III</td>
+<td valign="top">4.8</td>
+<td valign="top">720*1280</td>
+<td valign="top">306</td>
+<td valign="top">2.35</td>
+</tr>
+<tr>
+<td valign="top">LG Nexus 4 E960</td>
+<td valign="top">4.7</td>
+<td valign="top">768*1280</td>
+<td valign="top">318</td>
+<td valign="top">2.41</td>
+</tr>
+<tr>
+<td valign="top">Nokia Lumia 920&nbsp;</td>
+<td valign="top">4.5</td>
+<td valign="top">1280*768</td>
+<td valign="top">332</td>
+<td valign="top">2.31</td>
+</tr>
+<tr>
+<td valign="top">HTC One&nbsp;</td>
+<td valign="top">4.7</td>
+<td valign="top">1080*1920</td>
+<td valign="top">469</td>
+<td valign="top">2.30</td>
+</tr>
+<tr>
+<td valign="top">HTC One X</td>
+<td valign="top">4.7</td>
+<td valign="top">720*1280</td>
+<td valign="top">312</td>
+<td valign="top">2.30</td>
+</tr>
+<tr>
+<td valign="top">HTC Desire HD</td>
+<td valign="top">4.3</td>
+<td valign="top">480*800</td>
+<td valign="top">217</td>
+<td valign="top">2.21</td>
+</tr>
+<tr>
+<td valign="top">iPhone 5</td>
+<td valign="top">4</td>
+<td valign="top">640*1136</td>
+<td valign="top">326</td>
+<td valign="top">1.96</td>
+</tr>
+<tr>
+<td valign="top">Apple iPod Touch</td>
+<td valign="top">3.5</td>
+<td valign="top">960*640</td>
+<td valign="top">326</td>
+<td valign="top">1.96</td>
+</tr>
+<tr>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+</tr>
+<tr>
+<td valign="top">Apple iPad(1 &amp; 2)</td>
+<td valign="top">9.7</td>
+<td valign="top">1024*768</td>
+<td valign="top">132</td>
+<td valign="top">5.81</td>
+</tr>
+<tr>
+<td valign="top">Apple iPad(3rd Gen)</td>
+<td valign="top">9.7</td>
+<td valign="top">2048*1536</td>
+<td valign="top">264</td>
+<td valign="top">5.81</td>
+</tr>
+<tr>
+<td valign="top">Amazon Kindle DX</td>
+<td valign="top">9.7</td>
+<td valign="top">824*1200</td>
+<td valign="top">150</td>
+<td valign="top">5.49</td>
+</tr>
+<tr>
+<td valign="top">MICROSOFT SURFACE</td>
+<td valign="top">10.1</td>
+<td valign="top">1366*768</td>
+<td valign="top">148</td>
+<td valign="top">5.18</td>
+</tr>
+<tr>
+<td valign="top">iPad Mini</td>
+<td valign="top">7.9</td>
+<td valign="top">768*1024</td>
+<td valign="top">162</td>
+<td valign="top">4.74</td>
+</tr>
+<tr>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+</tr>
+<tr>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+<td valign="top">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>&nbsp;</div>
+<div>使用PSINET判断设备的尺寸只是一个假设，这个假设在设备的长宽相差不大的情况下还比较准确，如果长宽差别太大，这个数字就不准确了。</div>
+<div>&nbsp;</div>
+<div>PPI的计算公式，如果一个屏幕宽1280px，高720px，对角线尺寸为4.3inches，那么PPI的计算方式为：</div>
+<p><img src="https://images0.cnblogs.com/blog/39469/201303/24174506-2c27a4726b14445b82c0fd6104a70374.png" alt="" /></p>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>参考资料：</div>
+<div>1、<a href="http://mobile.smashingmagazine.com/2013/03/21/responsive-web-design-with-physical-units/">Device Size Matters: Responsive Web Design With Physical Units</a></div>
+<div>2、<a href="http://rss.9ria.com/?p=4414">学习Media Query</a></div>
+<div>3、<a href="http://www.smashingmagazine.com/2013/03/01/logical-breakpoints-responsive-design/">Logical Breakpoints in responsive design</a></div>
+<div>4、<a href="http://www.cnblogs.com/anjey/archive/2012/08/14/2638066.html">Media Type 与 Media Query</a></div>
+<p>&nbsp;</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2013-03-24 17:45</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2979397" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2979397);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2979397,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2013/3/24 17:45:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Gearman的问题分析与深入研究 - Cocowool - 博客园</title>
+<meta property="og:description" content="Gearman作为一个优秀的分布式解决方案，已经被众多的公司或者团队所采用，我在之前的一篇文章中也有过介绍。但是目前对于woker的执行状态和结果监控，特别是放入后台的worker的监控，官方还没有完" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2011/12/04/2275408.html">Gearman的问题分析与深入研究</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><style type="text/css" isprelink="true">@import url(http://www.cnblogs.com/Load.ashx?type=style&file=SyntaxHighlighter.css);</style><style type="text/css">@import url(/css/cuteeditor.css);</style>
+<!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">Gearman作为一个优秀的分布式解决方案，已经被众多的公司或者团队所采用，我在之前的<a href="http://www.cnblogs.com/cocowool/archive/2011/08/18/2145144.html">一篇文章</a>中也有过介绍。但是目前对于woker的执行状态和结果监控，特别是放入后台的worker的监控，官方还没有完善的解决方法。最近，为团队内部做了一次分享，我也得以深入的研究了 Gearmand。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><strong style="font-size: 18px; ">Gearman的主要作用：</strong></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">1、Dispatch 任务调度（无负载调度）</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">2、Interface 多应用语言间接口</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">3、Parallel 并行计算</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><strong style="font-size: 18px; ">Gearmand的安装</strong></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">Gearmand 的安装有多种方式，在 Ubuntu 和 Debian 的系统中已经提供了<a href="http://gearman.org/index.php?id=getting_started">在线安装的方法</a>。编译安装的过程也比较简单：</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<span style="font-family: Arial; line-height: normal; font-size: medium; "><span style="border-collapse: separate; color: #000000; font-family: Times; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-align: text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; "><span style="font-family: 'Lucida Grande', Verdana, Lucida, Helvetica, Arial, sans-serif; font-size: 13px; text-align: justify; ">
+<div style="padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 63px; ">
+<pre style="padding-top: 0.5em; padding-right: 0.5em; padding-bottom: 0.5em; padding-left: 0.5em; margin-top: 0px; margin-right: 0px; margin-bottom: 1em; margin-left: 0px; font-size: 12px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: dashed; border-right-style: dashed; border-bottom-style: dashed; border-left-style: dashed; border-top-color: #000000; border-right-color: #000000; border-bottom-color: #000000; border-left-color: #000000; color: #000000; overflow-x: auto; overflow-y: auto; background-color: #eeeeee; ">tar xzf gearmand-X.Y.tar.gz
+cd gearmand-X.Y
+./configure
+make
+make install</pre>
+</div>
+</span></span></span>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">安装需要系统提供了 libevent，如果没有编译就会报错。编译安装完成后的提示如下：</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<p><img src="https://images.cnblogs.com/cnblogs_com/cocowool/20111204-gearman/111.png" border="0" alt="" width="630" height="273" />&nbsp;</p>
+<p>&nbsp;</p>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><img src="file:///Users/shiqiang/Library/Application%20Support/Evernote/data/101370/content/p2934/98bfdb23a58e19f287b27d5dd51d7434.png" alt="" /><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">其中 libsqlite3、lbdrizzle、libmemcached、libpq、tokyocabinet的支持都是对于持久化来说的，如果需要要确保系统中安装了这些数据库。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">安装完成后，gearmand 提供了以下这些配置参数</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<p><img src="https://images.cnblogs.com/cnblogs_com/cocowool/20111204-gearman/222.jpg" border="0" alt="" width="649" height="669" />&nbsp;</p>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><img src="file:///Users/shiqiang/Library/Application%20Support/Evernote/data/101370/content/p2934/be3115b70c1ce250f17c455ed6f0cb61.png" alt="" /><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><strong style="font-size: 18px; ">性能的问题：</strong></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">gearmand 中使用到了多线程模型，其线程分为三种：</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">&nbsp; &nbsp; &nbsp;Listening and management thread 监听和管理线程 － 只有一个：主要负责接受连接请求，并分配给I/O线程</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">&nbsp; &nbsp; &nbsp;I/O Thread I/O 线程 － 可以有很多个：主要负责读写系统调用，解析数据包</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">&nbsp; &nbsp; &nbsp;Processing Thread 处理线程 &nbsp;－ 只有一个：负责管理列表和Hash表，管理唯一Key、任务的Handle、函数、任务队列</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">刚才在 &nbsp;gearmand 的参数中看到，-t 可以指定I/O线程的数量。如果 没有指定 t 或者 t = 0，则三个线程合为一个，所有的事情都在一个线程中处理。如果 -t 1 则有一个监听和管理线程、一个I/O和处理线程；如果 -t 2 则每个类别一个线程，如果大于2，则创建更多的I/O线程。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">官方提到，a 16 core Intel machine is able to process upwards of 50k jobs per second。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><strong style="font-size: 18px; ">使用中应当关注的几个问题</strong>：</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">1、Job Server 的单点问题。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">实际上 Job Server 是存在单点问题的，我们只能通过增加冗余 Job Server 的方式来解决这个问题。就如官方的图例所示，下图：</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="text-align: center; font-family: Arial; line-height: normal; font-size: medium; "><img src="https://images.cnblogs.com/cnblogs_com/cocowool/20111204-gearman/333.jpg" border="0" alt="" width="390" height="178" /><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">我们可以通过配置域名、多个服务器配置列表等方法，在遇到其中一个 Job Server 失败时，将 Client 的请求转向另外的 Job Server。这种情况下，Job Server 中原来存在的任务会发生丢失，除非使用了数据库或其他类似的持久化方法。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">2、Job Server 重启后，Worker会自动重新注册。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">通过 gearmand -vvvvvvv &nbsp;分析发现，如果 gearmand 关闭并重新启动后，原来的 worker 会马上与 Job Server 建立连接，并询问是否有任务。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><img src="https://images.cnblogs.com/cnblogs_com/cocowool/20111204-gearman/444.jpg" border="0" alt="" width="880" height="162" /><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">3、使用持久队列避免任务的丢失</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">因为 Gearmand 的队列是放在内存中的，所以宕机或重启事件会导致队列的丢失。为了避免这种情况，可以使用持久队列，将队列存储在一个相对中立的位置。注意，持久队列只对于后台任务有效。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">4、Gearman Worker 的无缝重启</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">我在实现Worker的过程中，采用了PHP脚本，脚本调用外部的配置文件。如果外部的配置文件修改后，需要重新启动脚本才能够使配置文件中修改的变量生效，所以想要坐到无缝的重启。即脚本Stop、Start的过程不会影响正在进行的业务。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">对于无缝重启的问题，我总结了如下几个思路进行处理，解决的方法：</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">1、每次修改完代码后，Worker需要手工重启（先杀死然后启动）。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">2、在Worker中设置，单次任务循环完成后，就对Worker进行重启。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">3、在Worker中添加一个退出函数，如果需要Worker退出的时候，在Client端发送一个优先级比较高的退出调用。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">4、在Worker中检查文件是否发生变化，如果发生了变化，退出并重启自身。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">5、为Worker编写信号控制，接受重启指令，类似于 http restart graceful 指令<br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">另外，也可以使用&nbsp;supervisord 。这个工具暂时还没有了解，有兴趣的朋友可以分享一下。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">下面是我在部门内部分享时制作的PPT</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+<div style="width:425px" id="__ss_10452050"><strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/Wonwang/gearman-introduction-10452050" title="Gearman Introduction">Gearman Introduction</a></strong><object id="__sse10452050" width="425" height="355">
+<param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=20111115gearman-111204003123-phpapp02&stripped_title=gearman-introduction-10452050&userName=Wonwang" />
+<param name="allowFullScreen" value="true"/>
+<param name="allowScriptAccess" value="always"/>
+<param name="wmode" value="transparent"/><embed name="__sse10452050" src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=20111115gearman-111204003123-phpapp02&stripped_title=gearman-introduction-10452050&userName=Wonwang" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="transparent" width="425" height="355"></embed></object>
+<div style="padding:5px 0 12px">View more <a href="http://www.slideshare.net/">presentations</a> from <a href="http://www.slideshare.net/Wonwang">Wonwang</a>.</div>
+</div>
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">参考资料：</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">1、<a href="http://william.shallum.net/random-notes/usingmemcachetogetresultsfromagearmanbackgroundjob">Using memcache to get results from a gearman background job</a></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">2、<a href="http://gearman.org/">Gearman</a></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">3、<a href="http://groups.google.com/group/gearman/msg/5314505c52e92b74?dmode=source">PHP Worker Script Automatically Restart On Crash/Exit</a></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">4、<a href="http://www.supervisord.org/">http://www.supervisord.org</a></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<style type="text/css" isprelink="true">@import url(http://www.cnblogs.com/Load.ashx?type=style&file=SyntaxHighlighter.css);</style><style type="text/css">@import url(/css/cuteeditor.css);</style></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2011-12-04 14:35</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2275408" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2275408);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2275408,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2011/12/4 14:35:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

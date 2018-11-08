@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Fedora 11 的安装以及 LAMP环境的搭建(二) - Cocowool - 博客园</title>
+<meta property="og:description" content="补充：首先，补充上一篇中的一些常用软件 (8)、RAR支持 Windows下的同事，很多都使用winrar来压缩和传输文件，所以这个也是不可或缺的，提供对于rar压缩格式的支持  sudo yum i" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2009/09/22/1571587.html">Fedora 11 的安装以及 LAMP环境的搭建(二)</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><br />补充：首先，补充上一篇中的一些常用软件<br /><br />&nbsp;&nbsp; &nbsp;(8)、RAR支持<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Windows下的同事，很多都使用winrar来压缩和传输文件，所以这个也是不可或缺的，提供对于rar压缩格式的支持<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;sudo yum install unrar<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;(9)、Filezilla，FTP支持<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Linux下的优秀的ftp客户端。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;sudo yum install fillzilla<br /><br /><strong>五、LAMP开发环境配置</strong><br /><br />&nbsp;&nbsp; &nbsp;(1)、ZendStudio 6.1.2<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Zend Studio 的安装非常方便，从官方下载 ZendStudioForEclipse_6_1_2.bin 后直接在命令行下执行就可以出现图形的安装界面，选择好后一切就OK了。<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;项目的代码使用SVN进行管理，所以需要从SVN中check项目：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;google SVN 密码：xxxxx<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;google SVN 地址：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;phpplot&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;https://xxxxx.googlecode.com/svn/trunk/<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;(2)、Virtualbox<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;到官方下载RPM安装包&nbsp;&nbsp; &nbsp;VirtualBox-3.0.6_52128_fedora11-1.i586.rpm&nbsp;&nbsp; &nbsp;，安装很简单 rpm -ivh Vir** 就可以了。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;之后就可以建立自己的虚拟机。<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;(3)、Apache安装和配置<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Apache 的安装通过yum很简单，执行命令：sudo yum install apache 就可以了。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;服务启动命令：sudo service httpd start<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;不用service的话，命令都在：/usr/sbin/ 下<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Apache 默认配置文件在 /httpd/conf/httpd.conf，可以在这个文件中做一些基本的配置定义。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;配置虚拟主机，apache 在配置文件中设定了启动包含 /etc/httpd/conf.d/ 中的配置文件，所以如果建立虚拟机，我们只需要在 /etc/httpd/conf.d/vhost.conf 中进行编辑即可，而不需要编辑默认配置文件。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;典型的虚拟主机配置如下：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;#www.work.rk.cn<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;NameVirtualHost *:80<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;VirtualHost *:80&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ServerAdmin cocowool@gmail.com<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DocumentRoot /home/cipher/Zend/workspaces/DefaultWorkspace/<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ServerName www.work.cn<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ErrorLog logs/www.work.cn-error_log<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CustomLog logs/www.work.cn-access_log common<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetEnv SRV_MEMCACHED_KEY_PREFIX&nbsp;&nbsp;&nbsp;&nbsp; 'work_cn'<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetEnv SRV_MEMCACHED_HOST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'localhost'<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetEnv SRV_MEMCACHED_SERVERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '127.0.0.1:11211'<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetEnv SRV_MEMCACHED_PORT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '11211'<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Directory "/home/cipher/Zend/workspaces/cgi"&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AllowOverride Options<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Allow from All<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Directory&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&lt;/VirtualHost&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;注意的问题：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;NameVirtualHost 在虚拟主机的配置文件中，只需要写一份就可以了，否则会报出一个 warnning；<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;如果 DocumentRoot 设置在自己的用户目录下，那么很可能会遇到 访问被拒绝的(403) 的问题，这个时候需要修改用户目录的权限，例如：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;chmod 711 -R /home/cipher/<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;同时还需要检查在几的 Selinux 是否打开，如果是本地的测试开发环境，建议关闭，图形界面下选择 System -&gt; Administration -&gt; SELinux Management，然后 Disable 掉就可以了。如果需要的话，可以使用：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;setseool -P httpd_enbale_homedirs 1<br />　　&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;chcon -R -t httpd_sys_content_t /home/cipher/workspace<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;单独对虚拟主机的目录进行权限设置。<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;(4)、PHP的安装及配置<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;sudo yum install php<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;fedora 11源中提供的PHP版本为 php 5.2.9，这个版本应该来说还是比较稳定，在 Fedora 12 中将会使用 php 5.3，很多人不推荐使用这个版本，服务器上一般会采用比较稳定的 php 5.2.5 或者 php 5.2.6；<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;PHP的默认配置文件位于 /etc/php.ini，我经常需要的几个配置项有：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;配置 include_path，将自己常用的一些库文件，包括 PEAR，SMARTY 类文件放在一起；<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;配置 error_report，关闭 notice，个别项目需要的话，可以在项目中打开；<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;添加Memcache支持：sudo yum install php-pecl-memcache<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;添加mysql支持：sudo yum install php-mysql.i586<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;其他可能会遇到的支持包括：GD，sqlite，PDO，mysqli，ftp，ldap，xmlrpc，zlib，bz2，png，mhash，iconv，mcrypt，simplexml，json，dom，mbstring，soap，curl等<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;这些基本上我是用到发现没有的时候就去添加，当然这个习惯很不好，应当制定一套基本的服务器环境规范，每个项目都遵守。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;(5)、Mysql的安装及配置<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Fedora 11 的 yum 源中提供的 mysql 版本为 5.1.37<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;mysql的安装：sudo yum install mysql<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;启动命令：sudo service mysqld satrt<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;mysql 的默认配置文件位于 /etc/my.cnf ，另外还有5个推荐的配置文件位于 sudo vi /usr/share/doc/mysql-server-5.1.37/ 分别适用于不同数据量的情况，可以酌情选用 ；<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;等到装Mysql的时候才想起来，之前系统中的数据都没有备份出来，很是可惜。在Windows下备份的时候，一般选择将数据文件拷贝一份就可以了，而在 Fedora 下，除了 mysqldump 和 mysqlbinlog 外，亦可以将数据文件备份下来，下面介绍具体方法。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;首先停掉系统中的 mysql 服务：sudo service mysqld stop<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;移动数据文件到自己的目录下：sudo mv -f mysql/ ~/Data/，这里要注意权限<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;修改 /etc/my.cnf 中的相关配置为实际情况：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;[mysqld]<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;#datadir=/var/lib/mysql<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;#socket=/var/lib/mysql/mysql.sock<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;datadir=/home/cipher/Data/mysql<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;socket=/home/cipher/Data/mysql/mysql.sock<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;修改启动脚本 /etc/init.d/mysqld ：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;#get_mysql_option mysqld datadir "/var/lib/mysql"<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;get_mysql_option mysqld datadir "/home/cipher/Data/mysql"<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;重新启动 mysql 服务： sudo service mysqld start<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;使用命令：mysql -uroot --sock=/home/cipher/Data/mysql/mysql.sock 便可以进入数据库，创建一个测试的数据库 overtest，之后便可以在 /home/cipher/Data/mysql 下看到新建立了一个数据文件夹。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;这个时候，如果直接使用 mysql -uroot 进行登录，会提示：Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock'，原因当然是那个位置已经没有这个文件了<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;为了改正这个错误，再次编辑 /etc/my.cnf，添加：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;[client]<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;socket=/home/cipher/Data/mysql/mysql.sock<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;重启服务后，再次使用 mysql -uroot 登录，OK！<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;(6)、其他所需组件的安装及配置<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Memcached，<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;(7)、设置服务随机启动 <br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;sudo ntsysv，命令执行后，会出现一个图形界面，用空格选择需要随机启动的服务，然后点击OK就可以了。<br />&nbsp;&nbsp; &nbsp;<br /><strong>六、系统性能的优化配置</strong><br /><br />&nbsp;&nbsp; &nbsp;(0)、启动问题<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;使用一段时间后，发现系统启动的时候 sendmail 和 sm-client 这两个服务启动的特别慢，google 了一下原因，原来是在 /etc/hosts 中添加了本机地址和对应的主机名记录，去掉以后，启动很快（不过貌似超过了宣传的20秒）。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;现在有一点事情想不明白，刚装上系统的时候，使用 sudo 命令编辑执行非常缓慢，所以在 /etc/hosts 中添加了一条记录，现在又造成了启动变慢，去掉之后，在执行 sudo 却并没有影响，不知道是不是后来安装的一些包中，解决了这个问题。<br /><br />&nbsp;&nbsp; &nbsp;(1)、Firefox的内存占用问题<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;修改内存占用，在地址栏输入 about:config<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;修改如下选项：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;browser.cache.memory.capacity = 1024<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;browser.sessionhistory.max_total_viewers = 1<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;修改Firefox选项：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Privacy -&gt; History -&gt; 选择 Use Custom settings for History<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;修改 Remeber my browsering history for at least 15 days ，根据自己的习惯选吧，不要太大；<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;勾选 Clear history when firefox closes -&gt; 然后再适当的选择需要删除的历史；<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;(2)、ZendStudio 6.1.2 优化<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;增加内存；<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;关闭 Code Analyzer；<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;关闭其它不相关的项目；<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;如果不喜欢用 Zend 自带的 JRE 的话，可以参考[4]来进行 JRE 环境的替换，这样据说能够提供一个比较漂亮的 Zend 的日志记录。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;(3)、Vimperator 的优化<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;我们可以在home下创建 .vimperatorrc 来定义自己喜欢的快捷键，而不是用vimperator默认提供的。<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;我的配置文件如下：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;"---------------------------<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;"Common setting<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;"---------------------------<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;" 先把麻烦的东西拿掉<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;map A &lt;Nop&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;map &lt;C-q&gt; &lt;Nop&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;map &lt;C-o&gt; &lt;Nop&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;map &lt;C-i&gt; &lt;Nop&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;map &lt;C-z&gt; &lt;Nop&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;map &lt;C-p&gt; &lt;Nop&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;"set nocompatible<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;set clipboard+=unnamed<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;"display tool bar<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;set go+=T<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;"Next Tab<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;noremap &lt;Left&gt; gT<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;"Prev Tab<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;noremap &lt;Right&gt; gt<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;noremap q :back&lt;CR&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;noremap w :forward&lt;CR&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;" 解决全选、复制、粘帖、剪切和撤销与vimperator冲突的问题<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;noremap &lt;C-V&gt; &lt;C-v&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;noremap &lt;C-Z&gt; &lt;C-z&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;noremap &lt;C-c&gt; &lt;C-v&gt;&lt;C-c&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;noremap &lt;C-a&gt; &lt;C-v&gt;&lt;C-a&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;cnoremap &lt;C-c&gt; &lt;C-v&gt;&lt;C-c&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;cnoremap &lt;C-v&gt; &lt;C-v&gt;&lt;C-v&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;cnoremap &lt;C-x&gt; &lt;C-v&gt;&lt;C-x&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inoremap &lt;C-a&gt; &lt;C-v&gt;&lt;C-a&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inoremap &lt;C-c&gt; &lt;C-v&gt;&lt;C-c&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inoremap &lt;C-v&gt; &lt;C-v&gt;&lt;C-v&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inoremap &lt;C-x&gt; &lt;C-v&gt;&lt;C-x&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inoremap &lt;C-z&gt; &lt;C-v&gt;&lt;C-z&gt;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inoremap &lt;C-y&gt; &lt;C-v&gt;&lt;C-y&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br /><br />参考资料:<br />1、<a href="http://www.linuxidc.com/Linux/2009-02/18262.htm">Fedora 下 Apache 的配置</a>&nbsp;&nbsp;&nbsp; <br />2、<a href="http://www.zend.com/support/knowledgebase.php?kbid=319">Zend 优化</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />3、<a href="http://www.linuxsir.org/bbs/thread275230-2.html">优化Firefox的内存占用</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />4、<a href="http://www.zend.com/support/knowledgebase.php?kbid=353">替换 Zend 的 JRE</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />5、<a href="http://www.linuxidc.com/Linux/2009-01/18097.htm">Mysql 的安装配置</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />6、<a href="http://www.cnblogs.com/songQQ/archive/2009/07/13/1522379.html">Fedora10下Mysql的安装配置</a>&nbsp;&nbsp;&nbsp; <br />7、<a href="http://www.wangchao.net.cn/bbsdetail_1632534.html">修改Mysql数据位置</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />8、<a href="http://hi.baidu.com/dwj192/blog/item/b656991be00ff3138618bfc9.html">Mysql 启动错误解决</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />9、<a href="http://www.chinadforce.com/viewthread.php?tid=1204824&amp;extra=page%3D4">Vimperator配置</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />10、<a href="http://swdpress.cn/tag/vimperator/">试玩Vimperator</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2009-09-22 09:46</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1571587" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1571587);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1571587,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2009/9/22 9:46:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

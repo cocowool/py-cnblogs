@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>YUI学习笔记 – CSS Rest、Base、Font以及Grid - Cocowool - 博客园</title>
+<meta property="og:description" content="YUI不仅为我们提供了一个强大的JS框架，同时还提供了几个CSS的框架，分别是Reset、Base、Font以及Grid。通过在页面中引用这几个CSS，可以让我们的前端开发工作事半功倍，达到快速将美工" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/articles/1907498.html">YUI学习笔记 – CSS Rest、Base、Font以及Grid</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>YUI不仅为我们提供了一个强大的JS框架，同时还提供了几个CSS的框架，分别是Reset、Base、Font以及Grid。通过在页面中引用这几个CSS，可以让我们的前端开发工作事半功倍，达到快速将美工图转化为实际产品、并且能够保证在绝大多数浏览器上的正常表现。今天我们就来了解一下这几个CSS。</p>  <blockquote>   <p>YUI这几个CSS存在于两个版本的YUI中（YUI2和YUI3）。本文的介绍以YUI3版本为例。</p> </blockquote>  <p>1、YUI3 Css Reset。</p>  <p>做过前端的朋友都知道，目前众多的浏览器，对于HTML的解析并不是完全一样。比如 li ，这个元素默认的样式在IE和Firefox中就不一样。Css Reset 就是为了消除这种不同元素在各个浏览器下的不同而设计的。这样，我们在 Build 我们的页面的时候，就是建立在一个完全一致的基础上，能够非常方便的让我们按照自己的想法去进行排版布局。通过这个<a href="http://developer.yahoo.com/yui/3/examples/cssreset/cssreset-basic_source.html" target="_blank">例子</a>我们可以看到，使用了 Css Reset之后的样式会是什么样的。</p>  <p>YUI3的Css Reset还提供了局部的Reset样式的功能，在我们想对某一容器内的元素（而不是整个页面）进行样式统一时使用。</p>  <p>2、YUI3 Css Base。</p>  <p>Css Base是一个补充YUI的核心CSS框架的文件，Css Base 为符合 A-Grade Browsers的浏览器提供了一个标准的基础。这个文件也可以作为我们扩展自己CSS框架的基础。同样Css Base也有全局（Global）和局部（Contextual）的选择。</p>  <p>3、YUI3 Css Fonts。</p>  <p>Css Fonts保证了跨浏览器的字体一致，即使在用户对字体进行调整情况下也是如此。不管是标准模式（Standard）还是怪异模式（Quirks），只要是A-Grade Browsers 都支持。</p>  <p>4、YUI3 Css Grids。</p>  <p>Css Grids 提供了一套基本的、简单的布局系统。我们使用CSS进行布局时，不需要再为两栏、三栏以及各种分栏形式而烦恼，使用Css Grids可以快速的实现。YUI3 Css Grids中对于命名规则进行了改变，这与YUI2 Css Grids中有很大的不同。不过基本原理还是一样的熟悉了任何一个，就能够方便快速的进行页面的布局。Css Reset、Css Font、Css Grids三个合起来，构成了YUI CSS的一个核心。我们可以一次将这三个文件引入进来。当然，现在YUI3的Css Grids还在Beta阶段，还不是太完善，如果我们需要一个成熟的解决方案，可以考虑使用YUI2的Css Grids，使用YUI2的Css Grids并不会影响我们使用YUI3的框架，他只是一个样式表嘛 :)</p>  <p>参考资料：    <br />1、<a href="http://developer.yahoo.com/yui/" target="_blank">YUI</a>&nbsp;<a href="http://developer.yahoo.com/yui/3/cssreset/" target="_blank">CSS Reset</a>    <br />2、YUI CSS     <br />3、<a href="http://developer.yahoo.com/yui/articles/gbs/" target="_blank">A-Grade Browsers</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2010-12-16 02:03</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>) &nbsp;<a href="https://i.cnblogs.com/EditArticles.aspx?postid=1907498" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1907498);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1907498,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2010/12/16 2:03:00';loadViewCount(cb_entryId);var cb_postType=2;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

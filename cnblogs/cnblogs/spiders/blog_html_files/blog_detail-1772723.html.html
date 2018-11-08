@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>使用YUI3创建Popup弹出层 - Cocowool - 博客园</title>
+<meta property="og:description" content="YUI3是一个非常好的开源框架，但是学习曲线稍微有些陡峭，这个系列将记录下我使用YUI3过程中的一些心得点滴，希望对大家能够有帮助。 很多互联网的项目应用中，弹出层出现的越来越多，使用YUI3可以快速" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/articles/1772723.html">使用YUI3创建Popup弹出层</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><blockquote>   <p>YUI3是一个非常好的开源框架，但是学习曲线稍微有些陡峭，这个系列将记录下我使用YUI3过程中的一些心得点滴，希望对大家能够有帮助。</p> </blockquote>  <p>很多互联网的项目应用中，弹出层出现的越来越多，使用YUI3可以快速的实现制作弹出层的效果。</p>  <p>YUI3提供了Overlay这个组件来实现可定位、可叠加的弹出层效果，这个弹出层同时还包含标准的布局模块。</p>  <p>首先是包含YUI的基础文件，因为Overlay组件使用中要用到WidgetPosition、WidgetStack、WidgetPositionAlign、WidgetPositionConstrain等组件，简单的方法是只引用YUI的种子文件，他会根据情况自动加载需要的组件。</p>  <blockquote>   <pre>&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;
+        src=&quot;http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js&quot;&gt;
+&lt;/script&gt;</pre>
+</blockquote>
+
+<p>之后，我们就可以创建YUI的实例了。</p>
+
+<blockquote>
+  <p>YUI().use(&#8220;overlay&#8221;, function(Y){ 
+    <br />
+
+    <br />});</p>
+</blockquote>
+
+<p>传给use最后的一个参数是一个回调函数。该回调函数在YUI实例完成了页面中缺少的文件加载后开始执行。</p>
+
+<p>Overlay组件继承自Widget类，所以初始化方式同Widget一样，可以接受一个配置对象来设置初始的环境变量。Overlay初始的方式有很多种，即支持基于已有的HTML生成的方式，也支持代码动态创建的方式生成。我们可以根据自己的需求选择不同的方式。个人认为基于已有HTML的方式，比较容易控制HTML的结构和样式，方便后期的修改，对于包含复杂弹出层内容的应用比较合适。而代码动态创建的方式，则适合显示简单信息的场景。</p>
+
+<p>使用HTML的方式，需要准备的HTML为（Markup）：</p>
+
+<blockquote>
+  <pre>&lt;div id=&quot;myContent&quot;&gt;
+    &lt;div class=&quot;yui3-widget-hd&quot;&gt;Overlay Header&lt;/div&gt;
+    &lt;div class=&quot;yui3-widget-bd&quot;&gt;Overlay Body&lt;/div&gt;
+    &lt;div class=&quot;yui3-widget-ft&quot;&gt;Overlay Footer&lt;/div&gt;
+&lt;/div&gt;</pre>
+</blockquote>
+
+<pre>在实例化的时候，需要在配置对象中指定一个到HTML的引用。引用可以是元素的ID\可以是YUI对象，也可以是一个选择器，如果选择到了多个符合的元素，则默认使用第一个。</pre>
+
+<pre>来看一下基本的例子：</pre>
+
+<blockquote>
+  <p>YUI().use('overlay', function(Y){
+    <br />&#160;&#160;&#160; var popup = new Y.Overlay({
+
+    <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; srcNode:&quot;#myContent&quot;,
+
+    <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; visible:false,
+
+    <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; width:'650px',
+
+    <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; height:'650px'
+
+    <br />&#160;&#160;&#160; }).render();</p>
+
+  <p>});</p>
+</blockquote>
+
+<p>也可以完全使用动态的方式来创建弹出，在脚本中指定要弹出的内容。</p>
+
+<p>仅仅有上面这些还不够，我们还需要未弹出层设计位置和样式，光秃秃的弹出几句话来只会引起用户的奇怪。YUI提供了丰富的选项允许我们对Overlay进行定制，下面是参数列表：</p>
+
+<p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/WindowsLiveWriter/YUI3Popup_145F8/image_2.png"><img style="border-bottom: 0px; border-left: 0px; display: block; float: none; margin-left: auto; border-top: 0px; margin-right: auto; border-right: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/WindowsLiveWriter/YUI3Popup_145F8/image_thumb.png" width="661" height="431" /></a> 我觉得 x,y\zIndex\align\centered 都是非常常用也非常有用的属性，具体的使用可以参考YUI的官方说明。</p>
+
+<p>弹出层一般会绑定在一个事件上，比如鼠标单击按钮后，出现弹出层，那么首先需要绑定事件的函数：</p>
+
+<blockquote>
+  <p>Y.on(event, fn, selector);</p>
+</blockquote>
+
+<p>这个函数还可以接受其他的一些参数，具体的可以参考 YUI Development。</p> </div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2010-07-07 11:17</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>) &nbsp;<a href="https://i.cnblogs.com/EditArticles.aspx?postid=1772723" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1772723);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1772723,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2010/7/7 11:17:00';loadViewCount(cb_entryId);var cb_postType=2;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

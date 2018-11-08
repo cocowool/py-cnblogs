@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>基于Vue、Bootstrap的Tab形式的进度展示 - Cocowool - 博客园</title>
+<meta property="og:description" content="最近基于Vue、Bootstrap做了一个箭头样式的进度展示的单页应用，并且支持了对于一个本地JS文件的检索，通过这个单页应用，对于Vue的理解又深入了一些。在这里把主要的代码分享出来。 本单页应用实" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/vue_tab_single_page_app.html">基于Vue、Bootstrap的Tab形式的进度展示</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><p>最近基于Vue、Bootstrap做了一个箭头样式的进度展示的单页应用，并且支持了对于一个本地JS文件的检索，通过这个单页应用，对于Vue的理解又深入了一些。在这里把主要的代码分享出来。</p>
+<p>本单页应用实现了几个功能：<br />
+1、点击箭头导航栏能够切换页面内容<br />
+2、使用了渲染到方式来展示内容，内容采用混合模板<br />
+3、对步骤一中的输入文本框进行监听，根据输入的内容，从本地JS文件检索给出用户提示</p>
+<p>期望改进的地方<br />
+1、点击Tab链接的时候，能够有页面切换效果（左右滑动）<br />
+2、文本框的提示方式改为 Suggestion</p>
+<blockquote>
+<p>全部的代码可以参见<a href="https://github.com/cocowool/vue-tab">我的 github 主页</a>上的项目代码，这里只分享主要的代码。</p>
+</blockquote>
+<p>看一下页面效果<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201806/39469-20180619090612999-1481422824.png" /></p>
+<p>先看一下代码结构<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201806/39469-20180619090623555-1780169568.png" /></p>
+<p>具体的代码</p>
+<h3 id="index.html">index.html</h3>
+<pre class="html"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;智慧园区考勤操作指引&lt;/title&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;描述了北数员工如何绑定智慧园区，并通过智慧园区进行日常工作考勤。&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;&gt;
+    &lt;link href=&quot;./bootstrap-3.3.7/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        @-ms-viewport     { width: device-width; }
+        @-o-viewport      { width: device-width; }
+        @viewport         { width: device-width; }
+        
+        body { padding-top:20px; padding-bottom: 20px; }
+        .header, .footer { padding-right: 15px; padding-left: 15px; }
+        .header { padding-bottom: 20px; border-bottom: 1px solid #e5e5e5; margin-bottom: 30px; }
+        .header h3 { margin-top: 0; margin-bottom: 0; line-height: 40px; }
+        .footer { padding-top: 19px; color: #777; border-top: 1px solid #e5e5e5; margin-top: 30px; }
+        .jumbotron {  }
+        .step-container { margin:30px 0; }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1000px;
+            }
+        }
+
+        .container-narrow &gt; hr { margin: 30px 0; }
+        .step-container { clear: both; vertical-align: middle; display: table-cell; margin-bottom: 30px; }
+        .rs-step-container { height: 40px; margin-bottom: 25px; }
+        .rs-arrow {  }
+        .rs-arrow .rs-step { text-align:center; cursor: pointer; display: inline-block; padding:10px 38px 10px 38px; position: relative; background-color: #e7e7e7; margin:0 3px; font-size: 14px;-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;  }
+        .rs-arrow .rs-step:after, .rs-arrow .rs-step:before { content: &quot; &quot;; position: absolute; top: 0; right: -17px; width: 0; height: 0; border-top: 20px solid transparent; border-bottom: 20px solid transparent; border-left: 17px solid #e7e7e7; z-index: 2; transition: border-color 0.2s ease; }
+        .rs-arrow .rs-step:before { right: auto; left: 0; border-left: 17px solid #fff;     z-index: 0; }
+        .rs-arrow .rs-step:first-child:before { border: none; }
+        .rs-arrow .rs-step:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; }
+        .rs-arrow .current, .rs-arrow .active { background-color: #337ab7; color:#fff; }
+        .rs-arrow .current:after, .rs-arrow .active:after { border-left-color: #337ab7;  }
+        .rs-arrow .active a { color:#fff; }
+        .rs-arrow div:hover { color:tomato; }        
+        .rs-arrow a:hover { text-decoration: none; }
+        .step-content { margin-top: 50px; }
+
+        .fade-enter-active, .fade-leave-active { transition: opacity .5s; }
+        .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ { opacity: 0; }
+
+        /*路由切换动画*/
+        .slide-right-enter-active,
+        .slide-right-leave-active,
+        .slide-left-enter-active,
+        .slide-left-leave-active {
+            will-change: transform;
+            transition: all 500ms;
+            position: absolute;
+        }
+        .slide-right-enter {
+            opacity: 0;
+            transform: translate3d(-100%, 0, 0);
+        }
+        .slide-right-leave-active {
+            opacity: 0;
+            transform: translate3d(100%, 0, 0);
+        }
+        .slide-left-enter {
+            opacity: 0;
+            transform: translate3d(100%, 0, 0);
+        }
+        .slide-left-leave-active {
+            opacity: 0;
+            transform: translate3d(-100%, 0, 0);
+        }
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.3s
+        }
+
+        .fade-enter, .fade-leave-active {
+            opacity: 0
+        }
+    &lt;/style&gt;
+    &lt;!--[if lt IE 8]&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            window.location.href=&#39;unsupport_tips.html&#39;
+        &lt;/script&gt;
+    &lt;![endif]--&gt;
+    &lt;!--[if lt IE 9]&gt;
+      &lt;script src=&quot;./html5shiv.min.js&quot;&gt;&lt;/script&gt;
+      &lt;script src=&quot;./respond.min.js&quot;&gt;&lt;/script&gt;
+    &lt;![endif]--&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;header clearfix&quot;&gt;
+            &lt;nav&gt;
+                &lt;ul class=&quot;nav nav-pills pull-right&quot;&gt;
+                    &lt;li&gt;&lt;a href=&quot;javascript:void(0);&quot; target=&quot;_blank&quot;&gt;友情链接&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=&quot;javascript:void(0);&quot; target=&quot;_blank&quot;&gt;友情链接&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=&quot;javascript:void(0);&quot;&gt;友情链接&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/nav&gt;
+            &lt;h3 class=&quot;text-muted&quot; id=&quot;ccb-title&quot; v-bind:title=&quot;message&quot;&gt;智慧园区考勤指引&lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;app&quot;&gt;
+            
+        &lt;/div&gt;
+        &lt;footer class=&quot;footer&quot;&gt;
+            &lt;p&gt;&amp;copy;2018 cocowool&lt;/p&gt;
+        &lt;/footer&gt;
+    &lt;/div&gt;    
+    &lt;script src=&quot;./jquery-3.3.1.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;./bootstrap-3.3.7/js/bootstrap.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;./dist/build.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;./bsuser_utf8.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<h3 id="main.js">main.js</h3>
+<pre class="javascript"><code>import Vue from &#39;vue&#39;
+
+import routes from &#39;./routes&#39;
+
+const app = new Vue({
+  el: &#39;#app&#39;,
+  data: {
+    currentRoute: window.location.pathname,
+  },
+  watch : {
+    currentRoute (to, from){
+      to = routes[to] ? routes[to] : routes[&#39;/&#39;]
+      from = routes[from] ? routes[from] : routes[&#39;/&#39;]
+      if(to.meta.index &gt; from.meta.index){
+        this.transitionName = &quot;slide-left&quot;
+      }else{
+        this.transitionName = &quot;slide-right&quot;
+      }
+    }
+  },
+  methods : {
+  },
+  computed: {
+    ViewComponent () {
+      //console.log(bsuser)
+      const matchingView = routes[this.currentRoute] ? routes[this.currentRoute].name : &#39;Home&#39;
+      return matchingView
+        ? require(&#39;./pages/&#39; + matchingView + &#39;.vue&#39;)
+        : require(&#39;./pages/Home.vue&#39;)
+    }
+  },
+  render (h) {
+    return h(this.ViewComponent)
+    // return h(require(&#39;./pages/About.vue&#39;))
+  }
+})
+
+window.addEventListener(&#39;popstate&#39;, () =&gt; {
+  app.currentRoute = window.location.pathname
+})</code></pre>
+<h3 id="route.js">route.js</h3>
+<pre class="javascript"><code>export default {
+
+  &#39;/&#39; : {
+    name : &#39;Home&#39;,
+    path : &#39;/&#39;,
+    meta : { index:0 }
+  },
+  &#39;/step1&#39; : {
+    name : &#39;Step1&#39;,
+    path : &#39;/step1&#39;,
+    meta : { index:1 }
+  },
+  &#39;/step2&#39; : {
+    name : &#39;Step2&#39;,
+    path : &#39;/step2&#39;,
+    meta : { index:2 }
+  },
+  &#39;/step3&#39; : {
+    name : &#39;Step3&#39;,
+    path : &#39;/step3&#39;,
+    meta : { index:3 }
+  }
+}</code></pre>
+<h3 id="main.vue">Main.vue</h3>
+<pre class="vue"><code>&lt;template&gt;
+
+    &lt;div class=&quot;step-container&quot;&gt;
+        &lt;div class=&quot;rs-step-container rs-arrow&quot;&gt;
+            &lt;v-tab href=&quot;/home&quot;&gt;说明&lt;/v-tab&gt;
+            &lt;v-tab href=&quot;/step1&quot;&gt;第一步:查询考勤ID&lt;/v-tab&gt;
+            &lt;v-tab href=&quot;/step2&quot;&gt;第二步:下载APP &amp; 绑定考勤ID&lt;/v-tab&gt;
+            &lt;v-tab href=&quot;/step3&quot;&gt;第三步:考勤并查看结果&lt;/v-tab&gt;
+        &lt;/div&gt;
+        &lt;!-- &lt;div&gt;
+            &lt;input type=&quot;text&quot; v-model=&quot;question&quot; name=&quot;question&quot;&gt;
+        &lt;/div&gt; --&gt;
+        &lt;transition name=&quot;fade&quot; mode=&quot;out-in&quot; v-on:after-enter=&quot;afterEnter&quot; appear&gt;
+            &lt;slot&gt;&lt;/slot&gt;
+        &lt;/transition&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+import VLink from &#39;../components/VLink.vue&#39;
+import VTab from &#39;../components/VTab.vue&#39;
+export default {
+    methods : {
+        inputChanged(){
+            console.log(&quot;Input CHanged&quot;)
+        }
+    },
+    watch : {
+    },
+    components: {
+        VLink,
+        VTab
+    }
+}
+&lt;/script&gt;</code></pre>
+<h3 id="step1.vue">Step1.vue</h3>
+<pre class="vue"><code>&lt;template&gt;
+
+  &lt;main-layout&gt;
+    &lt;div class=&quot;step-content slide-left&quot;&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label for=&quot;searchItem&quot; class=&quot;col-sm-2 control-label text-right&quot; style=&quot;padding-top:8px;&quot;&gt;用户名:&lt;/label&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;input type=&quot;text&quot; id=&quot;searchVal&quot; v-model=&quot;searchVal&quot; @input=&quot;inputChanged&quot; name=&quot;searchVal&quot; placeholder=&quot;请输入北数考勤系统登录用户名、中文姓名或身份证号进行查询&quot; class=&quot;form-control&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-sm-2&quot;&gt;&amp;nbsp;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot; style=&quot;margin-top:30px; clear:both; padding-top:30px;&quot;&gt;
+            &lt;div class=&quot;col-sm-2&quot;&gt;&amp;nbsp;&lt;/div&gt;
+            &lt;div class=&quot;col-sm-8&quot;&gt;
+                &lt;table class=&quot;table table-striped&quot; v-if=&quot;userList.length &gt; 0&quot;&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;姓名&lt;/th&gt;
+                            &lt;th&gt;登陆用户&lt;/th&gt;
+                            &lt;th&gt;考勤编号&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        &lt;tr v-for=&#39;(item, key) in userList&#39;&gt;
+                            &lt;td&gt;{{item.CNNAME}}&lt;/td&gt;
+                            &lt;td&gt;{{item.BSUSER}}&lt;/td&gt;
+                            &lt;td&gt;{{item.WHID}}&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;div class=&quot;col-sm-offset-2 col-sm-10&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/main-layout&gt;
+&lt;/template&gt;
+&lt;script&gt;
+import MainLayout from &#39;../layouts/Main.vue&#39;
+export default {
+    components : {
+        MainLayout
+    },
+    data() {
+        return {
+            searchVal : &#39;&#39;,
+            userList : []
+        }
+    },
+    props: {
+        value : {
+            type: String,
+            default:&#39;&#39;
+        }
+    },
+    computed:{
+    },
+    methods:{
+        inputChanged(event){
+            this.userList = []
+            var len = this.searchVal.length
+            if( len &gt; 0){
+                for (var i = 0 ; i &lt; bsuser.length ; i++){
+                    if(bsuser[i].ID.substring(0,len) == this.searchVal || bsuser[i].CNNAME.substring(0,len) == this.searchVal || bsuser[i].BSUSER.substring(0,len) == this.searchVal ){
+                        this.userList.push(bsuser[i])
+                    }
+                }
+            }
+        }
+    }
+}
+&lt;/script&gt;</code></pre>
+<p>参考资料：<br />
+1、<a href="https://codepen.io/polinovskyi/pen/embZmw">Fancy arrow-type progress bar</a><br />
+2、<a href="https://stackoverflow.com/questions/23428286/create-border-arrow-with-css">Create border arrow with css</a><br />
+3、<a href="https://www.cssscript.com/demo/responsive-step-progress-indicator-with-pure-css/">CSS Progress Wizard Example Page</a><br />
+4、<a href="https://www.cssscript.com/responsive-step-progress-indicator-with-pure-css/">Responsive Step Progress Indicator with Pure CSS</a><br />
+5、<a href="https://blog.csdn.net/qq_33236453/article/details/79110485">使用 vue-router 切换页面时怎么设置过渡动画</a><br />
+6、<a href="https://www.cnblogs.com/zhengweijie/p/7149443.html">基于Vue的页面切换左右滑动效果</a><br />
+7、<a href="https://blog.csdn.net/lvkelly/article/details/75270101">tab切换功能——vue</a><br />
+8、<a href="https://blog.csdn.net/landl_ww/article/details/79149461">解决vue在ie9中的兼容问题</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-06-19 09:07</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9197058" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9197058);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9197058,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/6/19 9:07:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

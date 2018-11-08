@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>重新认识wget - Cocowool - 博客园</title>
+<meta property="og:description" content="wget作为日常工具之一，相比很多人非常熟悉，但是我们通常使用了它最简单的功能，其实wget非常的强大，希望本文能够让大家领略到wget的强大" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2011/07/09/2101874.html">重新认识wget</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><div>  <title></title>      <p>Wget是平时经常会用到的一个工具，这个工具其实有着非常丰富的参数和配置，能够实现很强大的功能。比较常用的一个就是抓站或者为网站做镜像。</p> <p><br /></p> <p>wget -np -x -r -k -E &nbsp;<a href="http://wiki.intra.weibo.com/%E9%A6%96%E9%A1%B5">http://</a>www.baidu.com</p> <p><br /></p> <p>上面这个命令就实现了对 www.baidu.com 这个网站页面的递归抓取，并且将页面中的链接保存为相对链接，这样能够方便我们在本地查看网站的页面。如果我们需要将一个网站建立一个对等的镜像站点，可以使用 -m 这个参数。</p> <p><br /></p> <p>Wget在下载url中包含中文的路径时，会产生乱码的问题，按照参考资料中的方法，修改源码重新编译之后，这个问题就可以解决了。</p> <p><br /></p> <p>下面是wget的一些介绍资料：</p> <p><br /></p> <p>wget是一个从网络上自动下载文件的自由工具。它支持HTTP，HTTPS和FTP协议，可以使用HTTP代理.所谓的自动下载是指，wget可以在用户退出系统的之后在后台执行。这意味这你可以登录系统，启动一个wget下载任务，然后退出系统，wget将在后台执行直到任务完成，相对于其它大部分浏览器在下载大量数据时需要用户一直的参与，这省去了极大的麻烦。wget可以跟踪HTML页面上的链接依次下载来创建远程服务器的本地版本，完全重建原始站点的目录结构。这又常被称作&#8221;递归下载&#8221;。在递归下载的时候，wget遵循Robot Exclusion标准(/robots.txt). wget可以在下载的同时，将链接转换成指向本地文件，以方便离线浏览。wget非常稳定,它在带宽很窄的情况下和不稳定网络中有很强的适应性.如果是由于网络的原因下载失败，wget会不断的尝试，直到整个文件下载完 毕。如果是服务器打断下载过程，它会再次联到服务器上从停止的地方继续下载。这对从那些限定了链接时间的服务器上下载大文件非常有用。</p> <p><br /></p> <p>1）支持断点下传功能（2）同时支持FTP和HTTP下载方式（3）支持代理服务器（4）设置方便简单；5）程序小，完全免费；</p> <p><br /></p> <p>命令格式：</p> <p>　　wget [参数列表] [目标软件、网页的网址]</p> <p><br /></p> <p>1、启动类参数</p> <p><br /></p> <p>　　这一类参数主要提供软件的一些基本信息；</p> <p><br /></p> <p>　　-V,--version 显示软件版本号然后退出；</p> <p>　　-h,--help显示软件帮助信息；</p> <p>　　-e,--execute=COMMAND 执行一个 &#8220;.wgetrc&#8221;命令</p> <p><br /></p> <p>　　以上每一个功能有长短两个参数，长短功能一样，都可以使用。需要注意的是，这里的-e参数是执行一个.wgettrc的命令，.wgettrc命令其实是一个参数列表，直接将软件需要的参数写在一起就可以了。</p> <p><br /></p> <p>2、文件处理参数</p> <p><br /></p> <p>　　这类参数定义软件log文件的输出方式等；</p> <p><br /></p> <p>　　-o,--output-file=FILE 将软件输出信息保存到文件；</p> <p>　　-a,--append-output=FILE将软件输出信息追加到文件；</p> <p>　　-d,--debug显示输出信息；</p> <p>　　-q,--quiet 不显示输出信息；</p> <p>　　-i,--input-file=FILE 从文件中取得URL；</p> <p><br /></p> <p>　　以上参数对于攻击者比较有用，我们来看看具体使用；</p> <p><br /></p> <p>&nbsp;&nbsp; &nbsp; 例1：下载192.168.1.168首页并且显示下载信息</p> <p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;wget -d <a href="http://192.168.1.168/"><span>http://192.168.1.168</span></a></p> <p><br /></p> <p>&nbsp;&nbsp; &nbsp; 例2：下载192.168.1.168首页并且不显示任何信息</p> <p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;wget -q <a href="http://192.168.1.168/"><span>http://192.168.1.168</span></a></p> <p><br /></p> <p>&nbsp;&nbsp; &nbsp; 例3：下载filelist.txt中所包含的链接的所有文件</p> <p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;wget -i filelist.txt</p> <p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;wget -np -m -l5&nbsp; <a href="http://jpstone.bokee.com/">http://jpstone.bokee.com</a> //不下载本站所链接的其它站点内容，5级目录结构</p> <p><br /></p> <p>3、下载参数</p> <p><br /></p> <p>　　下载参数定义下载重复次数、保存文件名等；</p> <p><br /></p> <p>　　-t,--tries=NUMBER 是否下载次数（0表示无穷次）</p> <p>　　-O --output-document=FILE下载文件保存为别的文件名</p> <p>　　-nc, --no-clobber 不要覆盖已经存在的文件</p> <p>　　-N,--timestamping只下载比本地新的文件</p> <p>　　-T,--timeout=SECONDS 设置超时时间</p> <p>　　-Y,--proxy=on/off 关闭代理</p> <p><br /></p> <p>&nbsp;&nbsp; &nbsp; &nbsp;例：下载192.168.1.168的首页并将下载过程中的的输入信息保存到test.htm文件中</p> <p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;wget -o test.htm <a href="http://192.168.1.168/">http://192.168.1.168</a></p> <p><br /></p> <p>4、目录参数</p> <p><br /></p> <p>　　目录参数主要设置下载文件保存目录与原来文件（服务器文件）的目录对应关系；</p> <p><br /></p> <p>　　-nd&nbsp; --no-directories 不建立目录</p> <p>　　-x,--force-directories 强制建立目录</p> <p>　　可能现在我们对这里的目录还不是很了解，我们来看一个举例</p> <p><br /></p> <p>&nbsp;&nbsp; &nbsp; &nbsp; 例：下载192.168.1.168的首页，并且保持网站结构</p> <p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;wget -x <a href="http://192.168.1.168/">http://192.168.1.168</a>&nbsp;&nbsp;</p> <p><br /></p> <p>5、HTTP参数</p> <p><br /></p> <p>　　HTTP参数设置一些与HTTP下载有关的属性；</p> <p><br /></p> <p>　　--http-user=USER设置HTTP用户</p> <p>　　--http-passwd=PASS设置HTTP密码</p> <p>　　--proxy-user=USER设置代理用户</p> <p>　　--proxy-passwd=PASS设置代理密码</p> <p><br /></p> <p>　　以上参数主要设置HTTP和代理的用户、密码；</p> <p><br /></p> <p>6、递归参数设置</p> <p><br /></p> <p>　　在下载一个网站或者网站的一个目录的时候，我们需要知道的下载的层次，这些参数就可以设置；</p> <p>　　-r,--recursive 下载整个网站、目录（小心使用）</p> <p>　　-l,--level=NUMBER 下载层次</p> <p><br /></p> <p>&nbsp;&nbsp; &nbsp; &nbsp; 例：下载整个网站</p> <p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;wget -r <a href="http://192.168.1.168/">http://192.168.1.168</a></p> <p><br /></p> <p>7、递归允许与拒绝选项参数</p> <p><br /></p> <p>　　下载一个网站的时候，为了尽量快，有些文件可以选择下载，比如图片和声音，在这里可以设置；</p> <p><br /></p> <p>　　-A,--accept=LIST 可以接受的文件类型</p> <p>　　-R,--reject=LIST拒绝接受的文件类型</p> <p>　　-D,--domains=LIST可以接受的域名</p> <p>　　--exclude-domains=LIST拒绝的域名</p> <p>　　-L,--relative 下载关联链接</p> <p>　　--follow-ftp 只下载FTP链接</p> <p>　　-H,--span-hosts 可以下载外面的主机</p> <p>　　-I,--include-directories=LIST允许的目录</p> <p>　　-X,--exclude-directories=LIST 拒绝的目录</p> <p><br /></p> <p>Wget各项参数列表</p> <p><br /></p> <p>-V,&nbsp; --version &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 显示wget的版本后退出</p> <p>-h,&nbsp; --help &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;打印语法帮助</p> <p>-b,&nbsp; --background &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 启动后转入后台执行</p> <p>-e,&nbsp; --execute=COMMAND &nbsp; 执行`.wgetrc'格式的命令，wgetrc格式参见/etc/wgetrc或~/.wgetrc记录和输入文件</p> <p>-o,&nbsp; --output-file=FILE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;把记录写到FILE文件中</p> <p>-a,&nbsp; --append-output=FILE&nbsp;&nbsp; 把记录追加到FILE文件中</p> <p>-d,&nbsp; --debug &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;打印调试输出</p> <p>-q,&nbsp; --quiet &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;安静模式(没有输出)</p> <p>-v,&nbsp; --verbose &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;冗长模式(这是缺省设置)</p> <p>-nv, --non-verbose &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 关掉冗长模式，但不是安静模式</p> <p>-i,&nbsp; --input-file=FILE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 下载在FILE文件中出现的URLs</p> <p>-F,&nbsp; --force-html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 把输入文件当作HTML格式文件对待</p> <p>-B,&nbsp; --base=URL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 将URL作为在-F -i参数指定的文件中出现的相对链接的前缀</p> <p>--sslcertfile=FILE&nbsp;&nbsp;&nbsp;&nbsp; 可选客户端证书</p> <p>--sslcertkey=KEYFILE&nbsp;&nbsp; 可选客户端证书的KEYFILE</p> <p>--egd-file=FILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 指定EGD socket的文件名下载</p> <p>--bind-address=ADDRESS&nbsp;&nbsp; 指定本地使用地址(主机名或IP，当本地有多个IP或名字时使用)</p> <p>-t,&nbsp; --tries=NUMBER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 设定最大尝试链接次数(0 表示无限制).</p> <p>-O&nbsp;&nbsp; --output-document=FILE&nbsp;&nbsp; 把文档写到FILE文件中</p> <p>-nc, --no-clobber&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不要覆盖存在的文件或使用.#前缀</p> <p>-c,&nbsp; --continue&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 接着下载没下载完的文件</p> <p>--progress=TYPE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 设定进程条标记</p> <p>-N,&nbsp; --timestamping&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不要重新下载文件除非比本地文件新</p> <p>-S,&nbsp; --server-response&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 打印服务器的回应</p> <p>--spider&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不下载任何东西</p> <p>-T,&nbsp; --timeout=SECONDS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 设定响应超时的秒数</p> <p>-w,&nbsp; --wait=SECONDS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 两次尝试之间间隔SECONDS秒</p> <p>--waitretry=SECONDS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在重新链接之间等待1...SECONDS秒</p> <p>--random-wait&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在下载之间等待0...2*WAIT秒</p> <p>-Y,&nbsp; --proxy=on/off&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 打开或关闭代理</p> <p>-Q,&nbsp; --quota=NUMBER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 设置下载的容量限制</p> <p>--limit-rate=RATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 限定下载输率目录</p> <p>-nd&nbsp; --no-directories&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不创建目录</p> <p>-x,&nbsp; --force-directories&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 强制创建目录</p> <p>-nH, --no-host-directories&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不创建主机目录</p> <p>-P,&nbsp; --directory-prefix=PREFIX&nbsp;&nbsp; 将文件保存到目录 PREFIX/...</p> <p>--cut-dirs=NUMBER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 忽略 NUMBER层远程目录HTTP 选项</p> <p>--http-user=USER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 设定HTTP用户名为 USER.</p> <p>--http-passwd=PASS&nbsp;&nbsp;&nbsp; 设定http密码为 PASS.</p> <p>-C,&nbsp; --cache=on/off&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 允许/不允许服务器端的数据缓存 (一般情况下允许).</p> <p>-E,&nbsp; --html-extension&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 将所有text/html文档以.html扩展名保存</p> <p>--ignore-length&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 忽略 `Content-Length'头域</p> <p>--header=STRING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在headers中插入字符串 STRING</p> <p>--proxy-user=USER&nbsp;&nbsp;&nbsp;&nbsp; 设定代理的用户名为 USER</p> <p>--proxy-passwd=PASS&nbsp;&nbsp; 设定代理的密码为 PASS</p> <p>--referer=URL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在HTTP请求中包含 `Referer: URL'头</p> <p>-s,&nbsp; --save-headers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 保存HTTP头到文件</p> <p>-U,&nbsp; --user-agent=AGENT&nbsp;&nbsp;&nbsp; 设定代理的名称为 AGENT而不是 Wget/VERSION.</p> <p>--no-http-keep-alive&nbsp; 关闭 HTTP活动链接 (永远链接).</p> <p>--cookies=off&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不使用 cookies.</p> <p>--load-cookies=FILE&nbsp;&nbsp; 在开始会话前从文件 FILE中加载cookie</p> <p>--save-cookies=FILE&nbsp;&nbsp; 在会话结束后将 cookies保存到 FILE文件中FTP 选项</p> <p>-nr, --dont-remove-listing&nbsp;&nbsp; 不移走 `.listing'文件</p> <p>-g,&nbsp; --glob=on/off&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 打开或关闭文件名的 globbing机制</p> <p>--passive-ftp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 使用被动传输模式 (缺省值).</p> <p>--active-ftp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 使用主动传输模式</p> <p>--retr-symlinks&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在递归的时候，将链接指向文件(而不是目录)递归下载</p> <p>-r,&nbsp; --recursive&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 递归下载－－慎用!</p> <p>-l,&nbsp; --level=NUMBER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 最大递归深度 (inf 或 0 代表无穷).</p> <p>--delete-after&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在现在完毕后局部删除文件</p> <p>-k,&nbsp; --convert-links&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 转换非相对链接为相对链接</p> <p>-K,&nbsp; --backup-converted&nbsp;&nbsp; 在转换文件X之前，将之备份为 X.orig</p> <p>-m,&nbsp; --mirror&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 等价于 -r -N -l inf -nr.</p> <p>-p,&nbsp; --page-requisites&nbsp;&nbsp;&nbsp; 下载显示HTML文件的所有图片递归下载中的包含和不包含(accept/reject)</p> <p>-A,&nbsp; --accept=LIST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 分号分隔的被接受扩展名的列表</p> <p>-R,&nbsp; --reject=LIST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 分号分隔的不被接受的扩展名的列表</p> <p>-D,&nbsp; --domains=LIST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 分号分隔的被接受域的列表</p> <p>--exclude-domains=LIST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 分号分隔的不被接受的域的列表</p> <p>--follow-ftp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 跟踪HTML文档中的FTP链接</p> <p>--follow-tags=LIST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 分号分隔的被跟踪的HTML标签的列表</p> <p>-G,&nbsp; --ignore-tags=LIST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 分号分隔的被忽略的HTML标签的列表</p> <p>-H,&nbsp; --span-hosts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 当递归时转到外部主机</p> <p>-L,&nbsp; --relative&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 仅仅跟踪相对链接</p> <p>-I,&nbsp; --include-directories=LIST&nbsp;&nbsp; 允许目录的列表</p> <p>-X,&nbsp; --exclude-directories=LIST&nbsp;&nbsp; 不被包含目录的列表</p> <p>-np, --no-parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不要追溯到父目录</p> <p><br /></p> <p>参考资料：</p> <p>1、<a href="http://opkeep.com/system/linux/wget-command.html"><span>Wget的强大</span></a></p> <p>2、<a href="http://blog.csdn.net/DevPlus/article/details/6246707"><span>Wget中文乱码问题</span></a></p> <p>3、<a href="http://www.gnu.org/s/wget/"><span>GNU Wget</span></a></p></div></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2011-07-09 17:10</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2101874" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2101874);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2101874,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2011/7/9 17:10:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

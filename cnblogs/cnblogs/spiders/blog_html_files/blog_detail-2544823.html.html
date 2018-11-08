@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>进程的同步、互斥以及PV原语 - Cocowool - 博客园</title>
+<meta property="og:description" content="在处理进程间的同步与互斥问题时，我们离不开信号量和PV原语，使用这两个工具的目的在于打造一段不可分割不可中断的程序。应当注意的是，信号量和PV原语是解决进程间同步与互斥问题的一种机制，但并不是唯一的机" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2012/06/11/2544823.html">进程的同步、互斥以及PV原语</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>在处理进程间的同步与互斥问题时，我们离不开信号量和PV原语，使用这两个工具的目的在于打造一段不可分割不可中断的程序。应当注意的是，信号量和PV原语是解决进程间同步与互斥问题的一种机制，但并不是唯一的机制。</p>  <p><b>信号量：</b></p>  <p>信号量的概念1965年由著名的荷兰计算机科学家 Edsger Wybe Dijkstra 艾兹格·迪科斯彻 提出。</p>  <p>其核心思想是用一种新的变量类型（Semaphore）来记录可用资源的数量。有两种实现方式：</p>  <p>1、Semaphore的取值必须大于或等于0。0表示当前已经没有空闲资源，而正数表示当前空闲资源的数量；</p>  <p>2、Semaphore的取值可正可负，负数的绝对值表示正在等待进入临界区的进程个数；</p>  <p>信号量是一个二元组（S，Q）。S是一个具有非负初值的整型变量，Q是一个初始状态为空的队列。</p>  <p><b>PV原语</b></p>  <p>P原语：P是荷兰语Proberen（测试）的首字母。为阻塞原语，负责把当前进程由运行状态转换为阻塞状态，直到另一个进程唤醒它。具体操作为：申请一个空闲资源（把信号量减1），若成功，则退出；若失败，则该进程被阻塞。</p>  <p>V原语：V是荷兰语Verhogen（增加）的首字母。为唤醒原语，负责把一个被阻塞的进程唤醒，他有一个参数表，存放着等待被唤醒的进程信息。具体操作为：释放一个被占用的资源（把信号量加1），如果发现有被阻塞的进程，则选择一个唤醒。</p>  <p><b>表示方法</b></p>  <p>P(S)：表示将信号量S的值减一，即S=S-1；如果S&gt;=0，则该进程继续执行，否则该进程置为等待状态，排入等待队列（队列Q）。</p>  <p>V(S)：表示将信号量S的值加一，即S=S+1；如果S&gt;0，则该进程继续执行，否则释放队列（Q）中第一个等待信号量的进程。</p>  <p><b>实现互斥模型</b></p>  <p>在互斥模型中，多个进程对可用资源进行争用，使用信号量S表示可用资源的数量。一般来说，信号量S&gt;=0时，S表示可用资源的数量。执行一次P操作意味着请求分配一个单位资源，因此S的值减1；当S&lt;0时，表示已经没有可用资源，请求者必须等待别的进程释放该类资源，它才能运行下去。而执行一个V操作意味着释放一个单位资源，因此S的值加1；若S&lt;=0，表示有某些进程正在等待该资源，因此要唤醒一个等待状态的进程，使之运行下去。</p>  <p>进程互斥是进程之间发生的一种间接性作用，一般是程序不希望的。</p>  <p>如下表所示，我们使用S=1做为初值，表示当前系统资源只有一个，多个进程需要轮流使用这个资源。</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201206/201206111225432991.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201206/201206111225438357.png" width="801" height="203" /></a> </p>  <p>在互斥模型的问题中，关键的问题在于使用PV操作来保证有限的系统资源被正常的使用和释放，而不是多人争抢谁都抢不到，或者某人独占而不释放的情况。有点类似于北京现在的摇号制度，实际上资源就是两万个号牌，每个申请的人都执行了一次P操作，表示自己想要使用资源，在摇号结果出来之前没有资源可用，大家都进入Q队列等候，放号之时，获得资格的用户执行V操作，释放一个等待位置，其他人可以进入下一次的排号等候队列。</p>  <p><b>实现同步模型</b></p>  <p>所谓同步，是指多个相互合作的进程，在一些关键点上可能需要相互等待或相互交换信息，这种互相制约的关系称为进程同步。例如系统中有两个合作的进程，他们共用一个单缓冲区。这两个进程一个是计算进程，负责对数据进行计算；另一个为打印进程，负责对计算结果进行打印。当计算进程没有计算完毕，计算结果没有送到缓冲区的时候，打印进程就不能打印。一旦计算进程把计算结果送入缓冲区，就应该给打印进程发送一个信号，打印进程收到信号后就可以从缓冲区中取出计算结果进行打印。</p>  <p>之前我在想这个同步模型的时候，考虑可以使用定时轮询的方式，计算进程定时查询缓冲区，可用即开始写入；打印进程定时查询缓冲区，有内容即开始打印。但是这种没有相互合作沟通的方式，非常容易出现问题，比如计算进程内容还没有写完，打印进程就开始读取打印，造成分页的不正确或者数据的不完整。实际上，一般我们都会有多个计算进程，这种情况下就会同时存在资源争用的问题。</p>  <p><b>     <br /></b></p>  <p>进程同步是进程之间直接的相互作用，是合做进程间有意识的行为。与互斥模型不同，进程同步时的信号量只与制约进程、被制约进程有关而不是与所有的同类并发进程有关，所以同步模型中的信号量为私有信号量。</p>  <p>生产者-消费者模型是同步模型的典型代表，其也存在多种情况，分别叙述如下：</p>  <p>1、一个生产者，一个消费者，共用一个缓冲区。</p>  <p>定义两个同步信号量，生产者需要一个EMPTY信号量来判断当前是否能够写入，设置初值为1，消费者需要一个FULL信号量，来判断当前是否能够读取，设置初值为0。</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201206/201206111225431421.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201206/201206111225436438.png" width="871" height="199" /></a> </p>  <p>2、一个生产者，一个消费者，共用N个缓冲区。</p>  <p>与上面的例子不同的是，EMPTY的初值为N，则生产者的阻塞时间会减少很多。</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201206/201206111225445980.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201206/20120611122545158.png" width="869" height="199" /></a> </p>  <p>3、多个生产者，多个消费者，共用N个缓冲区。</p>  <p>在这种场景下，除了同步之外，还需要在生产者之间、消费者之间进行互斥的访问缓冲区，所以需要设置四个信号量，分别是EMPTY、FULL、生产者之间的互斥信号量Mutex1、消费者之间的互斥信号量Mutex2。</p>  <p>非生产者、消费者模型的例子有一个司机和售票员的。设置RUN信号量供司机判断是否应该开车，初始值为0；设置STOP信号量供售票员判断是否可以开门，初始值为0。描述如下：</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201206/201206111225458239.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201206/201206111225457716.png" width="899" height="205" /></a> </p>  <p>前驱图（Precedence Graph）是一种有向无循环图，记为DAG（Directed Acyclic Graph），用于描述进程间执行的前后关系。如下图：</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201206/201206111225452732.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201206/201206111225495047.png" width="536" height="150" /></a> </p>  <p>图中的每个结点可用于描述一个进程段或进程，乃至一条语句；结点间的有向边则用于表示两个结点之间存在的偏序（Partial Order）或前驱关系。可以使用PV原语，来描述前驱图。</p>  <p>PS：互斥的问题可以用硬件方法解决，如何解决，不太清楚。</p>  <p>参考资料：</p>  <p>1、<a href="http://blog.csdn.net/navorse/article/details/5108650">Process Synchronization PV</a></p>  <p>2、<a href="http://wenku.baidu.com/view/322fa727ccbff121dd368389.html">Linux死锁浅谈</a></p>  <p>3、<a href="http://www.ibm.com/developerworks/cn/linux/l-cn-mthreadps/index.html">Linux的多线程编程的高效开发经验</a></p>  <p>4、<a href="http://baike.baidu.com/view/809762.htm">百度百科PV原语</a></p>  <p>5、<a href="http://wenku.baidu.com/view/d75cd2294b73f242336c5f26.html">PV原语</a></p>  <p>6、<a href="http://blog.csdn.net/ljob2006/article/details/4735098">PV原语解释</a></p>  <p>7、<a href="http://www.doc88.com/p-90893801430.html">PV原语实现进程的同步与互斥</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2012-06-11 12:26</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2544823" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2544823);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2544823,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2012/6/11 12:26:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

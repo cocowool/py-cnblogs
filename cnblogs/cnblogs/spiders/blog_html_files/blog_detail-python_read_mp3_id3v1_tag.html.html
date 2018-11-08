@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>使用Python读取Mp3的标签信息 - Cocowool - 博客园</title>
+<meta property="og:description" content="什么是ID3 MP3是音频文件最流行的格式，它的全称是 MPEG layer III。但是这种格式不支持对于音频内容的描述信息，包括歌曲名称、演唱者、专辑等等。 因此在1996年，Eric Kemp在" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/python_read_mp3_id3v1_tag.html">使用Python读取Mp3的标签信息</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><h3 id="什么是id3">什么是ID3</h3>
+<p>MP3是音频文件最流行的格式，它的全称是 MPEG layer III。但是这种格式不支持对于音频内容的描述信息，包括歌曲名称、演唱者、专辑等等。</p>
+<p>因此在1996年，Eric Kemp在<em>Studio 3</em>项目中提出了ID3的解决方案。ID3全称是Identity of MP3，其解决方案是在音频文件末尾附加一串数据，包含关于歌曲的名称、歌手、图片的信息。为了方便检测，数据的长度固定为128bytes。这个版本的解决方案称为 ID3v1。</p>
+<p>Michael Mutschler 在 1997 对格式进行了微小的调整，压缩了Comment字段，增加了Track信息，这个版本被称为ID3v1.1。</p>
+<p>1998年，Martin Nilsson &amp; Michael Mutschler牵头，多个贡献者一起发起了ID3v2的工作。这个班的结构和ID3v1完全不同，数据的长度不再固定，位置也从尾部移到了头部，并且引入了Unicode支持。ID3v2的第一个版本是ID3v2.2，2000年发布了ID3v2.4。</p>
+<h3 id="id3v1">ID3v1</h3>
+<p>附着在音频数据之后，长度为128bytes，每个字段最大支持30个字符。<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201806/39469-20180622143756058-1269044464.png" /><br />
+具体的字段信息</p>
+<table>
+<thead>
+<tr class="header">
+<th>Song Title</th>
+<th>30 characters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Artist</td>
+<td>30 characters</td>
+</tr>
+<tr class="even">
+<td>Album</td>
+<td>30 characters</td>
+</tr>
+<tr class="odd">
+<td>Year</td>
+<td>4 characters</td>
+</tr>
+<tr class="even">
+<td>Comment</td>
+<td>30 characters</td>
+</tr>
+<tr class="odd">
+<td>Genre</td>
+<td>1 byte</td>
+</tr>
+</tbody>
+</table>
+<p>在数据开始之前，总是有三个字符<code>TAG</code>，这样和上面的字段加起来，正好是128bytes。如果Artist字段内容不足30个字符，不足的部分用0填充。</p>
+<h3 id="id3v2">ID3v2</h3>
+<p>ID3v2是加在音频数据前面的一组数据，每项具体的数据称为frame(例如歌曲名称)。可以包含任意类型的数据，每个frame最大支持16MB，整个tag大小最大支持256MB。存储编码支持Unicode，这样就不会产生乱码问题。</p>
+<p>Tag数据放在音频数据之前还有一个好处，对于流式访问可以首先获得歌曲信息并展现给用户。<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201806/39469-20180622143813329-1167316642.png" /><br />
+列举一些特性：</p>
+<ul>
+<li>The ID3v2 tag is a container format, just like IFF or PNG files, allowing new frames (chunks) as evolution proceeds.</li>
+<li>Residing in the beginning of the audio file makes it suitable for streaming.</li>
+<li>Has an 'unsynchronization scheme' to prevent ID3v2-incompatible players to attempt to play the tag.</li>
+<li>Maximum tag size is 256 megabytes and maximum frame size is 16 megabytes.</li>
+<li>Byte conservative and with the capability to compress data it keeps the files small.</li>
+<li>The tag supports Unicode.</li>
+<li>Isn't entirely focused on musical audio, but also other types of audio.</li>
+<li>Has several new text fields such as composer, conductor, media type, BPM, copyright message, etc. and the possibility to design your own as you see fit.</li>
+<li>Can contain lyrics as well as music-synced lyrics (karaoke) in almost any language.</li>
+<li>Is able to contain volume, balance, equalizer and reverb settings.</li>
+<li>Could be linked to CD-databases such as CDDB and FreeDB.</li>
+<li>Is able to contain images and just about any file you want to include.</li>
+<li>Supports enciphered information, linked information and weblinks.</li>
+</ul>
+<h3 id="使用-python-读取id3-信息">使用 Python 读取ID3 信息</h3>
+<p>我写了一个 Python 脚本可以用来读取 ID3v1 的信息。实际操作过程中发现两个问题：<br />
+<em>1、ID3v1的信息没有编码字段，所以有的时候同样的Mp3，在不同的系统环境中播放，会显示乱码。针对这个问题，打算再写一篇文章说一下如何探测编码。</em><br />
+<em>2、iTunes应该是优先使用ID3v2的信息</em></p>
+<p>我把脚本放到了 github 上，感兴趣的同学可以通过 <a href="https://github.com/cocowool/py-id3" class="uri">https://github.com/cocowool/py-id3</a> 查看。</p>
+<pre class="python"><code># Read ID3v1 tag information
+import os
+import string
+import base64
+import chardet
+
+def parse(fileObj, version = &#39;v1&#39;):
+fileObj.seek(0,2)
+# ID3v1&#39;s max length is 128 bytes
+if(fileObj.tell() &lt; 128):
+return False
+fileObj.seek(-128,2)
+tag_data = fileObj.read()
+
+if(tag_data[0:3] != b&#39;TAG&#39;):
+return False
+return getTag(tag_data)
+
+# Detect the encoding and decode
+def decodeData(bin_seq):
+# print(bin_seq)
+result = chardet.detect(bin_seq)
+# print(result)
+if(result[&#39;confidence&#39;] &gt; 0):
+try:
+return bin_seq.decode(result[&#39;encoding&#39;])
+except UnicodeDecodeError:
+return &#39;Decode Failed&#39;
+
+
+# Get ID3v1 tag data
+def getTag(tag_data):
+# STRIP_CHARS = compat.b(string.whitespace) + b&quot;\x00&quot;
+STRIP_CHARS = b&quot;\x00&quot;
+
+tags = {}
+tags[&#39;title&#39;] = tag_data[3:33].strip(STRIP_CHARS)
+
+if(tags[&#39;title&#39;]):
+tags[&#39;title&#39;] = decodeData(tags[&#39;title&#39;])
+
+tags[&#39;artist&#39;] = tag_data[33:63].strip(STRIP_CHARS)
+if(tags[&#39;artist&#39;]):
+tags[&#39;artist&#39;] = decodeData(tags[&#39;artist&#39;])
+
+tags[&#39;album&#39;] = tag_data[63:93].strip(STRIP_CHARS)
+if(tags[&#39;album&#39;]):
+tags[&#39;album&#39;] = decodeData(tags[&#39;album&#39;])
+
+tags[&#39;year&#39;] = tag_data[93:97].strip(STRIP_CHARS)
+# if(tags[&#39;year&#39;]):
+# tags[&#39;year&#39;] = decodeData(tags[&#39;year&#39;])
+
+tags[&#39;comment&#39;] = tag_data[97:127].strip(STRIP_CHARS)
+#@TODO Need to analyze comment to verfiy v1 or v1.1
+if(tags[&#39;comment&#39;]):
+tags[&#39;comment&#39;] = decodeData(tags[&#39;comment&#39;])
+
+tags[&#39;genre&#39;] = ord(tag_data[127:128])
+
+return tags
+
+# Set ID3v1 tag data
+def setTag():
+pass</code></pre>
+<p><em>本文为作者原创，如果您觉得本文对您有帮助，请随意打赏，您的支持将鼓励我继续创作。</em></p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170825142904777-1467390737.png" /></p>
+<p>参考资料：<br />
+1、<a href="http://id3.org/Home">ID3.org</a><br />
+2、<a href="https://en.wikipedia.org/wiki/ID3">Wiki ID3</a><br />
+3、<a href="http://www.runoob.com/python/python-func-open.html">Python open() 函数</a><br />
+4、<a href="https://www.cnblogs.com/pcode/archive/2013/04/01/2992690.html">使用Python读取和写入mp3文件的id3v1信息</a><br />
+5、<a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/0014318447437605e90206e261744c08630a836851f5183000">Python 模块</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-06-22 14:39</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9213330" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9213330);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9213330,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/6/22 14:39:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>ElasticSearch + Logstash + Kibana 搭建笔记 - Cocowool - 博客园</title>
+<meta property="og:description" content="ElasticSearch 安装 1、下载 "ElasticSearch" ，本文使用的版本为 5.5.1。 2、配置 如果不修改配置的话，默认的数据和日志都位于elasticsearch文件夹下。 " />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/7297749.html">ElasticSearch + Logstash + Kibana 搭建笔记</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><h3 id="elasticsearch-安装">ElasticSearch 安装</h3>
+<p>1、下载 <a href="https://www.elastic.co/downloads/elasticsearch">ElasticSearch</a>，本文使用的版本为 5.5.1。</p>
+<p>2、配置</p>
+<pre class="sh"><code>path.data: /data/es #数据路径
+path.logs: /data/logs/es #日志路径
+network.host: 本机地址 #服务器地址
+http.port: 9200 #端口</code></pre>
+<p>如果不修改配置的话，默认的数据和日志都位于elasticsearch文件夹下。</p>
+<blockquote>
+<p>默认地址会使用 192.168.0.1 的地址，此时ElasticSearch运行于开发模式，只能从本机访问。如果修改为生产地址，就会进入生产模式，并且运行 bootstrap check 。</p>
+</blockquote>
+<p>3、启动</p>
+<pre class="sh"><code>./bin/elasticsearch</code></pre>
+<blockquote>
+<p>注意，elasticsearch 不能使用 root 用户启动，使用其他用户启动，要注意有文件夹的读写权限。</p>
+</blockquote>
+<p>我在安装过程中还出现了下面几个警告信息</p>
+<pre class="sh"><code>[2017-08-07T09:13:59,951][WARN ][o.e.b.JNANatives         ] unable to install syscall filter: 
+java.lang.UnsupportedOperationException: seccomp unavailable: requires kernel 3.5+ with CONFIG_SECCOMP and CONFIG_SECCOMP_FILTER compiled in
+    at org.elasticsearch.bootstrap.SystemCallFilter.linuxImpl(SystemCallFilter.java:350) ~[elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.bootstrap.SystemCallFilter.init(SystemCallFilter.java:638) ~[elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.bootstrap.JNANatives.tryInstallSystemCallFilter(JNANatives.java:245) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.bootstrap.Natives.tryInstallSystemCallFilter(Natives.java:113) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:111) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:194) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:351) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:123) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:114) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:67) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:122) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.cli.Command.main(Command.java:88) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:91) [elasticsearch-5.5.1.jar:5.5.1]
+    at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:84) [elasticsearch-5.5.1.jar:5.5.1]
+[2017-08-01T14:10:57,843][WARN ][o.e.b.BootstrapChecks    ] [VAfWGGZ] max file descriptors [65535] for elasticsearch process is too low, increase to at least [65536]
+[2017-08-01T14:10:57,844][WARN ][o.e.b.BootstrapChecks    ] [VAfWGGZ] max number of threads [1024] for user [maserati] is too low, increase to at least [2048]
+[2017-08-01T14:10:57,844][WARN ][o.e.b.BootstrapChecks    ] [VAfWGGZ] max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+[2017-08-01T14:10:57,844][WARN ][o.e.b.BootstrapChecks    ] [VAfWGGZ] system call filters failed to install; check the logs and fix your configuration or disable system call filters at your own risk</code></pre>
+<p>针对文件描述符，调成 65536 <code>ulimit -n 65536</code>，如果提示没有权限，则可以在用户的 .bash_profile 中增加一行，退出用户重新登陆就可以。</p>
+<p>针对 max number of threads 问题，修改 /etc/security/limits.d/90-nproc.conf 。</p>
+<pre class="sh"><code>*          soft    nproc     2048
+root       soft    nproc     unlimited</code></pre>
+<p>针对 max virtual memory areas ，修改 /etc/sysctl.conf。如果没有，就新增一行。</p>
+<pre class="sh"><code>vm.max_map_count = 262144</code></pre>
+<p>针对 system_call_filter 可以，通过修改配置文件（elasticsearch.yml）关掉这个参数。</p>
+<pre class="sh"><code>bootstrap.system_call_filter: false </code></pre>
+<p>4、访问，出现下面的结果表示启动成功。</p>
+<pre class="sh"><code>[root@iZ627x15h6pZ cloud]# curl http://localhost:9200
+{
+  &quot;name&quot; : &quot;VAfWGGZ&quot;,
+  &quot;cluster_name&quot; : &quot;elasticsearch&quot;,
+  &quot;cluster_uuid&quot; : &quot;J9Tm5R2zRt2PkOSwtXj5Wg&quot;,
+  &quot;version&quot; : {
+    &quot;number&quot; : &quot;5.5.1&quot;,
+    &quot;build_hash&quot; : &quot;19c13d0&quot;,
+    &quot;build_date&quot; : &quot;2017-07-18T20:44:24.823Z&quot;,
+    &quot;build_snapshot&quot; : false,
+    &quot;lucene_version&quot; : &quot;6.6.0&quot;
+  },
+  &quot;tagline&quot; : &quot;You Know, for Search&quot;
+}</code></pre>
+<h3 id="logstash-安装">Logstash 安装</h3>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170807100506284-855989471.png" /></p>
+<p>1、下载并解压 Logstash，本文用的 Logstash-5.5.1 版本</p>
+<p>2、创建一个简单的配置文件 logstash_test.conf</p>
+<pre><code>input { stdin { } }
+output {
+  stdout { codec =&gt; rubydebug }
+}</code></pre>
+<p>3、启动 logstash</p>
+<pre class="sh"><code>./bin/logstash -f logstash_test.conf </code></pre>
+<p>出现这些信息，表示启动成功了。</p>
+<pre class="sh"><code>[2017-08-01T13:58:38,437][INFO ][logstash.pipeline        ] Pipeline main started
+The stdin plugin is now waiting for input:
+[2017-08-01T13:58:38,532][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=&gt;9600}</code></pre>
+<p>4、与ElasticSearch配合。</p>
+<h3 id="kibana-安装">Kibana 安装</h3>
+<p>1、下载 <a href="https://www.elastic.co/downloads/kibana">Kibana</a></p>
+<p>2、修改配置</p>
+<pre class="sh"><code>//启动端口 因为端口受限 所以变更了默认端口
+server.port: 5601
+//启动服务的ip
+server.host: &quot;本机ip&quot;
+//elasticsearch地址
+elasticsearch.url: &quot;http://localhost:9200”</code></pre>
+<p>3、启动程序</p>
+<p>./bin/kibana</p>
+<p>4、访问查看Kibana启动是否成功，并检索查看数据</p>
+<p>http://localhost:5601</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170807100525580-1389653745.png" /></p>
+<p>参考资料：<br />
+1、<a href="https://www.elastic.co/downloads/logstash">Download Logstash</a><br />
+2、<a href="https://www.elastic.co/downloads/elasticsearch">ElasticSearch Download</a><br />
+3、<a href="http://blog.csdn.net/qq942477618/article/details/53414983">ElasticSearch 5.0启动出现的错误</a><br />
+4、<a href="http://www.cnblogs.com/zengkefu/p/5649407.html">Ulimit详解</a><br />
+5、<a href="http://www.cnblogs.com/jasonxuli/p/6397244.html">ELK+Filebeat 安装配置入门</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2017-08-07 10:06</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=7297749" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(7297749);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=7297749,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2017/8/7 10:06:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Kubernetes基础：Service - Cocowool - 博客园</title>
+<meta property="og:description" content="本文的试验环境为CentOS 7.3，Kubernetes集群为1.11.2，安装步骤参见 "kubeadm安装kubernetes V1.11.1 集群" Service 介绍 我们通过Pod、De" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/kubernetes_service.html">Kubernetes基础：Service</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>本文的试验环境为CentOS 7.3，Kubernetes集群为1.11.2，安装步骤参见<a href="https://www.cnblogs.com/cocowool/p/kubeadm_install_kubernetes.html">kubeadm安装kubernetes V1.11.1 集群</a></p>
+</blockquote>
+<h3 id="service-介绍">Service 介绍</h3>
+<p>我们通过Pod、Deployment等可以将应用发布到Kubernetes平台中，但是如果我们如何才能访问我们部署的应用呢？有一个办法就是通过节点的IP加上节点的端口来访问这个节点上的容器应用，但是如果我们有多个跨节点的相通应用时该怎么办呢？特别是应用发生扩容、缩容时应该如何处理，这时我们就需要利用<code>Service</code>来实现。</p>
+<p>在Kubernetes中，Service是一种资源，提供了我们访问单个或多个容器应用的能力。每个服务在其生命周期内，都拥有一个固定的IP地址和端口。每个服务对应了后台的一个或多个Pod，通过这种方式，客户端就不需要关心Pod所在的位置，方便后端进行方便的Pod扩容、缩容等操作。</p>
+<p>可以通过下面的示意图来理解Service的作用。<br />
+<img src="https://img2018.cnblogs.com/blog/39469/201810/39469-20181023132306675-1899988743.png" /></p>
+<p>由此可知，服务可以被外部的客户访问，也可以被内部的客户访问。Service通过创建时指定的标签选择器来决定用户的请求转发到后台的哪些Pods中。看一下Service创建的具体例子。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-svc
+spec:
+  sessionAffinity: ClientIP # 该参数可以设置相同IP的请求总是定位到同一个Pod
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: tomcat</code></pre>
+<p>这个例子定义了一个Service名为tomcat-svc，端口为8080，该服务会将用户的请求转发到后台带有app=tomcat标签的Pods上。</p>
+<pre class="sh"><code>kubectl get svc </code></pre>
+<blockquote>
+<p>我们在测试服务是否正常的时候，不能使用ping命令。因为Kubernetes中实现服务时，并不支持ping。因此不能使用ping的方式检查服务是否正常，应当使用telnet或者nc等命令进行测试。</p>
+</blockquote>
+<blockquote>
+<p>Pod中的应用访问Service有两种方式，一种是通过向Pod中注入环境变量的方式，这种方式缺点很明显，必须首先创建Service，Pod内的应用才能通过环境变量访问；另一种方式是通过DNS的方式，这种方式非常灵活。</p>
+</blockquote>
+<h3 id="service-与-endpints">Service 与 endpints</h3>
+<p>Endpoints 是组成Service的一组IP地址和端口资源。</p>
+<pre class="sh"><code>kubectl get endpoints kubia</code></pre>
+<p>默认情况下创建Service的时候，会创建一个同名的Endpoints资源，通过<code>kubectl descirbe svc svc-name</code>可以看到这个服务对应的Endpoints。<br />
+如果创建Service的时候，不指定Pod的选择器，则不会创建Endpoints资源。也可以手工创建Endpoints类型。创建时需要注意名称要与Service的名称一致。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Endpoints
+metadata: 
+  name: external-service
+subsets:
+  - addresses:
+    - ip: 11.11.11.11
+    - ip: 22.22.22.22
+    ports:
+    - port: 80</code></pre>
+<h3 id="service-的类型">Service 的类型</h3>
+<ul>
+<li>NodePort</li>
+<li>Loadbalance</li>
+<li>Ingress</li>
+</ul>
+<h3 id="实例解析">实例解析</h3>
+<h4 id="创建内部服务">1. 创建内部服务</h4>
+<p>创建用于内部访问的服务很简单，创建后服务将在生命周期内拥有固定的IP和端口。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-svc
+spec:
+  sessionAffinity: ClientIP # 该参数可以设置相同IP的请求总是定位到同一个Pod
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: tomcat</code></pre>
+<p>客户每次链接Service时，都会对应到后端的一个Pod上，如果客户需要链接所有的后端Pod呢，可以使用headless service。通过这种方式，Kubernetes内部的DNS服务会将Service对应的所有IP返回。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-headless
+spec:
+  clusterIP: None
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: tomcat</code></pre>
+<blockquote>
+<p>或者可以在客户端通过程序调用Kubernetes API的方式获取地址列表。</p>
+</blockquote>
+<h4 id="为外部服务创建一个内部别名">2. 为外部服务创建一个内部别名</h4>
+<p>容器内部的应用要访问外部应用时，可以直接在容器内访问外部服务地址，也可以通过创建一个外部服务的别名进行转发，这样相当于将内外部调用关系解耦了，每次外部发生变化的时候，可以不用修改应用的代码。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Service
+metadata:
+  name: external-service
+spec:
+  type: ExternalName
+  externalName: api.baidu.com
+  ports:
+  - port: 80</code></pre>
+<h4 id="向外部暴露内部服务">3. 向外部暴露内部服务</h4>
+<p>向外部暴露内部服务有三种方式：</p>
+<ul>
+<li>NodePort</li>
+<li>LoadBalancer</li>
+<li>Ingress，7层负载均衡</li>
+</ul>
+<h5 id="nodeport-方式">3.1 NodePort 方式</h5>
+<p>创建这种方式的Service，内部可以通过ClusterIP进行访问，外部用户可以通过NodeIP:NodePort的方式单独访问每个Node上的实例。这种方式有很多问题，直接访问节点的地址和端口需要在客户端记录很多信息，Pod发生迁移后这些信息没办法动态更新，节点的防火墙及节点所在网络区域的防火墙策略配置会比较麻烦。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Service
+metadata:
+  name: nodeport
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 30123
+  selector:
+    app: httpd</code></pre>
+<p>端口如果忽略，Kubernetes会自动生成。</p>
+<pre class="sh"><code>$ kubectl get svc nodeport</code></pre>
+<blockquote>
+<p>获取一些信息</p>
+</blockquote>
+<pre><code>kubectl get nodes -o jsonpath=&#39;{.items[*].status.addresses[?(@.type=&quot;InternalIP&quot;)].address}&#39;</code></pre>
+<h4 id="load-balancer-方式">3.2 load balancer 方式</h4>
+<p>这种方式一般需要云供应商的支持，或者一些本地资源如F5的支持。这里不做过多介绍了。</p>
+<h4 id="ingress-方式">3.3 Ingress 方式</h4>
+<p>LoadBalancer要求的IP资源较多，每个负载均衡服务都需要一个IP，Ingress可以只用一个IP，通过URL来判断需要访问的服务。Ingress工作在HTTP层，配置与使用更加灵活。目前为止还是一个beta特性。</p>
+<p>目前有很多Ingress的支持：</p>
+<ul>
+<li>Kubernetes提供的基于GCE、Nginx的Ingress控制器</li>
+<li><a href="http://clouddocs.f5.com/products/connectors/k8s-bigip-ctlr/latest">F5提供的控制器</a></li>
+<li>Kong提供的<a href="https://konghq.com/blog/kubernetes-ingress-controller-for-kong/">Kong Ingress Controller for Kubernetes</a></li>
+<li><a href="https://github.com/containous/traefik">Traefik</a>提供收费的解决方案</li>
+<li>NGINX提供的<a href="https://www.nginx.com/products/nginx/kubernetes-ingress-controller">NGINX Ingress Controller for Kubernetes</a></li>
+<li>基于HAProxy的<a href="https://www.haproxy.com/blog/haproxy_ingress_controller_for_kubernetes/">HAProxy Ingress Controller for Kubernetes</a></li>
+<li>Istio提供的<a href="https://istio.io/docs/tasks/traffic-management/ingress/">Control Ingress Traffic</a></li>
+</ul>
+<p>使用过程中的最佳实践：</p>
+<ul>
+<li>总是添加 Readiness 探测</li>
+<li>不要在探测中使用关闭的逻辑</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" /></p>
+<h3 id="参考资料">参考资料</h3>
+<ol>
+<li><a href="">Kubernetes in action</a></li>
+<li><a href="https://kubernetes.io/docs/reference/kubectl/jsonpath/">JSONPath Support</a></li>
+</ol>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-10-23 13:22</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9836096" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9836096);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9836096,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/10/23 13:22:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

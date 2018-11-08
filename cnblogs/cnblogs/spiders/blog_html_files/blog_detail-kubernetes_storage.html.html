@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Kubernetes 存储系统 Storage 介绍 - Cocowool - 博客园</title>
+<meta property="og:description" content="本文环境为Kubernetes V1.11，操作系统版本为 CentOs 7.3，Kubernetes集群安装可以参考 "kubeadm安装kubernetes V1.11.1 集群" 容器中的存储都" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/kubernetes_storage.html">Kubernetes 存储系统 Storage 介绍</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>本文环境为Kubernetes V1.11，操作系统版本为 CentOs 7.3，Kubernetes集群安装可以参考 <a href="https://www.cnblogs.com/cocowool/p/kubeadm_install_kubernetes.html">kubeadm安装kubernetes V1.11.1 集群</a></p>
+</blockquote>
+<p>容器中的存储都是临时的，因此Pod重启的时候，内部的数据会发生丢失。实际应用中，我们有些应用是无状态，有些应用则需要保持状态数据，确保Pod重启之后能够读取到之前的状态数据，有些应用则作为集群提供服务。这三种服务归纳为无状态服务、有状态服务以及有状态的集群服务，其中后面两个存在数据保存与共享的需求，因此就要采用容器外的存储方案。</p>
+<p>Kubernetes中存储中有四个重要的概念：Volume、PersistentVolume PV、PersistentVolumeClaim PVC、StorageClass。掌握了这四个概念，就掌握了Kubernetes中存储系统的核心。我用一张图来说明这四者之间的关系。</p>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201808/39469-20180802110249428-778032676.png" /></p>
+<ul>
+<li>Volumes是最基础的存储抽象，其支持多种类型，包括本地存储、NFS、FC以及众多的云存储，我们也可以编写自己的存储插件来支持特定的存储系统。Volume可以被Pod直接使用，也可以被PV使用。普通的Volume和Pod之间是一种静态的绑定关系，在定义Pod的同时，通过<code>volume</code>属性来定义存储的类型，通过<code>volumeMount</code>来定义容器内的挂载点。</li>
+<li>PersistentVolume。与普通的Volume不同，PV是Kubernetes中的一个资源对象，创建一个PV相当于创建了一个存储资源对象，这个资源的使用要通过PVC来请求。</li>
+<li>PersistentVolumeClaim。PVC是用户对存储资源PV的请求，根据PVC中指定的条件Kubernetes动态的寻找系统中的PV资源并进行绑定。目前PVC与PV匹配可以通过<code>StorageClassName</code>、<code>matchLabels</code>或者<code>matchExpressions</code>三种方式。</li>
+<li>StorageClass。</li>
+</ul>
+<h2 id="volumes">Volumes</h2>
+<p>Docker提供了<a href="https://docs.docker.com/engine/admin/volumes/">Volumes</a>，Volume 是磁盘上的文件夹并且没有生命周期的管理。Kubernetes 中的 Volume 是存储的抽象，并且能够为Pod提供多种存储解决方案。Volume 最终会映射为Pod中容器可访问的一个文件夹或裸设备，但是背后的实现方式可以有很多种。</p>
+<h3 id="volumes的类型">Volumes的类型</h3>
+<ul>
+<li><a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/cephfs/">cephfs</a></li>
+<li>configMap</li>
+<li>emptyDir</li>
+<li>hostPath</li>
+<li>local</li>
+<li>nfs</li>
+<li>persistentVolumeClaim</li>
+</ul>
+<h3 id="emptydir">emptyDir</h3>
+<p>emptyDir在Pod被分配到Node上之后创建，并且在Pod运行期间一直存在。初始的时候为一个空文件夹，当Pod从Node中移除时，emptyDir将被永久删除。Container的意外退出并不会导致emptyDir被删除。emptyDir适用于一些临时存放数据的场景。默认情况下，emptyDir存储在Node支持的介质上，不管是磁盘、SSD还是网络存储，也可以设置为<code>Memory</code>。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: tomcat-ccb
+  namespace: default
+  labels:
+    app: tomcat
+    node: devops-103
+spec:
+  containers:
+  - name: tomcat
+    image: docker.io/tomcat
+    volumeMounts:
+    - name: tomcat-storage
+      mountPath: /data/tomcat
+    - name: cache-storage
+      mountPath: /data/cache
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+    env:
+      - name: GREETING
+        value: &quot;Hello from devops-103&quot;
+  volumes:
+  - name: tomcat-storage
+    hostPath:
+      path: /home/es
+  - name: cache-storage
+    emptyDir: {}</code></pre>
+<h3 id="hostpath">hostPath</h3>
+<p>hostPath就是将Node节点的文件系统挂载到Pod中，在之前的例子中也可以看到用法。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pd
+spec:
+  containers:
+  - image: k8s.gcr.io/test-webserver
+    name: test-container
+    volumeMounts:
+    - mountPath: /test-pd
+      name: test-volume
+  volumes:
+  - name: test-volume
+    hostPath:
+      # directory location on host
+      path: /data
+      # this field is optional
+      type: Directory</code></pre>
+<h3 id="local">local</h3>
+<blockquote>
+<p>A local volume represents a mounted local storage device such as a disk, partition or directory.</p>
+</blockquote>
+<p>local类型作为静态资源被PersistentVolume使用，不支持Dynamic provisioning。与hostPath相比，因为能够通过PersistentVolume的节点亲和策略来进行调度，因此比hostPath类型更加适用。local类型也存在一些问题，如果Node的状态异常，那么local存储将无法访问，从而导致Pod运行状态异常。使用这种类型存储的应用必须能够承受可用性的降低、可能的数据丢失等。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: www
+spec:
+  capacity:
+    storage: 100Mi
+  volumeMode: Filesystem
+  accessModes: [&quot;ReadWriteOnce&quot;]
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  local:
+    path: /home/es
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - devops-102
+          - devops-103</code></pre>
+<p>对于使用了PV的Pod，Kubernetes会调度到具有对应PV的Node上，因此PV的节点亲和性 nodeAffinity 属性是必须的。</p>
+<blockquote>
+<p>PersistentVolume nodeAffinity is required when using local volumes. It enables the Kubernetes scheduler to correctly schedule Pods using local volumes to the correct node.</p>
+</blockquote>
+<h2 id="persistent-volumes">Persistent Volumes</h2>
+<p>Persistent Volumes 提供了一个抽象层，向用户屏蔽了具体的存储实现形式。</p>
+<ul>
+<li>PersistentVolume PV：集群管理员提供的一块存储，是Volumes的插件。类似于Pod，但是具有独立于Pod的生命周期。具体存储可以是NFS、云服务商提供的存储服务。</li>
+<li>PersistentVolumeClaim PVC：PVC是用户的存储请求，PVC消耗PV资源。</li>
+</ul>
+<p>生命周期：</p>
+<ul>
+<li>供给
+<ul>
+<li>静态供给</li>
+<li>动态供给：动态供给的请求基于StorageClass，集群针对用户的PVC请求，可以产生动态供给。</li>
+</ul></li>
+<li>绑定 Binding</li>
+<li>使用</li>
+<li>在用对象保护：对于正在使用的PV提供了保护机制，正在使用的PV如果被用户删除，PV的删除会推迟到用户对PV的使用结束。</li>
+<li>重用 Reclaim 策略
+<ul>
+<li>保留 Retain：保留现场，Kubernetes等待用户手工处理数据。</li>
+<li>删除 Delete：Kubernetes会自动删除数据</li>
+<li>重用：这个策略已经不推荐使用了，应该使用 Dynamic Provisioning 代替。</li>
+</ul></li>
+<li>扩容。主要是对于一些云存储类型，例如gcePersistentDisk、Azure Disk提供了扩容特性，在1.11版本还处于测试阶段。</li>
+</ul>
+<p>PersistenVolume 这个功能目前是通过Plugin插件的形式实现的，目前的版本V1.11.1有19中，特别关注了一下HostPath。</p>
+<blockquote>
+<p>HostPath (Single node testing only – local storage is not supported in any way and WILL NOT WORK in a multi-node cluster)</p>
+</blockquote>
+<h3 id="persistent-volumes-的一些属性">Persistent Volumes 的一些属性</h3>
+<ul>
+<li>Capacity：一般情况PV拥有固定的容量</li>
+<li>Volume Mode：在1.9版本中是alpha特性，允许设置 filesystem 使用文件系统（默认），设置 raw 使用裸设备。</li>
+<li>Access Modes</li>
+<li>Class：可以设置成StorageClass的名称。具有Class属性的PV只能绑定到还有相同CLASS名称的PVC上。没有CLASS的PV只能绑定到没有CLASS的PVC上。</li>
+<li>Reclaim Policy</li>
+</ul>
+<h3 id="状态">状态</h3>
+<ul>
+<li>Available：未被任何PVC使用</li>
+<li>Bound：绑定到了PVC上</li>
+<li>Released：PVC被删掉，资源未被使用</li>
+<li>Failed：自动回收失败</li>
+</ul>
+<h2 id="persistentvolumeclaims">PersistentVolumeClaims</h2>
+<pre class="yaml"><code>kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: myclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: slow
+  selector:
+    matchLabels:
+      release: &quot;stable&quot;
+    matchExpressions:
+      - {key: environment, operator: In, values: [dev]}</code></pre>
+<p>一些属性</p>
+<ul>
+<li>Access Modes</li>
+<li>Volume Modes</li>
+<li>Resources</li>
+<li>Selector：PVC可以通过标签选择器选择PV资源。可以包含两个字段<code>matchLabels</code>和<code>matchExpressions</code>。</li>
+<li>storageClassName 类似标签选择器，通过storagClassName 来确定PV资源。</li>
+</ul>
+<h2 id="storage-class">Storage Class</h2>
+<p>StorageClass为管理员提供了一种描述存储类型的方法。通常情况下，管理员需要手工创建所需的存储资源。利用动态容量供给的功能，就可以实现动态创建PV的能力。动态容量供给 Dynamic Volume Provisioning 主要依靠StorageClass。</p>
+<pre class="yaml"><code>kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer</code></pre>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" /></p>
+<h2 id="参考资料">参考资料：</h2>
+<ol>
+<li><a href="https://kubernetes.io/docs/concepts/storage/volumes">Kubernetes Storage</a></li>
+<li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/">Configure a Pod to Use a PersistentVolume for Storage</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#claims-as-volumes">Persistent Volumes</a></li>
+<li><a href="https://blog.csdn.net/liukuan73/article/details/60089305">kubernetes存储系统介绍(Volume、PV、dynamic provisioning)</a></li>
+<li><a href="https://blog.csdn.net/qq_26923057/article/details/52713463">Kubernetes 1.4 新特性 持久卷</a></li>
+<li><a href="http://dockone.io/article/2016?utm_source=tuicool&amp;utm_medium=referral">DockOne微信分享（一零三）：Kubernetes 有状态集群服务部署与管理</a></li>
+</ol>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-08-02 11:03</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9405927" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9405927);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9405927,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/8/2 11:03:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Silverlight学习笔记一：准备环境，开始第一个Siverlight 3程序 - Cocowool - 博客园</title>
+<meta property="og:description" content="最近，因为工作的需要，要接触Silverlight的编程了，所以开了这一个系列，希望能够起到和大家交流以及促进自己学习的作用，欢迎大家莅临指导~~~" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/articles/1602836.html">Silverlight学习笔记一：准备环境，开始第一个Siverlight 3程序</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>一、工具篇。</p><p>&nbsp;&nbsp; 工欲善其事，必先利其器，我一直觉得对于MS的东西，没有个强大的编辑器是万万不行的，绝对不想PHP那样的随意。所以，开始之前，我们必须准备好需要的工具，而且这些东西也都不是小个头。</p><p>&nbsp;&nbsp; 1、Visual studio 2008，大概3个G吧；<br /></p><p>&nbsp;&nbsp; 2、Visual Studio sp1，这个也有800多个Mb；</p><p>&nbsp;&nbsp; 3、Silverlight tools for visual studio 2008；</p><p>&nbsp;&nbsp; 4、Silverlight SDK</p><p>&nbsp;&nbsp; 如果我们需要在方便的界面下来完成Silverlight的布局，可能还需要下面两个</p><p>&nbsp;&nbsp; 5、Expression Blend 3；</p><p>&nbsp;&nbsp; 6、Expression Studio；</p><p>&nbsp;&nbsp; 安装就很简单了，这个不再赘言。 <br /></p><p>&nbsp;</p><p>二、初级的例子。 <br /></p><p>&nbsp; &nbsp; 这里我使用了 Visual Studio 2008 来创建一个简单的例子，Expression Blend 也可以创建，他们在创建项目的时候选型稍微有点区别，不过不大影响。创建项目基本上就是Visual Studio 一贯的风格，填写项目名称，不过随后出来的一个界面中，我们需要选择是否需要建立一个 Web 项目，然后再选择 Web 项目的类型，通俗的将就是静态网站和动态网站。<br /></p><p>&nbsp;<img alt="" src="https://images.cnblogs.com/cnblogs_com/cocowool/misc/0001.png" border="0" height="738" width="1024" /></p><p>&nbsp;</p><p><img alt="" src="https://images.cnblogs.com/cnblogs_com/cocowool/misc/0002.png" border="0" height="261" width="438" />&nbsp;</p><p><br /></p><p>&nbsp; &nbsp; 这里因为我只是需要了解 Silverlight 的制作，所以选择 Web Site。创建后， <br /></p><p>&nbsp;&nbsp;&nbsp; 完成后，我们可以看到相应的文件。<br /></p><p>&nbsp; &nbsp;&nbsp;<img alt="" src="https://images.cnblogs.com/cnblogs_com/cocowool/misc/0003.png" height="173" width="227" /> <br /></p><p>&nbsp; &nbsp; 资源管理器中查看工程的文件夹。 <br /></p><p>&nbsp;&nbsp;&nbsp; <img alt="" src="https://images.cnblogs.com/cnblogs_com/cocowool/misc/0004.png" height="460" width="256" /><br /></p><p>&nbsp; &nbsp; VS 资源管理器中查看工程。 <br /></p><p>&nbsp;&nbsp;&nbsp; 接下来，就可以在MainPage.xaml中编写Silverlight 布局样式的代码了，这里是一个3行4列的表格，分别显示名称，日期和消息的。<br /></p><p>&nbsp; &nbsp; <br /></p><div class="cnblogs_code"><!--<br /><br />Code highlighting produced by Actipro CodeHighlighter (freeware)<br />http://www.CodeHighlighter.com/<br /><br />--><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">UserControl&nbsp;</span><span style="color: #ff0000;">xmlns:controls</span><span style="color: #0000ff;">="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"</span><span style="color: #ff0000;">&nbsp;&nbsp;x:Class</span><span style="color: #0000ff;">="_002_simple_project.MainPage"</span><span style="color: #ff0000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;xmlns</span><span style="color: #0000ff;">="http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span><span style="color: #ff0000;">&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;xmlns:x</span><span style="color: #0000ff;">="http://schemas.microsoft.com/winfx/2006/xaml"</span><span style="color: #ff0000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;xmlns:d</span><span style="color: #0000ff;">="http://schemas.microsoft.com/expression/blend/2008"</span><span style="color: #ff0000;">&nbsp;xmlns:mc</span><span style="color: #0000ff;">="http://schemas.openxmlformats.org/markup-compatibility/2006"</span><span style="color: #ff0000;">&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;mc:Ignorable</span><span style="color: #0000ff;">="d"</span><span style="color: #ff0000;">&nbsp;d:DesignWidth</span><span style="color: #0000ff;">="640"</span><span style="color: #ff0000;">&nbsp;d:DesignHeight</span><span style="color: #0000ff;">="480"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Grid&nbsp;</span><span style="color: #ff0000;">x:Name</span><span style="color: #0000ff;">="LayoutRoot"</span><span style="color: #ff0000;">&nbsp;Background</span><span style="color: #0000ff;">="Azure"</span><span style="color: #ff0000;">&nbsp;ShowGridLines</span><span style="color: #0000ff;">="True"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Grid.ColumnDefinitions</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">ColumnDefinition&nbsp;</span><span style="color: #ff0000;">Width</span><span style="color: #0000ff;">="100"</span><span style="color: #0000ff;">/&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">ColumnDefinition&nbsp;</span><span style="color: #ff0000;">Width</span><span style="color: #0000ff;">="350"</span><span style="color: #ff0000;">&nbsp;</span><span style="color: #0000ff;">/&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">ColumnDefinition&nbsp;</span><span style="color: #ff0000;">Width</span><span style="color: #0000ff;">="200"</span><span style="color: #ff0000;">&nbsp;</span><span style="color: #0000ff;">/&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">ColumnDefinition&nbsp;</span><span style="color: #ff0000;">Width</span><span style="color: #0000ff;">="100"</span><span style="color: #ff0000;">&nbsp;</span><span style="color: #0000ff;">/&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Grid.ColumnDefinitions</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Grid.RowDefinitions</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">RowDefinition&nbsp;</span><span style="color: #ff0000;">Height</span><span style="color: #0000ff;">="50"</span><span style="color: #ff0000;">&nbsp;</span><span style="color: #0000ff;">/&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">RowDefinition&nbsp;</span><span style="color: #ff0000;">Height</span><span style="color: #0000ff;">="250"</span><span style="color: #ff0000;">&nbsp;</span><span style="color: #0000ff;">/&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">RowDefinition&nbsp;</span><span style="color: #ff0000;">Height</span><span style="color: #0000ff;">="150"</span><span style="color: #ff0000;">&nbsp;</span><span style="color: #0000ff;">/&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Grid.RowDefinitions</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">TextBlock&nbsp;</span><span style="color: #ff0000;">Text</span><span style="color: #0000ff;">="Name:"</span><span style="color: #ff0000;">&nbsp;x:Name</span><span style="color: #0000ff;">="name_1"</span><span style="color: #ff0000;">&nbsp;Grid.Row</span><span style="color: #0000ff;">="0"</span><span style="color: #ff0000;">&nbsp;Grid.Column</span><span style="color: #0000ff;">="0"</span><span style="color: #0000ff;">&gt;&lt;/</span><span style="color: #800000;">TextBlock</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">TextBlock&nbsp;</span><span style="color: #ff0000;">Text</span><span style="color: #0000ff;">="Date:"</span><span style="color: #ff0000;">&nbsp;x:Name</span><span style="color: #0000ff;">="cal_1"</span><span style="color: #ff0000;">&nbsp;Grid.Row</span><span style="color: #0000ff;">="1"</span><span style="color: #ff0000;">&nbsp;Grid.Column</span><span style="color: #0000ff;">="0"</span><span style="color: #ff0000;">&nbsp;</span><span style="color: #0000ff;">&gt;&lt;/</span><span style="color: #800000;">TextBlock</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">TextBlock&nbsp;</span><span style="color: #ff0000;">Text</span><span style="color: #0000ff;">="Message:"</span><span style="color: #ff0000;">&nbsp;x:Name</span><span style="color: #0000ff;">="message_1"</span><span style="color: #ff0000;">&nbsp;Grid.Row</span><span style="color: #0000ff;">="2"</span><span style="color: #ff0000;">&nbsp;Grid.Column</span><span style="color: #0000ff;">="0"</span><span style="color: #ff0000;">&nbsp;Grid.ColumnSpan</span><span style="color: #0000ff;">="2"</span><span style="color: #ff0000;">&nbsp;</span><span style="color: #0000ff;">&gt;&lt;/</span><span style="color: #800000;">TextBlock</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">TextBox&nbsp;</span><span style="color: #ff0000;">Text</span><span style="color: #0000ff;">="your&nbsp;name"</span><span style="color: #ff0000;">&nbsp;Grid.Row</span><span style="color: #0000ff;">="0"</span><span style="color: #ff0000;">&nbsp;Grid.Column</span><span style="color: #0000ff;">="1"</span><span style="color: #0000ff;">&gt;&lt;/</span><span style="color: #800000;">TextBox</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">StackPanel&nbsp;</span><span style="color: #ff0000;">Grid.Row</span><span style="color: #0000ff;">="1"</span><span style="color: #ff0000;">&nbsp;Grid.Column</span><span style="color: #0000ff;">="1"</span><span style="color: #ff0000;">&nbsp;Orientation</span><span style="color: #0000ff;">="Vertical"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">controls:Calendar&nbsp;</span><span style="color: #ff0000;">SelectionMode</span><span style="color: #0000ff;">="SingleDate"</span><span style="color: #ff0000;">&nbsp;HorizontalAlignment</span><span style="color: #0000ff;">="Left"</span><span style="color: #0000ff;">&gt;&lt;/</span><span style="color: #800000;">controls:Calendar</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Button&nbsp;</span><span style="color: #ff0000;">Content</span><span style="color: #0000ff;">="OK"</span><span style="color: #ff0000;">&nbsp;x:Name</span><span style="color: #0000ff;">="okButton"</span><span style="color: #ff0000;">&nbsp;Width</span><span style="color: #0000ff;">="100"</span><span style="color: #ff0000;">&nbsp;Click</span><span style="color: #0000ff;">="okButton_Click"</span><span style="color: #0000ff;">&gt;&lt;/</span><span style="color: #800000;">Button</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">StackPanel</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Grid</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br /></span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">UserControl</span><span style="color: #0000ff;">&gt;</span></div><p> </p><p>&nbsp;</p><p>&nbsp; &nbsp; 这样，布局基本上完成，可以开始隐藏代码的编写了，在开始之前，我们需要 Rebuild Solution 以确保 Xaml 中的命名能够在程序中被找到。</p><p>&nbsp;&nbsp;&nbsp; 程序的逻辑代码如下：<br /></p><div class="cnblogs_code"><!--<br /><br />Code highlighting produced by Actipro CodeHighlighter (freeware)<br />http://www.CodeHighlighter.com/<br /><br />--><span style="color: #000000;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">private</span><span style="color: #000000;">&nbsp;</span><span style="color: #0000ff;">void</span><span style="color: #000000;">&nbsp;okButton_Click(</span><span style="color: #0000ff;">object</span><span style="color: #000000;">&nbsp;sender,&nbsp;RoutedEventArgs&nbsp;e)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">string</span><span style="color: #000000;">&nbsp;dateString;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">if</span><span style="color: #000000;">&nbsp;(cal_1.SelectedDate&nbsp;</span><span style="color: #000000;">==</span><span style="color: #000000;">&nbsp;</span><span style="color: #0000ff;">null</span><span style="color: #000000;">)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dateString&nbsp;</span><span style="color: #000000;">=</span><span style="color: #000000;">&nbsp;</span><span style="color: #800000;">"</span><span style="color: #800000;">&lt;date&nbsp;not&nbsp;selected&gt;</span><span style="color: #800000;">"</span><span style="color: #000000;">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">else</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dateString&nbsp;</span><span style="color: #000000;">=</span><span style="color: #000000;">&nbsp;cal_1.SelectedDate.ToString();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_1.Text&nbsp;</span><span style="color: #000000;">=</span><span style="color: #000000;">&nbsp;</span><span style="color: #800000;">"</span><span style="color: #800000;">Hi&nbsp;</span><span style="color: #800000;">"</span><span style="color: #000000;">&nbsp;</span><span style="color: #000000;">+</span><span style="color: #000000;">&nbsp;name_1.Text&nbsp;</span><span style="color: #000000;">+</span><span style="color: #000000;">&nbsp;</span><span style="color: #800000;">"</span><span style="color: #800000;">\n&nbsp;Selected&nbsp;Date&nbsp;is&nbsp;</span><span style="color: #800000;">"</span><span style="color: #000000;">&nbsp;</span><span style="color: #000000;">+</span><span style="color: #000000;">&nbsp;dateString; <br /></span></div><p>&nbsp;</p><p>&nbsp;第一个简单的Silverlight程序就完成了，支持一个简单的单击事件，并且显示相应的信息。</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2009-11-14 10:08</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>) &nbsp;<a href="https://i.cnblogs.com/EditArticles.aspx?postid=1602836" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1602836);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1602836,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2009/11/14 10:08:00';loadViewCount(cb_entryId);var cb_postType=2;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

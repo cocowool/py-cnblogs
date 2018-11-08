@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>[每天五分钟，备战架构师-2]操作系统基本原理 - Cocowool - 博客园</title>
+<meta property="og:description" content="操作系统是管理和控制计算机硬件和软件资源的计算机程序，是直接运行在“裸机”上的最基本的系统软件。注意，这里说的裸机可以是物理机，也可以是虚拟机。随着技术的发展，现在还出现了Docker容器技术，一个D" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/rk_process_management.html">[每天五分钟，备战架构师-2]操作系统基本原理</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><p>操作系统是管理和控制计算机硬件和软件资源的计算机程序，是直接运行在“裸机”上的最基本的系统软件。注意，这里说的裸机可以是物理机，也可以是虚拟机。随着技术的发展，现在还出现了Docker容器技术，一个Docker容器实际上不一定需要具备完整的系统功能也能够运行程序，其底层是通过宿主机的内核来与硬件进行交互的。</p>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201806/39469-20180630103240461-782460484.png" /></p>
+<h3 id="处理机与进程管理">处理机与进程管理</h3>
+<p>处理机（CPU）是计算机的核心资源，进程是在处理机上运行的最小独立单位。从进程的观点来看操作系统，实际上就是组织和协调用户对处理机的争夺使用，对进程进行管理和控制，最大限度发挥处理机的作用。</p>
+<p><strong>1.进程的概念。</strong></p>
+<p>程序是存储在计算机上的代码，进程是运行状态的程序。进程发展经历了顺序程序和多道(并发)程序。</p>
+<p>顺序程序执行的特征：</p>
+<ul>
+<li>顺序性：每一操作必须在下一操作开始之前结束</li>
+<li>封闭性：程序运行时独占全机资源，资源的状态（除初始状态外）只有本程序才能改变，程序一旦执行，其结果不受外界影响</li>
+<li>可再现性：程序执行环境和初始条件相同，重复执行时，结果相同</li>
+</ul>
+<p>多道程序执行的特征：</p>
+<ul>
+<li>间断性：程序并发运行时，共享系统资源，为完成同一任务相互合作，会形成相互制约关系，导致并发程序具有“执行-暂停-执行”这种间断性的活动规律</li>
+<li>失去封闭性：程序并发执行时，资源状态由多个程序改变，某程序执行时，会受到其他程序影响，失去封闭性</li>
+<li>不可再现性：失去封闭性，导致失去可再现性</li>
+</ul>
+<p>进程的特征：</p>
+<ul>
+<li>结构特征：程序段、相关数据段和PCB三部分构成进程实体</li>
+<li>动态性：进程实体的一次执行过程，具有生命期，而程序是有序指令集合，是静态的</li>
+<li>并发性：多个进程同时存于内存，在一段时间内同时运行</li>
+<li>独立性：进程实体是一个能独立运行、独立分配资源和独立接受调度的基本单位</li>
+<li>异步性：进程按各自独立的、不可预知的速度向前推进</li>
+</ul>
+<p><strong>2.进程状态</strong></p>
+<p>三态模型<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201806/39469-20180630103346113-1746677579.png" alt="三态模型" /><br />
+五态模型<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201806/39469-20180630103358741-266352006.png" alt="五态模型" /></p>
+<p><strong>3.进程控制块</strong></p>
+<p>进程实体由程序块、进程控制块(Process Control Block，PCB)和数据块三部分组成。</p>
+<p>程序块描述进程要完成的任务，数据块包括程序执行时所需要的数据和工作区，PCB包括进程的描述信息、控制信息、资源信息和CPU现场保护信息等，反映了进程的动态性。</p>
+<blockquote>
+<p>PCB 可以被操作系统中的多个模块读或修改，如被调度程序、资源分配 程序、中断处理程序以及监督和分析程序等读或修改。OS是根据 PCB来对 并发执行的进程进行控制和管理，是操作系统中最重要的记录型数据，Linux 系统中用 task_struct 数据，Windows系统使用执行体进程块(EPROCESS)。</p>
+</blockquote>
+<ul>
+<li>进程标识符:包括内部标识符，操作系统为每一个进程赋予的唯一数字标识符，系统使用；外部标识符，由创建者提供，通常有字母与数字组成，往往是由用户(进程)在访问该进程时使用。描述进程的家族关系，设置父进程标识<br />
+及子进程标识，还可设置用户标识，以指示拥有该进程的用户。</li>
+<li>处理机状态（处理机状态信息）：主要是由处理机的各种寄存器中的内容组成的，处理机被中断时，所有这些信息都必须保存在PCB中，以便在该进程重新执行时，能从断点继续执行。寄存器包括：通用寄存器、指令计数器、程序状态字PSW、用户栈指针。</li>
+<li>进程调度信息：与进程调度和转换相关的信息包括：进程状态、进程优先级、进程调度所需的其它信息（与进程调度算法有关）、事件，指进程由执行状态转变为阻塞状态所等待发生的事件，即阻塞原因。</li>
+<li>进程控制信息：包括程序和数据的地址、进程同步和通信机制、资源清单：除CPU以外的、进程所需的全部资源及已经分配到该进程的资源、链接指针：了本进程(PCB)所在队列中 的下一个进程的 PCB的首地址。</li>
+</ul>
+<p><strong>4.进程控制</strong></p>
+<p>进程控制的主要任务就是系统使用一些具有特定功能的程序端来创建、撤销进程以及完成进程各状态之间的转换，从而达到多进程、高效率、并发的执行和协调，实现资源共享的目的。</p>
+<p>进程控制主要通过操作原语实现，用于控制的原语包括：创建原语、阻塞原语、撤销原语、唤醒原语、优先级原语和调度原语。</p>
+<p><strong>5.进程互斥与同步</strong></p>
+<blockquote>
+<p>这一部分几乎每年必考</p>
+</blockquote>
+<p>系统中某些资源可以供多个进程同时使用（如共享内存），有些资源则只允许一次被一个进程使用（如打印机），一次仅允许一个进程使用的资源称为临界资源（Critical Resource）。</p>
+<p>进程互斥(Mutual Exclusion)就是指若干进程因相互抢夺独占型资源而产生的竞争制约关系。</p>
+<p>进程同步(Synchronization)就是指为完成共同任务的并发进程基于某个条件来协调其活动，因为需要在某些位置上排定执行的先后次序而等待、传递信息或消息所产生的协作制约关系。</p>
+<p>对于临界资源（Critical Resource）的管理有四条原则：1、有空即进；2、无空则等；3、有限等待；4、让权等待。</p>
+<p><em>信号量可以有效的实现进程的同步与互斥</em></p>
+<p>信号量（semaphore）的数据结构为一个值和一个指针，指针指向等待该信号量的下一个进程。信号量的值与相应资源的使用情况有关。当它的值大于0时，表示当前可用资源的数量；当它的值小于0时，其绝对值表示等待使用该资源的进程个数。<em>注意，信号量的值仅能由PV操作来改变。</em></p>
+<blockquote>
+<p>一般来说，信号量S &gt;= 0时，S表示可用资源的数量。执行一次P操作意味着请求分配一个单位资源，因此S的值减1；当S &lt; 0时，表示已经没有可用资源，请求者必须等待别的进程释放该类资源，它才能运行下去。而执行一个V操作意味着释放一个单位资源，因此S的值加1；若S &lt;= 0，表示有某些进程正在等待该资源，因此要唤醒一个等待状态的进程，使之运行下去。</p>
+</blockquote>
+<p><strong>6.进程间通信与管理</strong></p>
+<p>进程间通信可以分为控制信息传递和大量数据传递。大量数据传递又叫做高级通信，分为有缓冲区的通信和无缓冲区的通信。</p>
+<p>管程(monitor)：代表共享资源的数据结构及并发进程在其上执行的一组进程就构成管程，管程被请求和释放资源的进程锁调用。</p>
+<p><strong>7.进程调度与死锁</strong></p>
+<p>进程调度即处理器调度，又叫做上下文切换。可以通过下面的思维导图了解。</p>
+<p>死锁是两个以上的进程互相要求对方已经占有的资源导致无法继续运行下去的现象。产生死锁的原因是：1、因为系统资源不足；2、进程运行推进的顺序不合适；3、资源分配不当等。</p>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201806/39469-20180630103422419-56032956.png" /></p>
+<p><strong>8.线程</strong></p>
+<p>进程是具有一定独立功能的程序关于某个数据集合上的一次运行活动，是系统进行资源分配和调度的一个独立单位。</p>
+<p>线程是进程的一个实体，是CPU调度和分派的基本单位，它是比进程更小的能独立运行的基本单位。线程自己基本上不拥有系统资源，只拥有一点在运行中必不可少的资源(如程序计数器，一组寄存器和栈)，但是它可与同属一个进程的其他的线程共享进程所拥有的全部资源。也有就绪、运行、阻塞三态。</p>
+<p>参考资料：<br />
+1、<a href="https://blog.csdn.net/yanglingwell/article/details/53745758">操作系统原理总结</a><br />
+2、<a href="https://wenku.baidu.com/view/82992dd4bcd126fff6050b09.html">操作系统基本原理</a><br />
+3、<a href="https://www.cnblogs.com/mukekeheart/p/5731833.html">操作系统基础知识整理</a><br />
+4、<a href="https://blog.csdn.net/canyanruxue/article/details/78439934">进程控制块及其作用、组织方式</a><br />
+5、<a href="https://www.cnblogs.com/noticeable/p/8511001.html">进程控制</a><br />
+6、<a href="https://www.cnblogs.com/Forever-LJX/p/5803528.html">操作系统：管程理解</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-06-30 10:35</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9246347" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9246347);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9246347,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/6/30 10:35:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="never" />
+<title>谈一下Docker与Kubernetes集群的日志和日志管理 - Cocowool - 博客园</title>
+<meta property="og:description" content="本文的测试环境为CentOS 7.3，Kubernetes集群为1.11.2，安装步骤参见 "kubeadm安装kubernetes V1.11.1 集群" 日志对于我们管理Kubernetes集群及" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/Docker_Kubernetes_Log_Location.html">谈一下Docker与Kubernetes集群的日志和日志管理</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>本文的测试环境为CentOS 7.3，Kubernetes集群为1.11.2，安装步骤参见<a href="https://www.cnblogs.com/cocowool/p/kubeadm_install_kubernetes.html">kubeadm安装kubernetes V1.11.1 集群</a></p>
+</blockquote>
+<p>日志对于我们管理Kubernetes集群及其上的应用具有非常重要的作用，特别是在出现故障或者Bug的时候。如果你能回答下面几个问题，那么可以不用再看本文了，如果不能回答，本文可能正好适合你。</p>
+<ul>
+<li>Docker都会产生哪些日志？</li>
+<li>Docker产生的日志都放在哪里？</li>
+<li>Docker的日志的分割、清理策略默认为什么？</li>
+<li>如何配置Docker日志的分割、清理策略？</li>
+<li>Kubernetes都会产生哪些日志？</li>
+<li>Kubernetes产生的日志都存放在那里？</li>
+<li>如何集中管理Kubernetes产生的日志？</li>
+</ul>
+<h2 id="docker的日志处理方案">1. Docker的日志处理方案</h2>
+<p>Docker产生的日志有两类:</p>
+<ul>
+<li>一类是Docker引擎日志。Docker引擎日志在不同的操作系统下管理方式不一样，在Centos中是通过journalctl来进行管理。</li>
+<li>一类是容器日志。容器中的应用产生的日志默认都输出到<code>stdout</code>和<code>stderr</code>中，可以通过<code>docker logs</code>来访问。Docker为容器日志提供了多种实现机制称为logging driver。通过<code>docker info</code>可以查看本机使用的logging driver，默认为<code>json-file</code>形式，这种形式下每个容器的日志默认以json格式存储在<code>/var/lib/docker/containers/&lt;容器id&gt;/&lt;容器id&gt;-json.log</code>下。下面两种情况使用<code>docker logs</code>看不到什么有用的信息：
+<ul>
+<li>容器内的应用不是交互式应用，而是实现了自己的日志输出，例如对于Apache、Nginx等Web服务，通常会将访问日志和错误日志记录到不同的文件，而不是打到标准输出和错误输出。</li>
+<li>使用不同的<a href="https://docs.docker.com/config/containers/logging/configure/">logging driver</a>将日志送到了文件、外部服务器、数据库等集中的日志后台。</li>
+</ul></li>
+</ul>
+<p>Docker目前支持的logging driver类型：</p>
+<ul>
+<li>none</li>
+<li>json-file</li>
+<li>syslog</li>
+<li>journald</li>
+<li>gelf</li>
+<li>fluentd</li>
+<li>awslogs</li>
+<li>splunk</li>
+<li>etwlogs</li>
+<li>gcplogs</li>
+<li>logentries</li>
+</ul>
+<h3 id="配置logging-driver">1.1 配置logging driver</h3>
+<p>运行容器时，可以通过命令行参数指定logging driver的类型。</p>
+<pre class="sh"><code>bogon:log rousseau$ docker run -it --log-driver none alpine sh
+/ # ls
+#切换一个终端
+bogon:log rousseau$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+8ec61e8feb61        alpine              &quot;sh&quot;                13 seconds ago      Up 12 seconds                           xenodochial_ptolemy
+bogon:log rousseau$ docker logs 8ec61e8feb61
+Error response from daemon: configured logging driver does not support reading
+bogon:log rousseau$ docker inspect -f &#39;{{.HostConfig.LogConfig.Type}}&#39; 8ec61e8feb61
+none</code></pre>
+<blockquote>
+<p>对于日志输出到文件的应用，可以通过软连接的方式将日志输出到标准输出和标准错误输出。例如：The official nginx image creates a symbolic link from /var/log/nginx/access.log to /dev/stdout, and creates another symbolic link from /var/log/nginx/error.log to /dev/stderr, overwriting the log files and causing logs to be sent to the relevant special device instead.</p>
+</blockquote>
+<blockquote>
+<p>对于多行格式的日志信息，有一点需要特别关注。The Docker json logging driver treats each line as a separate message. When using the Docker logging driver, there is no direct support for multi-line messages. You need to handle multi-line messages at the logging agent level or higher.</p>
+</blockquote>
+<h3 id="日志分割策略配置">1.3 日志分割策略配置</h3>
+<p>在CentOS中，可以通过修改<code>/etc/docker/daemon.json</code>来配置Docker的日志分割策略。</p>
+<pre class="json"><code>{
+    &quot;log-driver&quot;: &quot;json-file&quot;,
+    &quot;log-opts&quot;: {
+        &quot;max-size&quot;: &quot;9m&quot;, # Max size of the log files.
+        &quot;max-file&quot;: &quot;5&quot; # The maximum number of log files that can be present.
+    }
+}</code></pre>
+<blockquote>
+<p>总结：对于单机的Docker来说，可以将日志以json-file的形式存储到本地磁盘，同时提供了根据文件大小进行文件分割的配置，也提供了根据文件数量进行文件清理的策略。配置好这两个参数，基本上就不需要担心容器应用将磁盘写满的风险了。而Docker引擎本身的日志则是通过journald来进行管理的。</p>
+</blockquote>
+<h2 id="kubernetes的日志处理方案">2. Kubernetes的日志处理方案</h2>
+<p>Kubernetes的日志管理方式与Docker有所不同，因为容器封装在Pod中，当遇到Pod被删除或者Node节点故障的情况下，日志会被删除，单纯依靠Docker本身的日志机制将无法在故障后查询日志，因此在管理集群时需要认真考虑日志的管理问题。</p>
+<p>Kubernetes集群的日志包括以下几种：</p>
+<ul>
+<li>各种event事件，可以通过<code>kubectl describe pod</code>查看到详细信息</li>
+<li>容器应用产生的日志</li>
+<li>Node节点上Docker Daemon产生的日志</li>
+<li>Node节点上kubelet产生的日志</li>
+</ul>
+<h3 id="日志的位置">2.1 日志的位置</h3>
+<p>Kubernetes集群中包含众多组件，在用kubeadm方式安装的集群上，有些组件不是容器化运行的，包括Master节点的kubelet、kube-scheduler、kube-controller-manager、kube-apiserver，Node节点上运行了kubelet和kube-proxy。有些组件是容器化方式运行的，当然包括我们的应用。因此日志就分为两类：容器化组件及应用的日志，非容器化组件的日志。</p>
+<h4 id="容器化组件及应用的日志管理">2.1.1 容器化组件及应用的日志管理</h4>
+<p>对于容器化的组件和应用，其日志的管理方式都通过Docker的log-driver来进行指定，因此Kubernetes本身并不提供日志分割的功能。有两种方式来实现日志的分割：</p>
+<ul>
+<li>通过Docker配置<code>log-opt</code>参数，与上一节的方式相同。</li>
+<li>通过其他的脚本，例如<a href="https://github.com/kubernetes/kubernetes/blob/master/cluster/gce/gci/configure-helper.sh">kube-up.sh</a>来分割日志文件。</li>
+</ul>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/59b1aae2adcfe4f06270b99a2789012ed64bec1f/4d0ad/images/docs/user-guide/logging/logging-node-level.png" alt="单节点日志模式" /></p>
+<blockquote>
+<p>如果使用外部工具对日志进行了分割，再通过<code>docker logs</code>目录查看日志时，仅返回最新的文件中的内容。</p>
+</blockquote>
+<h4 id="非容器化的组件日志管理">2.1.2 非容器化的组件日志管理。</h4>
+<p>系统组件也分为两种，一种是运行在容器中的应用，包括<code>scheduler</code>、<code>kube-proxy</code>等；一种是没有运行在容器中的应用，包括<code>kubelet</code>和容器运行环境。这些组件的日志都是通过<code>journald</code>来进行管理的。</p>
+<h3 id="集群级别的日志管理">2.2 集群级别的日志管理</h3>
+<p>Kubernetes本身没有提供集群级别的日志管理功能，如想实现集群级别的日志管理有三种方案：</p>
+<ul>
+<li>在每个Node中运行日志采集代理，将日志收集到集中的日志管理平台。这种方案对应用没有侵入性，是优选方案。</li>
+<li>在前一种方案的基础上，在每个应用Pod中增加Sidecar容器来实现日志的分离。</li>
+<li>应用直接将日志输出到统一的日志管理平台，不在本地落地，这种方案对于应用的侵入性较大</li>
+<li></li>
+</ul>
+<h4 id="日志采集代理方案">2.3.1 日志采集代理方案</h4>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/2585cf9757d316b9030cf36d6a4e6b8ea7eedf5a/1509f/images/docs/user-guide/logging/logging-with-node-agent.png" /><br />
+这种方案在每台Node上运行一个专用的日志采集代理，可以是容器化的应用（需要能够在容器内访问节点上的日志文件），可以采用<code>DaemonSet</code>来确保代理在每个Node中都运行。</p>
+<h4 id="sidecar方案">2.3.2 Sidecar方案</h4>
+<p>Sidecar的本意是挎斗摩托车，这种车型在摩托车旁边加了一个边斗来提高运载量，是二战时期日军广泛使用的一种运输工具。<br />
+<img src="http://www.chmotor.cn/uploads/image/36ced2e10a12598fc7daab9820de4396.jpg" /></p>
+<p>类似于挎斗摩托车，Sidecar方案是在应用Pod中增加一个或多个负责处理日志的容器，根据增加容器的作用，可以分为日志分离和容器内代理。</p>
+<h5 id="日志分离">2.3.2.1 日志分离</h5>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/c51467e219320fdd46ab1acb40867b79a58d37af/b5414/images/docs/user-guide/logging/logging-with-streaming-sidecar.png" /></p>
+<blockquote>
+<p>尽管CPU和内存资源的消耗非常少，但是读取日志文件并且重写到标准输出会加倍磁盘的负载，这一点需要特别注意。</p>
+</blockquote>
+<h5 id="容器内代理">2.3.2.2 容器内代理</h5>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/d55c404912a21223392e7d1a5a1741bda283f3df/c0397/images/docs/user-guide/logging/logging-with-sidecar-agent.png" /></p>
+<p>采用这种方案，通过容器内代理直接将应用的日志上传到统一的日志管理平台，会增加Pod的资源消耗，同时无法通过<code>kubectl logs</code>命令来查看日志。</p>
+<h4 id="流式处理方案">2.3.3 流式处理方案</h4>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/0b4444914e56a3049a54c16b44f1a6619c0b198e/260e4/images/docs/user-guide/logging/logging-from-application.png" /></p>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" /></p>
+<h2 id="参考资料">参考资料</h2>
+<ol>
+<li><a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/">Logging Architecture</a></li>
+<li><a href="https://www.cnblogs.com/YatHo/p/7866029.html">Docker日志都在哪里？怎么收集？</a></li>
+<li><a href="https://www.cnblogs.com/itxdm/p/Systemd_log_system_journalctl.html">Systemd之journalctl</a></li>
+<li><a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#logs">Kubectl logs</a></li>
+<li><a href="https://docs.docker.com/engine/admin/logging/overview">Docker Logging Overview</a></li>
+<li><a href="http://www.fluentd.org/">fluentd</a></li>
+<li><a href="https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/">Stackdriver</a></li>
+<li><a href="http://www.tldp.org/LDP/abs/html/index.html">TLDC</a></li>
+<li><a href="https://www.cnblogs.com/keithtt/p/6410249.html">Kubernetes日志收集</a></li>
+<li><a href="http://www.yunweipai.com/archives/8797.html">Kubernetes容器集群中的日志系统集成实践</a></li>
+<li><a href="https://stackoverflow.com/questions/34113476/where-are-the-kubernetes-kubelet-logs-located">Where are the Kubernetes kublet logs located?</a></li>
+<li><a href="https://logz.io/blog/kubernetes-log-analysis/">Kubernetes Log Analysis with Fluentd, Elasticsearch and Kibana</a></li>
+<li><a href="https://wiki.mikejung.biz/Kubernetes#Kubernetes_Commands_and_Log_File_Locations">Kubernetes Log File Locations</a></li>
+<li><a href="https://github.com/kubernetes/kubernetes/issues/26726">Kubernetes Logs</a></li>
+</ol>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-08-30 10:49</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9558812" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9558812);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9558812,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/8/30 10:49:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

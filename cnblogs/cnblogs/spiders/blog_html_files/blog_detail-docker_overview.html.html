@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Docker 概述 - Cocowool - 博客园</title>
+<meta property="og:description" content="Docker 是一个应用程序开发、部署、运行的平台，使用 go 语言开发。相较于传统的主机虚拟化，Docker 提供了轻量级的应用隔离方案，并且为我们提供了应用程序快速扩容、缩容的能力。 Docker" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/docker_overview.html">Docker 概述</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><p>Docker 是一个应用程序开发、部署、运行的平台，使用 go 语言开发。相较于传统的主机虚拟化，Docker 提供了轻量级的应用隔离方案，并且为我们提供了应用程序快速扩容、缩容的能力。</p>
+<h3 id="docker-engine">Docker Engine</h3>
+<p>先来看一下 Docker Engine 的结构，它是一个Client-Server应用程序，包含了三个主要部分：dockerd守护进程、REST API接口层、cli接口层(管理容器、镜像、网络、存储等等)。</p>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201806/39469-20180620111050822-168274068.png" /></p>
+<h3 id="docker-架构">Docker 架构</h3>
+<p>Docker采用的是CS架构，docker client 通过Unix套接字或者网络接口访问 docker daemon，从而完成容器、镜像等内容的管理。</p>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201806/39469-20180620111102824-1462399429.png" /></p>
+<h4 id="docker-daemon">Docker Daemon</h4>
+<p>Docker的守护进程监听对于API的请求，并且管理Docker对象，包括容器、镜像、网络、存储等。不同守护进程之间可以互相通信，从而构成集群服务。</p>
+<h4 id="docker-client">Docker Client</h4>
+<p>Docker 客户端 <code>docker</code> 命令是与Docker交互的主要方式。</p>
+<h4 id="docker-仓库">Docker 仓库</h4>
+<p>Docker仓库保存Docker镜像，可以通过<code>docker pull</code>以及<code>docker push</code>来下载、上传镜像文件。</p>
+<h4 id="docker-对象">Docker 对象</h4>
+<p><em>1. 镜像</em></p>
+<p>镜像是一个用来构建容器的只读模版，通常一个镜像会依赖其他的镜像。例如我们编写的一个Node程序需要依赖Node环境，那在构建这个应用镜像时就需要依赖基础的Node镜像。</p>
+<p>我们可以创建自己的镜像，也可以使用仓库中已经创建好的镜像。创建镜像需要创建一个 <code>Dockerfile</code> 文件。每个Dockerfile定义镜像文件中的一层，当定义发生变化的时候，只需要更新着一层的文件即可。</p>
+<p><em>2. 容器</em></p>
+<p>容器是一个运行时状态下的镜像，通过docker命令我们可以创建、启动、停止、删除容器。例如以下命令：</p>
+<pre class="sh"><code>$ docker run -i -t ubuntu /bin/bash</code></pre>
+<p>实际上经过了6个步骤：1、如果本地没有 <em>ubuntu</em> 镜像，那么首先执行 <code>docker pull ubuntu</code>镜像文件到本地；2、自动创建一个容器，相当于命令 <code>dock container create</code>；3、Docker分配一块文件系统给容器；4、Docker创建网络接口、分配网络地址；5、启动容器，并且执行<code>/bin/bash</code>命令；6、我们可以在bash中执行命令，执行exit后，退出ubuntu的命令行，同时容器关闭。</p>
+<p><em>3. 网络</em></p>
+<p>Docker的网络子系统是可插拔的，支持bridge、host、overlay、macvlan、none等网络模式。熟悉虚拟机的同学可能对这些有概念，想要了解更多参考<a href="https://docs.docker.com/network/network-tutorial-standalone/">这里</a>。</p>
+<p><em>4. 存储</em></p>
+<p>默认情况下，容器中的应用生成的所有文件都存放在一个可写的容器层，意味着这些数据的生命周期和容器保持一致，一旦容器重启数据就丢了。另外，这些文件与容器高度关联，想要将这些文件分享给其他的容器或者设备非常困难。</p>
+<p>为此，Docker提供了两种方案解决数据问题：<em>Volumes</em>、<em>bind mount</em>。不管使用哪种方式，容器内看起来都是一样的，或者作为一个文件夹存在、或者作为一个文件存在。</p>
+<p>上图说明了不同方式的区别，<em>Volumes</em> 是存在本地文件系统中的一部分，其他应用程序不能对这个文件系统进行修改，Linux下在<code>/var/lib/docker/volumes</code>。这是数据持久化的最好方案。<em>Bind Mount</em> 允许将主机中任何位置的数据挂载，这些数据的读写没有收到保护。<em>tmps</em>是存储在主机内存中的数据。</p>
+<h3 id="技术依赖">技术依赖</h3>
+<p>Docker 严重依赖操作系统的虚拟化特性，主要包括以下几点。</p>
+<h4 id="namespaces">namespaces</h4>
+<h4 id="control-groups">Control Groups</h4>
+<p>Control Groups 也称 <code>cgroups</code>，主要是解决Linux系统中进程间的资源隔离与权限访问的相关问题。</p>
+<h4 id="union-file-systems">Union file Systems</h4>
+<h4 id="container-format">container format</h4>
+<p>容器格式是结合了namespace、cgroups、UnionFS在内的一个封装。</p>
+<p><em>本文为作者原创，如果您觉得本文对您有帮助，请随意打赏，您的支持将鼓励我继续创作。</em></p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170825142904777-1467390737.png" /></p>
+<p>参考资料：<br />
+1、<a href="https://docs.docker.com/engine/docker-overview/">Docker Overview</a><br />
+2、<a href="https://www.cnblogs.com/lisperl/archive/2012/05/03/2480573.html">Linux Namespaces机制——实现</a><br />
+3、<a href="https://en.wikipedia.org/wiki/Linux_namespaces">Linux namespaces</a><br />
+4、<a href="https://en.wikipedia.org/wiki/Cgroups">cgroups</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-06-20 11:12</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9202825" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9202825);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9202825,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/6/20 11:12:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>IBM的双机切换HACMP方案介绍 - Cocowool - 博客园</title>
+<meta property="og:description" content="HACMP，全称为IBM High Availablity Cluster Multiprocessing。 IBM PowerHA （原来称为HACMP）是IBM为AIX Unix以及基于Syste" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2012/04/05/2432787.html">IBM的双机切换HACMP方案介绍</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>HACMP，全称为IBM High Availablity Cluster Multiprocessing。</p>  <p>IBM PowerHA （原来称为HACMP）是IBM为AIX Unix以及基于System p平台的Linux开发的一个集群高可用性的解决方案，其全称为High Availability Cluster MultiProcessing。HACMP的产品最早发布与1991年，如今的PowerHA SystemMirror for AIX7.1 已经是第20个版本。</p>  <p>PowerHA最多可以支持32台Computer或者节点Node，可以主动的在节点上运行应用（Active），也可以被动的接管失败的节点（Passive）。文件系统中的数据也可以在集群之间共享。</p>  <p>PowerHA高度依赖 IBM RSCT（IBM Reliable Scalable Cluster Technology, RSCT,是为AIX和Linux集群环境管理，提供的一组全面的软件[<a href="http://en.wikipedia.org/wiki/IBM_RSCT">2</a>]）</p>  <p>下面探讨一下关于HACMP中实现高可用的方式，如下图是一个高可用的系统，在每个可能出现问题的节点上增加了冗余。</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201204/201204051036565990.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="Image(2)" border="0" alt="Image(2)" src="https://images.cnblogs.com/cnblogs_com/cocowool/201204/20120405103659153.png" width="379" height="441" /></a></p>  <p>为了实现系统的高可用，避免单点故障（Single Points Of Failure，SPOF），我们需要考察一个系统中的以下节点：</p>  <p>&#160;&#160;&#160;&#160; 1、服务器节点；</p>  <p>&#160;&#160;&#160;&#160; 2、服务器电源；</p>  <p>&#160;&#160;&#160;&#160; 3、网络适配器 Network Adapter；</p>  <p>&#160;&#160;&#160;&#160; 4、网络通路 Network；</p>  <p>&#160;&#160;&#160;&#160; 5、磁盘 Disk Adapter；</p>  <p>&#160;&#160;&#160;&#160; 6、应用程序 Application；</p>  <p>在HACMP中，通常将集群资源配置为一个个资源组 Resource Groups。这些资源组具有以下的属性：可以配置启动 Startup、切换 Failover、回撤 Fall back策略，设置处理时间和分布策略等。</p>  <p>HACMP Hot standby configuration</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201204/201204051037051543.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201204/201204051037065871.png" width="429" height="259" /></a> </p>  <p>Mutal takeover</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201204/201204051037096064.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201204/201204051037109553.png" width="442" height="252" /></a> </p>  <p>Third party takeover</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201204/201204051037122354.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201204/20120405103715420.png" width="465" height="365" /></a> </p>  <p>&#160;</p>  <p>最近的版本信息：</p>  <p>--------------------------</p>  <p>PowerHA 7.1 发布于2010年，可用于AIX V6.1 TL6 以及 AIX V7.1</p>  <p>PowerHA 6.1 发布于2009年，重新更名为 IBM PowerHA SystemMirror</p>  <p>HACMP 5.5 发布于2008年，更名为 IBM PowerHA</p>  <p>HACMP 5.4.1 发布于2007年</p>  <p>参考资料：</p>  <p>1、<a href="http://en.wikipedia.org/wiki/IBM_High_Availability_Cluster_Multiprocessing">Wiki HACMP</a></p>  <p>2、<a href="http://en.wikipedia.org/wiki/IBM_RSCT">IBM RSCT</a></p>  <p>3、<a href="http://en.wikipedia.org/wiki/High-availability_cluster">Wiki High Availability Cluster</a></p>  <p>4、<a href="http://aix.chinaunix.net/doc/2009/01/06/1349637.shtml">HACMP参考资料 for HACMP 5.4</a></p>  <p>5、<a href="http://www.mtxia.com/js/Documentation/mtxia_HACMP.pdf">一个介绍HACMP的PPT</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2012-04-05 10:37</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2432787" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2432787);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2432787,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2012/4/5 10:37:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Silverlight学习笔记：改变控件的样式 - Cocowool - 博客园</title>
+<meta property="og:description" content="Silverlight的控件都具有MS为我们赋予的默认样式，虽然这个样式也不怎么难看，但任何产品都很少用这个默认的样式去做最后的呈现，所以我们就需要对其进行修改。首先，根据我的了解，我想到的改变控件默" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2009/11/15/1603164.html">Silverlight学习笔记：改变控件的样式</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>Silverlight的控件都具有MS为我们赋予的默认样式，虽然这个样式也不怎么难看，但任何产品都很少用这个默认的样式去做最后的呈现，所以我们就需要对其进行修改。</p><p>&nbsp;</p><p>首先，根据我的了解，我想到的改变控件默认样式的方法有：一、直接在控件本身上写样式；二、定义一个公共的样式标，就像CSS一样；三、运行时样式，前面两个的样式定义好以后就生效了，而运行时样式，只有在程序运行的某一个阶段才会生效。</p><p>&nbsp;</p><p>第一个方法很简单，我们只需要在XAML中加入希望的样式，或者通过Expression Blend在右侧属性中进行修改就可以了。</p><p>&nbsp;当然，我们仍然可以通过编写代码来实现动态的控制控件的样式。</p><p><img alt="" src="https://images.cnblogs.com/cnblogs_com/cocowool/misc/0005.png" border="0" height="595" width="805" />&nbsp;</p><p>&nbsp;</p><p>第二个方法就是通过编辑外部的样式来实现改变的目的。这个方法在参考资料[<a target="_blank" href="#1">1</a>]中有详细的描述。</p><p>这里，补充一点定义样式的时候关于位置的定义，定义在程序级别 Application ，会将样式写在 App.xaml 中，如果定义在本文档的话，会在页面的上方写入。个人理解就和CSS的文档内写入和外部样式文件类同。 <br /></p><p>当我们写入 Application 时，标签是这样： <span id="Code_Open_Text_192541" style="display: inline;"><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Application.Resources</span><span style="color: #0000ff;">&gt;</span></span><br /></p><p>当我们写入 Document 时， 标签是这样：&lt;UserControl.Resources&gt;</p><p>关于样式更多的内容，可以在MSDN的资料中看到[<a target="_blank" href="#2">2</a>]。 <br /></p><p>&nbsp;</p><p>第三个方法我是在MSDN上看到的，貌似很强大，因为&#8220;属性设置和样式可以更改控件外观的某些方面，但应用新模板可以完全更改控件的外观。尽管模板不能更改控件类型的方法和事件，但它可以更改控件的外观，具体取决于不同的状态，如按下或禁用。使用  XAML 可以定义和设置控件的模板。每个控件都有一个可以替换为自定义模板的默认模板。&#8221;。 这就是通过 ControlTemplate 来改变控件的外观。<br /></p><p>&nbsp;Cotrol Template 的设置有三种方式：</p><p>&nbsp; &nbsp; 将 Template 本地设置成内联定义的 ControlTemplate；</p><p>&nbsp; &nbsp; 将 Template 本地设置成对定义资源的 ControlTemplate 的引用；</p><p>&nbsp; &nbsp; 用 Style 设置 Template 和 定义 ControlTemplate；</p><p>&nbsp;&nbsp;&nbsp; 下面分别是三种方式的定义方法：</p><br /><div class="cnblogs_code"><!--<br /><br />Code highlighting produced by Actipro CodeHighlighter (freeware)<br />http://www.CodeHighlighter.com/<br /><br />--><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Button&nbsp;</span><span style="color: #ff0000;">Content</span><span style="color: #0000ff;">="Button1"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Button.Template</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">ControlTemplate&nbsp;</span><span style="color: #ff0000;">TargetType</span><span style="color: #0000ff;">="Button"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000;">&lt;!--</span><span style="color: #008000;">Define&nbsp;the&nbsp;ControlTemplate&nbsp;here.</span><span style="color: #008000;">--&gt;</span><span style="color: #000000;"><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">ControlTemplate</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Button.Template</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br /></span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Button</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"> <br /></span></div><p>&nbsp;</p><div class="cnblogs_code"><!--<br /><br />Code highlighting produced by Actipro CodeHighlighter (freeware)<br />http://www.CodeHighlighter.com/<br /><br />--><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">StackPanel</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">StackPanel.Resources</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">ControlTemplate&nbsp;</span><span style="color: #ff0000;">TargetType</span><span style="color: #0000ff;">="Button"</span><span style="color: #ff0000;">&nbsp;x:Key</span><span style="color: #0000ff;">="newTemplate"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000;">&lt;!--</span><span style="color: #008000;">Define&nbsp;the&nbsp;ControlTemplate&nbsp;here.</span><span style="color: #008000;">--&gt;</span><span style="color: #000000;"><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">ControlTemplate</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">StackPanel.Resources</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br /><br />&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Button&nbsp;</span><span style="color: #ff0000;">Template</span><span style="color: #0000ff;">="</span><span style="color: #808000;">{StaticResource&nbsp;newTemplate}</span><span style="color: #0000ff;">"</span><span style="color: #ff0000;">&nbsp;Content</span><span style="color: #0000ff;">="Button1"</span><span style="color: #0000ff;">/&gt;</span><span style="color: #000000;"><br /></span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">StackPanel</span><span style="color: #0000ff;">&gt;</span></div><p>&nbsp;</p><p>&nbsp;</p><div class="cnblogs_code"><!--<br /><br />Code highlighting produced by Actipro CodeHighlighter (freeware)<br />http://www.CodeHighlighter.com/<br /><br />--><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">StackPanel</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">StackPanel.Resources</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Style&nbsp;</span><span style="color: #ff0000;">TargetType</span><span style="color: #0000ff;">="Button"</span><span style="color: #ff0000;">&nbsp;x:Key</span><span style="color: #0000ff;">="newTemplate"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;">&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Setter&nbsp;</span><span style="color: #ff0000;">Property</span><span style="color: #0000ff;">="Template"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Setter.Value</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">ControlTemplate&nbsp;</span><span style="color: #ff0000;">TargetType</span><span style="color: #0000ff;">="Button"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000;">&lt;!--</span><span style="color: #008000;">Define&nbsp;the&nbsp;ControlTemplate&nbsp;here.</span><span style="color: #008000;">--&gt;</span><span style="color: #000000;"><br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">ControlTemplate</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Setter.Value</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Setter</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Style</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">StackPanel.Resources</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;"><br />&nbsp;&nbsp;</span><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Button&nbsp;</span><span style="color: #ff0000;">Style</span><span style="color: #0000ff;">="</span><span style="color: #808000;">{StaticResource&nbsp;newTemplate}</span><span style="color: #0000ff;">"</span><span style="color: #ff0000;">&nbsp;Content</span><span style="color: #0000ff;">="Button1"</span><span style="color: #0000ff;">/&gt;</span><span style="color: #000000;"><br /></span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">StackPanel</span><span style="color: #0000ff;">&gt;</span></div><p>&nbsp;</p><p> <br /></p><p>&nbsp;</p><p>参考资料：</p><p><a target="_blank" href="#1">1</a>、<a target="_blank" href="http://www.cnblogs.com/think8848/archive/2008/12/01/1345144.html">Silverlight2自定义样式</a>。 <a name='1' id='1'></a></p><p><a target="_blank" href="#2">2</a>、<a target="_blank" href="http://msdn.microsoft.com/zh-cn/library/cc645030%28VS.95%29.aspx">MSDN 控件入门</a> <a name='2' id='2'></a></p><p><a target="_blank" href="#3">3</a>、<a target="_blank" href="http://msdn.microsoft.com/zh-cn/library/cc189093%28VS.95%29.aspx">使用ControlTemplate 改变现有控件外观</a> <br /></p><p>4、<a target="_blank" href="http://msdn.microsoft.com/zh-cn/library/dd185509.aspx">创建系统控件的可重用模版</a> <br /></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2009-11-15 16:21</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1603164" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1603164);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1603164,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2009/11/15 16:21:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

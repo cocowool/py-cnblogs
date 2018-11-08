@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Logstash中如何处理到ElasticSearch的数据映射 - Cocowool - 博客园</title>
+<meta property="og:description" content="Logstash作为一个数据处理管道，提供了丰富的插件，能够从不同数据源获取用户数据，进行处理后发送给各种各样的后台。这中间，最关键的就是要对数据的类型就行定义或映射。 本文讨论的 ELK 版本为 5" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/7347069.html">Logstash中如何处理到ElasticSearch的数据映射</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><p>Logstash作为一个数据处理管道，提供了丰富的插件，能够从不同数据源获取用户数据，进行处理后发送给各种各样的后台。这中间，最关键的就是要对数据的类型就行定义或映射。</p>
+<blockquote>
+<p>本文讨论的 ELK 版本为 5.5.1。</p>
+</blockquote>
+<h2 id="为什么要定义数据">为什么要定义数据</h2>
+<p>Elastisearch不仅是一个强大的全文检索引擎，它还能够对一些数据类型进行实时的统计运算，相关的结果可以通过Kibana的图表展现出来。如果数据类型没有正确的定义，那么Elasticsearch就无法进行运算了，因此，虽然数据类型的定义需要花一点时间，但你会收到意想不到的效果。</p>
+<h2 id="json字符串和数字">JSON、字符串和数字</h2>
+<p>所有送往Elasticsearch的数据都要求是JSON格式，Logstash所做的就是如何将你的数据转换为JSON格式。ElasticSearch会帮我们自动的判断传入的数据类型，这么做当然极大的方便了用户，但也带来了一些问题。</p>
+<p>Elastic中的一些数据类型： <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/text.html">text</a>、<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/keyword.html">keyword</a>、<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html">date</a>、<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/number.html">long</a>、<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/number.html">double</a>、<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/boolean.html">boolean</a>、<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/ip.html">ip</a>、<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/object.html">object</a>、<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html">nested</a>、<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-point.html">geo_point</a>等。不同的类型有不同的用途，如果你需要全文检索，那应该使用text类型，如果你需要统计汇总那应该选择数据或者keyword类型。感谢动态映射 Dynamic Mapping 的存在，在向ES送数的时候我们不需要事先定义映射关系，ES会对新增的字段自动进行映射。但是你比Elasticsearch更加熟悉你的数据，因此可能需要自己进行显示定义 Explicit Mapping 映射关系。例如IP字段，默认是解析成字符串，如果映射为IP类型，我们就可以在后续的查询中按照IP段进行查询，对工作是很有帮助的。我们可以在创建索引时定义，也可以在索引创建后定义映射关系。</p>
+<blockquote>
+<p>对于已经存在的数据，无法更新映射关系。更新映射关系意味着我们必须重建索引。</p>
+</blockquote>
+<p>先来看下面这个JSON文档。</p>
+<pre class="json"><code>{
+  &quot;@timestamp&quot;: &quot;2017-08-11T20:11:45.000Z&quot;,
+  &quot;@version&quot;: &quot;1&quot;,
+  &quot;count&quot;: 2048,
+  &quot;average&quot;: 1523.33,
+  &quot;host&quot;: &quot;elasticsearch.com&quot;
+}</code></pre>
+<p>这里有五个字段：<code>@timestamp</code>，<code>@version</code>，<code>count</code>，<code>average</code>，<code>host</code>。其中 @timestamp 和 host 是字符串，count、average 是数字，@version比较特殊，它的值是数字，但是因为放在双引号中，所以作为字符串来对待。</p>
+<p>尝试把数据送入到 Elasticsearch 中，首先创建一个测试的索引：</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172249929-901624181.png" /></p>
+<p>将数据存入索引</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172301960-1150423241.png" /></p>
+<p>查看数据映射的情况</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172314288-1982265310.png" /></p>
+<p><em>根据结果可知，在没有明确定义数据类型的情况下，Elasticsearch会自动判断数据的类型，因此 @timestamp、@version、host都被映射为 text ，average、count 被映射为数字。</em></p>
+<h2 id="在logstash中定义数据类型映射">在Logstash中定义数据类型映射</h2>
+<p>Logstash提供了 grok 和 mutate 两个插件来进行数值数据的转换。</p>
+<h3 id="grok">grok</h3>
+<p>grok 目前是解析非结构化的日志数据最好的插件。特别适合处理syslog、apache或其他web服务器、mysql等为了阅读而输出的信息类日志。</p>
+<p>grok 的基本用法如下：<code>%{SYNTAX:SEMANTIC}</code>，SYNTAX是grok提供的样式Pattern的名称，grok提供了<a href="https://github.com/logstash-plugins/logstash-patterns-core/tree/master/patterns">120多种Pattern</a>，SEMANTIC是你给匹配内容的名称（标志符）。因为grok实际上是正则匹配，因此任何输出都默认转换为字符类型，如果你需要数据类型的转换，则使用下面这种格式</p>
+<pre class="sh"><code>%{NUMBER:SEMANTIC:int}</code></pre>
+<p>目前，类型转换仅支持 int 和 float 两种类型。</p>
+<blockquote>
+<p>如果将带小数的数字转换为 int 类型，会将小数后的数字丢弃。</p>
+</blockquote>
+<h3 id="mutate">mutate</h3>
+<p>mutate 为用户提供了处理Logstash event数据的多种手段。允许我们移除字段、重命名字段、替换字段、修改字段等操作。</p>
+<pre><code>filter {
+  mutate {
+    convert =&gt; { &quot;num&quot; =&gt; &quot;integer&quot; }
+  }
+}</code></pre>
+<h3 id="使用模版进行字段映射">使用模版进行字段映射</h3>
+<p>Elasticsearch中通过模板来存放索引字段的映射关系，logstash可以在配置文件中指定模板文件来实现自定义映射关系。</p>
+<p>查询 Elasticsearch 中的模板，系统自带了 logstash-* 的模板。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172341726-2022060215.png" /></p>
+<p>我们用实际的例子来看一下映射和模板是如何起作用的。</p>
+<p>1、首先创建一个 logstash 配置文件，通过 filebeat 读取 combined 格式的 apache 访问日志。</p>
+<p>配置文件名为 filebeat.conf 位于 logstash 文件夹内。filebeat的配置比较简单，可以参考我的上一篇文章 <a href="http://www.cnblogs.com/cocowool/p/7338426.html">Filebeat+Logstash+ElasticSearch+Kibana搭建Apache访问日志解析平台</a></p>
+<pre class="sh"><code>input {
+  beats {
+    port =&gt; &quot;5043&quot;
+  }
+}
+filter {
+  grok {
+    match =&gt; { &quot;message&quot; =&gt; &quot;%{COMBINEDAPACHELOG}&quot; }
+  }
+  date {
+    match =&gt; [ &quot;timestamp&quot;, &quot;dd/MMM/yyyy:HH:mm:ss Z&quot; ]
+    target =&gt; [&quot;datetime&quot;]
+  }
+  geoip {
+    source =&gt; &quot;clientip&quot;
+  }
+}
+output {
+  elasticsearch {
+    hosts =&gt; &quot;localhost:9200&quot;
+    index =&gt; &quot;my_index&quot;
+    #template =&gt; &quot;/data1/cloud/logstash-5.5.1/filebeat-template.json&quot;
+    #template_name =&gt; &quot;my_index&quot;
+    #template_overwrite =&gt; true
+  }
+  stdout { codec =&gt; rubydebug }
+}</code></pre>
+<p>第一次数据导入的时候，我们先不使用模板，看看 es 如何默认映射数据，启动elk环境，进行数据导入。</p>
+<pre class="sh"><code>[maserati@iZ627x15h6pZ logstash-5.5.1]$ ../elasticsearch-5.5.1/bin/elasticsearch 
+[maserati@iZ627x15h6pZ logstash-5.5.1]$ ./bin/logstash -f filebeat.conf 
+[maserati@iZ627x15h6pZ filebeat-5.5.1-linux-x86_64]$ sudo ./filebeat -e -c filebeat.yml -d &quot;publish&quot;</code></pre>
+<p>数据导入完成后，看一下索引的情况</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172547288-1536608024.png" /></p>
+<p>因为从log导入的数据，所以mapping中给映射规则起名为log，对应的是 document_type，可以看到clientip和 geoip.location 分别解析成了文本和数值。其他大部分内容都映射为 text 。这种不需要我们定义映射规则的处理方式非常方便，但有时候我们更需要精确的映射。</p>
+<p>看一下ES映射模板，只有logstash命名的模板，因为名称不匹配，所以没有应用这里的映射规则。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172611742-1957071184.png" /></p>
+<p>这里可以注意到模板文件和索引中的映射关系稍有不同，没关系，我们把 my_index 的映射关系拷贝下来，存为 filebeat-template.json ，这里贴一下一个删减版的 模板文件。</p>
+<pre class="sh"><code>{
+  &quot;template&quot;: &quot;my_index&quot;,
+  &quot;order&quot;: 1,
+  &quot;settings&quot;: {
+    &quot;index.refresh_interval&quot; : &quot;5s&quot;
+  },
+  &quot;mappings&quot;: {
+    &quot;_default_&quot;: {
+      &quot;properties&quot;: {
+        &quot;clientip&quot; : { &quot;type&quot;:&quot;ip&quot; },
+        &quot;geoip&quot;: {
+          &quot;properties&quot;: {
+            &quot;location&quot;: { &quot;type&quot;:&quot;geo_point&quot; }
+          }
+        }
+
+      }
+    }
+  }
+}</code></pre>
+<p>我们可以通过命令行收工把模板上传到 elasticsearch ，也可以通过 logstash 配置文件指定。</p>
+<pre class="sh"><code>curl -XPUT http://localhost:9200/_template/my_index_template?pretty -d @filebeat-template.json</code></pre>
+<p>我的例子中，我们只需要把 filebeat.conf 中的注释打开即可。然后删除索引，我们对索引重建一下。</p>
+<p>看一下索引，可以看到模板中定义的规则已经在里面了。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172643695-153584130.png" /></p>
+<p>看一下索引字段，看到 clientip 已经定义成 ip 类型了。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172702570-768463545.png" /></p>
+<p>同样，geoip.location映射成 geo_point 类型。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172716226-1525265207.png" /></p>
+<p>这样我们就可以做访客地图了。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172731195-1160532515.png" /></p>
+<p>这时，再看一下 template 的情况。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170811172746163-1334997107.png" /></p>
+<p>可以看到，除了默认的模板，新增了一个我们定义的 my_index 模板。后续还可以对模板进行修改，但是注意只能增加或者删除，无法对已经映射的字段进行更新。</p>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" alt="欢迎关注我的微信公众号" /></p>
+<p>参考资料：<br />
+1、<a href="https://www.elastic.co/blog/logstash_lesson_elasticsearch_mapping">Using Logstash to help create an Elasticsearch mapping template</a><br />
+2、<a href="https://www.elastic.co/blog/little-logstash-lessons-part-using-grok-mutate-type-data">Using grok and mutate to type your data</a><br />
+3、<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#mapping-type">Elasticsearch Mapping</a><br />
+4、<a href="https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html">Grok Filter Plugin</a><br />
+5、<a href="https://www.elastic.co/guide/en/logstash/current/plugins-filters-mutate.html">Mutate Filter Plugin</a><br />
+6、<a href="http://m.blog.csdn.net/u012516166/article/details/75106184">用logstash导入ES且自定义mapping时踩的坑</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2017-08-11 17:28</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=7347069" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(7347069);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=7347069,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2017/8/11 17:28:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>短链接算法收集与分析 - Cocowool - 博客园</title>
+<meta property="og:description" content="短链接就不说了，大家已经都清楚了，如下所示就是短链接： 新浪微博 http://t.cn/SVpONM 腾讯微博 http://url.cn/302yor Yun.io http://d.yun.io" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2011/12/29/2305955.html">短链接算法收集与分析</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>短链接就不说了，大家已经都清楚了，如下所示就是短链接：</p>  <blockquote>   <p>新浪微博&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://t.cn/SVpONM">http://t.cn/SVpONM</a></p>    <p>腾讯微博&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://url.cn/302yor?type=1&amp;from=19&amp;u=wonwang&amp;s=3&amp;f=1&amp;skey=">http://url.cn/302yor</a></p>    <p>Yun.io&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://d.yun.io/PNri2v">http://d.yun.io/PNri2v</a></p> </blockquote>  <p>短链接的好处：1、内容需要；2、用户友好；3、便于管理。</p>  <p>如何实现呢，大概有三个步骤：</p>  <p>1、定义一个URL映射算法，可以将长的URL映射成短字符串；</p>  <p>2、使用一个存储（数据库？NoSQL？）来存储完成的映射；</p>  <p>3、实现自己的URL映射算法；</p>  <p>一般来说，第三步是我们比较头疼的，如何将一个长的URL字符串，映射成一个较短的字符串呢。我总结了三种办法：</p>  <p><strong>普通实现</strong></p>  <p>我想以前大家学习过十进制和二进制的互相转换，或者十进制和十六进制的互相转换，那么为了更短，我们可以使用62进制，对于一个数字ID进行转码，转换成一个短字符串。</p>  <p>这种做法的缺点是没有办法保证所有链接都是固定的位数的长度，而且在高并发的情况下，如何保证能够快速分发是个问题。</p>  <p>具体实现方法：</p>  <blockquote>   <p>&nbsp;&nbsp;&nbsp; /**     <br />&nbsp;&nbsp;&nbsp;&nbsp; * 利用62进制对数字ID进行短链接编码，缺点不能保证每个短链接是固定长度      <br />&nbsp;&nbsp;&nbsp;&nbsp; *      <br />&nbsp;&nbsp;&nbsp;&nbsp; * @author&nbsp; wanshiqiang&lt;wangshiqiang@360.cn&gt;      <br />&nbsp;&nbsp;&nbsp;&nbsp; * @param integer $integer      <br />&nbsp;&nbsp;&nbsp;&nbsp; * @param string $base      <br />&nbsp;&nbsp;&nbsp;&nbsp; */      <br />&nbsp;&nbsp;&nbsp; private function getShortenedURLFromID ($integer, $base = ALLOWED_CHARS)      <br />&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $length = strlen($base);      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while($integer &gt; $length - 1)      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $out = $base[fmod($integer, $length)] . $out;      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $integer = floor( $integer / $length );      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $base[$integer] . $out;      <br />&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; /**      <br />&nbsp;&nbsp;&nbsp;&nbsp; * 对62进制编码的短链接进行解码      <br />&nbsp;&nbsp;&nbsp;&nbsp; *      <br />&nbsp;&nbsp;&nbsp;&nbsp; * @author&nbsp; wangshiqiang&lt;wangshiqiang@360.cn&gt;      <br />&nbsp;&nbsp;&nbsp;&nbsp; * @param string $string      <br />&nbsp;&nbsp;&nbsp;&nbsp; * @param string $base      <br />&nbsp;&nbsp;&nbsp;&nbsp; */      <br />&nbsp;&nbsp;&nbsp; private function getIDFromShortenedURL ($string, $base = ALLOWED_CHARS)      <br />&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $length = strlen($base);      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $size = strlen($string) - 1;      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $string = str_split($string);      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $out = strpos($base, array_pop($string));      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; foreach($string as $i =&gt; $char)      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $out += strpos($base, $char) * pow($length, $size - $i);      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $out;      <br />&nbsp;&nbsp;&nbsp; }</p> </blockquote>  <blockquote></blockquote>  <p><strong>文艺实现</strong></p>  <p>算法描述：使用6个字符来表示短链接，我们使用ASCII字符中的'a'-'z','0'-'5'，共计32个字符做为集合。每个字符有32种状态，六个字符就可以表示32^6（1073741824），那么如何得到这六个字符，描述如下：</p>  <p>对传入的长URL进行Md5，得到一个32位的字符串，这个字符串变化很多，是16的32次方，基本上可以保证唯一性。将这32位分成四份，每一份8个字符，这时机率变成了16的8次方，是4294967296，这个数字碰撞的机率也比较小啦，关键是后面的一次处理。我们将这个8位的字符认为是16进制整数，也就是1*('0x'.$val)，然后取0-30位，每5个一组，算出他的整数值，然后映射到我们准备的32个字符中，最后就能够得到一个6位的短链接地址。</p>  <p>PHP实现如下：</p>  <blockquote>   <p>function shorten( $long_url )     <br />{      <br />&nbsp;&nbsp;&nbsp;&nbsp; $base32 = "abcdefghijklmnopqrstuvwxyz012345";      <br />&nbsp;&nbsp;&nbsp;&nbsp; $hex = md5( $long_url );      <br />&nbsp;&nbsp;&nbsp;&nbsp; $hexLen = strlen( $hex );      <br />&nbsp;&nbsp;&nbsp;&nbsp; $subHexLen = $hexLen / 8;      <br />&nbsp;&nbsp;&nbsp;&nbsp; $output = array();      <br />&nbsp;&nbsp;&nbsp;&nbsp; for( $i = 0; $i &lt; $subHexLen; $i++ )      <br />&nbsp;&nbsp;&nbsp;&nbsp; {      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $subHex = substr( $hex, $i * 8, 8 );      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $subHex = 0x3FFFFFFF &amp; ( 1 * ('0x' . $subHex ) ); </p><p>　　　 $out = '';&nbsp;</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for( $j = 0; $j &lt; 6; $j++ )      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $val = 0x0000001F &amp; $int;      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $out .= $base32[$val];      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $int = $int &gt;&gt; 5;      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }      <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $output[] = $out;      <br />&nbsp;&nbsp;&nbsp;&nbsp; }      <br />&nbsp;&nbsp;&nbsp;&nbsp; return $output;      <br />}</p> </blockquote>  <p><strong>二逼实现</strong></p>  <p>下面这个函数使用了纯随机的方式来生成一个短链接，虽然我们可以通过查询操作来确保不重复使用短链接，可是... 这样真的靠谱吗~~</p>  <blockquote>   <p>function random($length, $pool = '') {     <br />&nbsp;&nbsp;&nbsp;&nbsp; $random = '';      <br />&nbsp;&nbsp;&nbsp;&nbsp; if (empty($pool)) { $pool&nbsp;&nbsp;&nbsp; = 'abcdefghkmnpqrstuvwxyz'; $pool&nbsp;&nbsp; .=      <br />&nbsp;&nbsp;&nbsp;&nbsp; '23456789'; }      <br />&nbsp;&nbsp;&nbsp;&nbsp; srand ((double)microtime()*1000000);      <br />&nbsp;&nbsp;&nbsp;&nbsp; for($i = 0; $i &lt; $length; $i++) { $random .=      <br />&nbsp;&nbsp;&nbsp;&nbsp; substr($pool,(rand()%(strlen ($pool))), 1); }      <br />&nbsp;&nbsp;&nbsp;&nbsp; return $random;      <br />}</p> </blockquote>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:0767317B-992E-4b12-91E0-4F059A8CECA8:1296de55-0862-4b26-98eb-264397851b41" class="wlWriterEditableSmartContent">Technorati 标签: <a href="http://technorati.com/tags/%e7%9f%ad%e9%93%be%e6%8e%a5" rel="tag">短链接</a>,<a href="http://technorati.com/tags/Short+Url" rel="tag">Short Url</a>,<a href="http://technorati.com/tags/%e6%98%a0%e5%b0%84" rel="tag">映射</a>,<a href="http://technorati.com/tags/%e5%93%88%e5%b8%8c" rel="tag">哈希</a></div>  <p>参考资料：</p>  <p>1、<a href="http://qn-lf.iteye.com/blog/1084516">微博短地址原理解析</a></p>  <p>2、<a href="http://www.iteye.com/topic/973365?page=2">微博短域名原理及作用</a></p>  <p>3、<a href="http://code.google.com/p/yourls/downloads/list">Yours.org</a></p>  <p>4、<a href="http://briancray.com/2009/08/26/free-php-url-shortener-script/">Free PHP URL Shorten script that kicks ass</a></p>  <p>5、<a href="http://www.snippetit.com/2009/04/php-short-url-algorithm-implementation/">PHP Short Url Algorithm Implementation</a></p>  <p>6、<a href="http://www.snippetit.com/2008/10/implement-your-own-short-url/">Implement your own short URL</a></p>  <p>7、<a href="http://hi.baidu.com/jok607/blog/item/a2258b25ce28827a35a80f6b.html">短网址算法初步汇总</a></p>  <p>8、<a href="http://i.laoer.com/short-url.html">Short Url 实现方式</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2011-12-29 13:10</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2305955" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2305955);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2305955,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2011/12/29 13:10:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

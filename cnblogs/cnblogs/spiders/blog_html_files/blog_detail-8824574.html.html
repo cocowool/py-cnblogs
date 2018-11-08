@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Memcache的安装与配置 - Cocowool - 博客园</title>
+<meta property="og:description" content="因为单位要求修复Memcached的DDOS漏洞，整理了本文。之前的文章 "防止Memcached的DDOS攻击另外一个思路" 提到了解决方案，我们使用的版本较低，因此需要对 Memcached 进行" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/8824574.html">Memcache的安装与配置</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><p>因为单位要求修复Memcached的DDOS漏洞，整理了本文。之前的文章<a href="http://www.cnblogs.com/cocowool/p/8665704.html">防止Memcached的DDOS攻击另外一个思路</a> 提到了解决方案，我们使用的版本较低，因此需要对 Memcached 进行升级，有需要的朋友可以参考。</p>
+<h3 id="旧版本的卸载">旧版本的卸载</h3>
+<p>如果 Memcached 是通过 yum 或 rpm 安装的，可以通过 yum 删除</p>
+<pre class="sh"><code>yum remove &lt;package_name&gt;</code></pre>
+<h3 id="新版本的安装">新版本的安装</h3>
+<p>我的环境是 Redhat 6.5 和 6.4，因为最新版的 Memcached 要求 Libevent 2.0 ，系统自带的版本太老了，因此需要先安装 Libevent 再安装 Memcached。我都使用了源码安装的方式，过程比较简单，都是<code>configure make &amp;&amp; make install</code>。这里只是对遇到的问题总结一下。</p>
+<blockquote>
+<p>如果启动的时候看到这个提示：/usr/local/memcached/bin/memcached: error while loading shared libraries: libevent-2.1.so.6: cannot open shared object file: No such file or directory</p>
+</blockquote>
+<p>在 Redhat 6.5 和 6.4 中有不同的解决方案</p>
+<h4 id="redhat-6.5">Redhat 6.5</h4>
+<pre class="sh"><code>ln -s /usr/local/lib/libevent-2.1.so.6 /usr/lib64/libevent-2.1.so.6</code></pre>
+<h4 id="redhat-6.4">Redhat 6.4</h4>
+<pre class="sh"><code>ln -s /usr/local/lib/libevent-2.1.so.6 /usr/lib/libevent-2.1.so.6</code></pre>
+<h3 id="如何把-memcached-加入到服务中">如何把 Memcached 加入到服务中</h3>
+<pre class="sh"><code>cp scripts/memcached.sysv /etc/init.d/memcahced #拷贝启动脚本到init.d目录
+ln -s /usr/local/bin/memcached /usr/bin/memcached
+chkconfig --add memcached
+chkconfig memcached on</code></pre>
+<h3 id="memcache的配置">Memcache的配置</h3>
+<p>第一次配置Memcached的时候，需要特别关注 -m, -d, -v 这三个参数。<br />
+-m 设置Memcached可以使用的内存大小（以Mb为单位），Memcached不能完全使用分配的大小，实际上要小一些。所以这个值需要设置在一个安全的范围内。在1.4.x版本或之前，设置为小于48M是不能生效的。<br />
+-d 设置Memcached以守护进行的形式运行。如果使用init脚本启动，则不需要这个参数。<br />
+-v 控制Memcached与STDOUT/STDERR的交互方式。加上这个参数后，可以在命令行中看到Memcache启动和工作过程中的一些输出信息。</p>
+<p>-p 指定监听的端口<br />
+-l 绑定特定的地址</p>
+<p>TCP -p 修改的时候，只针对TCP的链接请求有效<br />
+UDP -U 用来修改UDP的监听端口，UDP对于读取、设置一些比较小的条目时非常有用。如果对于这个端口比较担心，设置为0就可以禁止掉。</p>
+<p>-s <file> 这个配置可以将访问限制在一个单独的本地用户，启用这个配置后，会禁用TCP和UDP的访问。</p>
+<p>连接限制：默认情况下，最大的连接限制是1024。这个的正确配置非常重要，达到最大连接数后，额外的连接会一直等待，直到有多余的slots空闲出来。通过查看“listen_disabled_num”这个状态值能够检查实例是否发生过最大连接数的情况。</p>
+<p>memcached能够轻松的处理访问量的变化，所以即使设置的太高，也不需要担心。但是，设置一定要适合自己的情况，并且有一定的富余。如果你有5个Web前端，每台前端的MaxClients设置为12，那么memcached可能承受的最大访问量就是60。</p>
+<h3 id="ldd-命令">ldd 命令</h3>
+<p>打印依赖的共享库</p>
+<h3 id="ld_debuglibs-usrlocalbinmemcached--v">LD_DEBUG=libs /usr/local/bin/memcached -v</h3>
+<p><em>本文为作者原创，如果您觉得本文对您有帮助，请随意打赏，您的支持将鼓励我继续创作。</em></p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170825142904777-1467390737.png" /></p>
+<p>参考资料：<br />
+1、<a href="http://code.google.com/p/memcached/wiki/NewConfiguringServer">Memcached Config</a><br />
+2、<a href="http://www.jb51.net/LINUXjishu/161302.html">yum更新软件、删除软件</a><br />
+3、<a href="https://www.cnblogs.com/EasonJim/p/7580220.html#commentform">启动Memcached报错</a><br />
+4、<a href="https://blog.csdn.net/aoshilang2249/article/details/78366355">error while loading shared libraries: libevent-2.1.so.6 的解决办法</a><br />
+5、<a href="https://www.linuxidc.com/Linux/2015-09/123019.htm">CentOS 6.6下Memcached 源码安装配置</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-04-13 22:49</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=8824574" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(8824574);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=8824574,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/4/13 22:49:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

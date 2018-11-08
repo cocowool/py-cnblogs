@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>学习使用YUI3 - Cocowool - 博客园</title>
+<meta property="og:description" content="以下只是在YUI学习和使用中零碎的一些心得体会，未成体系，发出来，供批判。  1、利用 Font、Base、Grid CSS进行快速的网页布局。  对YUI一直很有好感，最近开始看了看YUI CSS " />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2010/01/24/1655430.html">学习使用YUI3</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>以下只是在YUI学习和使用中零碎的一些心得体会，未成体系，发出来，供批判。</p>  <p>1、利用 Font、Base、Grid CSS进行快速的网页布局。</p>  <p>对YUI一直很有好感，最近开始看了看YUI CSS GRID，发现这个理念非常好，非常有利于我们工作效率的提高，特别是熟悉了这套CSS之后，我们就不必每一个项目自己都去写一些CSS。其实，我想有心的朋友或多或少的都会收集一些自己常用的CSS，在不同的项目间使用，但是能够做到像YUI CSS这样有逻辑性、模块清楚的，恐怕还比较少见。</p>  <p>YUI CSS GRID 中，最重要的是三个概念：页宽 Page width，预设模板 Template Preset和嵌套布局 Nested Grid。合理的利用这三个手段，我们基本上可以满足日常页面的布局工作。</p>  <p>但是YUI CSS GRID在YUI3中已经不被推荐使用，我为此感到惋惜和不解。不过幸好，及时不被推荐，我们仍可在项目中使用他。</p>  <blockquote>   <p>2、 IO的使用。</p>    <p>YUI3中封装的IO具备了强大的功能，不仅能够通过GET、POST方式提交数据。而且支持整个Form数据的提交，这个方法对于希望全站都是用Ajax来做的同学无疑提供了极大地便利。</p> </blockquote>  <p>但是，现在由于不是十分的熟悉YUI3的API，绑定IO事件的时候，都是在初始页面中进行的编码，这样必须能够了解到这个页面中可能会出现多少个Form，并分别把Form的提交事件绑定好。我在考虑，能否将JS代码写在每个表单中，通过IO将表单调入到当前页面，然后JS生效，再进行提交呢？ 这样对应的表单带着自己的JS，逻辑上就比较清楚。</p>  <div>   <pre>Y.io(&quot;<span style="color: #8b0000">/foo/bar/some_widget</span>&quot;, {
+  method: 'GET',
+  on: {
+    complete: function(id, respdata) {
+      thediv.innerHTML = respdata.responseText;
+      initWidget(); <span style="color: #008000">// this function is embedded in the responseText</span>
+                    <span style="color: #008000">// and doesn't get evaluated. I.e. it doesn't exist.</span>
+    },
+    failure: function(id, respdata) {
+      alert('Feed failed to load!');
+    }
+  }
+});</pre>
+</div>
+
+<p>
+  <br /></p>
+
+<p>这里作者提供了一个解决的办法，但是提到了一个缺点，用户在被搜索引擎导向到这个页面后这些代码还是不能够执行。</p>
+
+<p>那么有什么办法解决呢？</p>
+
+<p>有一位<a href="http://starcatcher.ca/?p=636">兄弟</a>提出利用一种真正的ajax的方法，将返回结果分成两部分，一部分是HTML的内容，一部分是javascript的脚本，返回后就直接执行javascript的方法。这样做也未尝不可，但是在写这个响应页面的时候，就要稍微注意结果的形式。</p>
+
+<p>我就采用了一种比较笨的办法，将脚本放在一个容器中，加载到宿主页面以后，再通过 eval 执行一下，暂时这个问题就被这么丑陋的解决了。</p>
+
+<p>但是有一个问题需要注意，就是通过ajax传递过来的js代码中不能含有注释，否则 eval 的时候会报错，这个是在 ie 下发现的错误。</p>
+
+<p>3、YUI3还是不够稳定。</p>
+
+<p>还是使用IO的时候，当通过POST方式提交数据时，第二次点击提交表单按钮，就会发出双份的数据，第三次，发送出去的数据就会变成三份。这个在YUI的论坛里有人反映了，是一个bug，已经解决，但是官方的那个build还没有更新。</p>
+
+<p>在排查这个错误的时候因为不了解 YUI Loader 的工作原理，所以费了一些周折，同样不了解的同学可以去 <a href="http://www.zhuoqun.net/html/y2008/1118.html">这里</a> 看一下，补充一下相关知识。我将 io-base.js 的最新版本下载下来，覆盖了本地文件之后，发现问题并没有解决，使用firebug查看，如下：</p>
+
+<p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/WindowsLiveWriter/YUI3CSSGRID_1356B/image_2.png"><img title="image" style="border-right: 0px; border-top: 0px; display: inline; border-left: 0px; border-bottom: 0px" height="183" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/WindowsLiveWriter/YUI3CSSGRID_1356B/image_thumb.png" width="608" border="0" /></a> </p>
+
+<p>原来这些模块都还是通过combo调用的远程的，很奇怪的是为什么在firebug的网络中没有看到这个链接消耗的时间呢，难道他不消耗带宽？</p>
+
+<p>至此，发现了原来将 YUI(combine:true) 配置去掉，就可以调用本地文件了。但同时丧失了 combo 的这个节省带宽的优势，本地有办法自己搭建一个 combo 么?</p>
+
+<p>&#160;</p>
+
+<p>参考资料 
+  <br />1、<a href="http://ued.taobao.com/blog/2010/01/11/yui3%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E6%BF%80%E8%BF%9B%E5%92%8C%E5%A6%A5%E5%8D%8F/">YUI3设计中的激进与妥协</a>
+
+  <br />2、<a href="http://blog.fredrikbostrom.net/2008/10/29/executing-embedded-javascript-after-ajax-call">Excute embedded javascript after ajax-call</a>
+
+  <br />3、<a href="http://starcatcher.ca/?p=636">Post-Ajax Javascripts Calls</a>
+
+  <br />4、<a href="http://yuilibrary.com/forum/viewtopic.php?f=92&amp;t=2058&amp;p=6793">YUI Library</a>
+
+  <br />5、<a href="http://www.zhuoqun.net/html/y2008/1118.html">YUI Loader 学习笔记</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2010-01-24 22:02</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1655430" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1655430);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1655430,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2010/1/24 22:02:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

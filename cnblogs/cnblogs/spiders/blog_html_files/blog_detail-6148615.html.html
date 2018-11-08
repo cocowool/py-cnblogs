@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Mac下体验Hexo与Github Pages搭建 - Cocowool - 博客园</title>
+<meta property="og:description" content="很久之前就知道Github可以发布自己的博客，因为仅支持静态文件，一直懒于动手自己进行编辑。再了解到还存在 "JekyII" 和 "Hexo" 这样的内容生成框架后，终于决定体验一下。 一、本地环境准" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/6148615.html">Mac下体验Hexo与Github Pages搭建</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><p>很久之前就知道Github可以发布自己的博客，因为仅支持静态文件，一直懒于动手自己进行编辑。再了解到还存在 <a href="https://hexo.io/">JekyII</a> 和 <a href="https://hexo.io/">Hexo</a> 这样的内容生成框架后，终于决定体验一下。</p>
+<h3 id="一本地环境准备">一、本地环境准备。</h3>
+<p><a href="https://pages.github.com/">Github Pages</a>的申请过程就不再搬砖，Github的<a href="https://pages.github.com/">页面</a>上说的很清楚，注意每个用户只能创建一个与自己用户名相同的Pages。</p>
+<p>Pages申请好之后，可以克隆到本地的文件夹，这样 hexo 运行的文件夹就准备好，可以开始准备本地的hexo环境。</p>
+<p>hexo需要有nodes和nam的支持，我先安装了<a href="https://nodejs.org/dist/v6.9.2/node-v6.9.2.pkg">6.9.2版本的node</a>，使用的是安装包，当然也可以使用<a href="http://brew.sh/">homebrew</a>等工具。安装hexo很简单：</p>
+<pre class="bash"><code>$ npm install hexo-cli -g</code></pre>
+<p>然后进入到 github Pages 的本地目录执行：</p>
+<pre class="bash"><code>hexo init blog
+cd blog
+nam install
+hexo server</code></pre>
+<p>当看到Hexo is running的提示之后，就可以按照提示的地址在浏览器中预览博客效果了。</p>
+<p><img src="https://images2015.cnblogs.com/blog/39469/201612/39469-20161209105601835-184073315.png" alt="&quot;hexo目录结构&quot;" /></p>
+<p>_config.yml 是博客的配置文件，能够定义博客名称、作者等各种全局的参数。</p>
+<p>package.json 应用数据，EJS、Sylus、Markdown三个渲染工具是默认安装的，如果不需要刻意卸载。但是对于最终要是使用 Markdown 来编辑博客的我来说，那是必不可少的。</p>
+<p>source 文件夹，文章原始的 md 文件都放在这个文件夹下面。通过生成器会对该文件夹下的 markdown、html 文件进行解析，其他的文件只做拷贝，放入 public 文件夹。</p>
+<p>themes 主题文件夹，默认的主题为 landscape。</p>
+<h3 id="二主题更换">二、主题更换。</h3>
+<p>默认的主题美观性基本上没有，hexo 支持自己开发博客主题，但是刚开始的时候最好还是选择一个比较成熟的主题先上手。hexo 官方有一个提供预览图的<a href="https://hexo.io/themes/">列表</a>，也有一个更完整的<a href="https://github.com/hexojs/hexo/wiki/Themes">列表</a>，我这里要使用的是 <a href="https://github.com/litten/hexo-theme-yilia">yilia</a>，后续考虑自己定义一个。</p>
+<p>更换theme的步骤包括获取 theme 文件，修改配置，可以参考 yilia 的文档进行。</p>
+<h3 id="三生成与发布">三、生成与发布</h3>
+<p>编辑完自己的文章后，本地预览觉得效果还可以的话，就可以生成等待发布的页面了。</p>
+<pre class="bash"><code>hexo generate</code></pre>
+<p>执行完成后，可以在 public 文件夹下看到生成的文件。由此可以看到，hexo 中有原始的文档文件，也有发布后生成的网页文件。</p>
+<p>修改 hexo 配置文件中关于部署的部分</p>
+<pre><code># Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+type: git
+repo: https://github.com/yourname/yourname.github.io.git
+branch: hexo</code></pre>
+<p>至此，使用 hexo 搭建环境发布内容的工作就完成了，你可以通过 <a href="http://yourname.github.io" class="uri">http://yourname.github.io</a> 访问页面，查看效果。</p>
+<p>为了让这两部分文件都保存下来，我们利用 git 中的分支功能。在本地环境查看有多少分支 git branch -a，一般只有一个 master。创建一个新的分支 git branch hexo<br />
+将分支推送到远程服务器 git push origin hexo，在 hexo 的配置文件中选择将内容发布到 hexo 而本地的源码提交到 master 中。</p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2016-12-09 10:54</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=6148615" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(6148615);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=6148615,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2016/12/9 10:54:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

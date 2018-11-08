@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>20个Linux服务器安全强化建议（一） - Cocowool - 博客园</title>
+<meta property="og:description" content="Linux服务器安全对于保护用户数据、知识产权非常重要，同时还能减少你面对黑客的时间。在工作中，通常由系统管理员对Linux的安全负责，在这篇文章中，介绍了20条对Linux系统进行强化的建议。本文所" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/5623709.html">20个Linux服务器安全强化建议（一）</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><div>Linux服务器安全对于保护用户数据、知识产权非常重要，同时还能减少你面对黑客的时间。在工作中，通常由系统管理员对Linux的安全负责，在这篇文章中，介绍了20条对Linux系统进行强化的建议。本文所有的建议都基于CentOS、RHEL系统或者Ubuntu/Debian的发行版本。</div>
+<div>&nbsp;</div>
+<div><strong>#1、加密数据通信方式。</strong></div>
+<div>&nbsp;</div>
+<div>所有通过网络传输的数据都是可以被监听的，因此只要有可能就要使用密码、证书等方式加密你的通讯数据。</div>
+<div>&nbsp;</div>
+<div>1、使用 scp、ssh、rsync或者sftp来进行文件传输。也可以使用特殊的sshfs或者fuse工具来挂载远程文件系统或者你的工作目录。</div>
+<div>2、<a href="http://www.gnupg.org/">GnuPG</a>&nbsp;提供功能丰富的证书管理功能，允许你签名数据并进行传输。</div>
+<div>3、<a href="http://rsug.itd.umich.edu/software/fugu/">Fugu</a>&nbsp;是一个图形化的SFTP文件传输工具。SFTP类似于FTP，但是与FTP不同，整个会话是加密的，也就是说不会用明文形式发送密码。另外一个选项是<a href="http://filezilla-project.org/">FileZilla</a>，一个跨平台的客户端段，也支持FTP、FTPS 和 SFTP。</div>
+<div>4、<a href="http://openvpn.net/">OpenVPN</a>&nbsp;是一个轻量级、低成本的SSL VPN。</div>
+<div>5、<a href="http://www.cyberciti.biz/tips/how-to-install-ssl-lighttpd-https-configuration.html">Lighttpd SSL（Secure Server Layer）Https</a>&nbsp;的安装和配置。</div>
+<div>6、<a href="http://www.cyberciti.biz/faq/rhel-apache-httpd-mod-ssl-tutorial/">Apache SSL（Secure Server Layer）Https</a>（mod_ssl）的安装和配置。</div>
+<div>&nbsp;</div>
+<div>#1.1、避免使用FTP、Telnet和Rlogin/Rsh服务</div>
+<div>&nbsp;</div>
+<div>在大多数的网络配置下，用户名、密码，FTP / telnet /rsh 命令和传输的文件能够被同网段的任何人使用包嗅探软件监听。这个问题的通常解决方法是使用&nbsp;<a href="http://www.cyberciti.biz/tips/linux-unix-bsd-openssh-server-best-practices.html">OpenSSH</a>、<a href="http://www.cyberciti.biz/tips/configure-vsfptd-secure-connections-via-ssl-tls.html">SFTP&nbsp;</a>或者&nbsp;<a href="http://www.cyberciti.biz/tips/configure-vsfptd-secure-connections-via-ssl-tls.html">FTPS</a>。</div>
+<div>&nbsp;</div>
+<div>下面的命令可以帮助你删除服务器中没必要的服务。</div>
+<div>&nbsp;</div>
+<div># yum erase inetd xinetd ypserv tfpt-server telnet-server rsh-server</div>
+<div>&nbsp;</div>
+<div><strong>#2、最小化软件安装原则。</strong></div>
+<div>&nbsp;</div>
+<div>你确实需要服务器上安装的所有服务吗？避免安装不必要的服务就是避免漏斗。使用 RPM 包管理工具，例如 yum 或者 apt-get 、dpkg 来检查系统上安装的软件包，同时删除不必要的包。</div>
+<div>&nbsp;</div>
+<div>
+<div class="cnblogs_code">
+<pre><span style="color: #008080;">1</span> # <span style="color: #0000ff;">yum</span><span style="color: #000000;"> list installed
+</span><span style="color: #008080;">2</span> # <span style="color: #0000ff;">yum</span><span style="color: #000000;"> list packageName
+</span><span style="color: #008080;">3</span> # <span style="color: #0000ff;">yum</span><span style="color: #000000;"> remove packageName
+</span><span style="color: #008080;">4</span>  
+<span style="color: #008080;">5</span> <span style="color: #000000;">或者
+</span><span style="color: #008080;">6</span>  
+<span style="color: #008080;">7</span> # dpkg --<span style="color: #000000;">list
+</span><span style="color: #008080;">8</span> # dpkg --<span style="color: #0000ff;">info</span><span style="color: #000000;"> packageName
+</span><span style="color: #008080;">9</span> # apt-get remove packageName</pre>
+</div>
+<p><span style="line-height: 1.5;">&nbsp;</span></p>
+</div>
+<div><strong>#3、每个系统或实例上只运行一种服务。</strong></div>
+<div>&nbsp;</div>
+<div>将不同的服务运行在单独的服务器或虚拟化实例中。例如：如果黑客攻破Apache进入到系统中，他就可以访问部署在这台服务器上的Mysql、E-Mail等其他服务，尽量不要这么做。</div>
+<div>&nbsp;</div>
+<div><strong>#4、保持Linux内核和软件的更新。</strong></div>
+<div>&nbsp;</div>
+<div>维护系统的一项重要工作就是及时的安装系统补丁。Linux提供了很多必要的工具和方法来保证系统的更新，所有安全方面的更新都应该尽快执行，与第2条一样，我们可以使用 yum、apt-get等工具来进行安全更新。</div>
+<div>&nbsp;</div>
+<div>
+<div class="cnblogs_code">
+<pre><span style="color: #008080;">1</span> # <span style="color: #0000ff;">yum</span><span style="color: #000000;"> update
+</span><span style="color: #008080;">2</span>  
+<span style="color: #008080;">3</span> <span style="color: #000000;">或者
+</span><span style="color: #008080;">4</span>  
+<span style="color: #008080;">5</span> # apt-get update &amp;&amp; apt-get upgrade</pre>
+</div>
+<p><span style="line-height: 1.5;">&nbsp;</span></p>
+</div>
+<div>你可以在系统中配置<a href="http://www.cyberciti.biz/faq/red-hat-centos-fedora-send-package-update-notification-via-email/">更新提示邮件</a>（Red hat、CentOS、Fedora），或者另外一个办法就是通过一个cron定时任务安装所有的安全更新。</div>
+<div>&nbsp;</div>
+<div><strong>#5、使用Linux安全扩展。</strong></div>
+<div>&nbsp;</div>
+<div>Linux提供了多种安全补丁，可以用来保护错误配置或者一些妥协的方案。尽可能使用&nbsp;<a href="http://www.cyberciti.biz/tips/selinux-vs-apparmor-vs-grsecurity.html">SELinux和其他Linux安全扩展</a>来加强网络和程序的限制。例如，SELinux提供了Linux内核的安全策略。</div>
+<div>&nbsp;</div>
+<div><strong>#5.1、SELinux</strong></div>
+<div>&nbsp;</div>
+<div>SELinux提供了一套灵活的访问控制机制（MAC：Mandatory Access Control），标注的MAC下一个应用程序或者进程具有相关权限的用户下运行。使用MAC的内核保护能够使系统免于遭受系统的恶意攻击。更相信的信息可以查看官方的<a href="http://www.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/5.4/html/Deployment_Guide/selg-overview.html">SELinux说明配置文档</a>。</div>
+<div>&nbsp;</div>
+<p>参考资料：</p>
+<div>1、<a href="http://www.cyberciti.biz/tips/linux-security.html">http://www.cyberciti.biz/tips/linux-security.html</a></div></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2016-06-28 15:41</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=5623709" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(5623709);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=5623709,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2016/6/28 15:41:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

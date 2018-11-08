@@ -1,0 +1,543 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>离线环境下使用二进制方式安装配置Kubernetes集群 - Cocowool - 博客园</title>
+<meta property="og:description" content="本文环境 Redhat Linux 7.3，操作系统采用的最小安装方式。 Kubernetes的版本为 V1.10。 Docker版本为18.03.1 ce。 etcd 版本为 V3.3.8。 1. " />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/install_k8s_offline.html">离线环境下使用二进制方式安装配置Kubernetes集群</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>本文环境 Redhat Linux 7.3，操作系统采用的最小安装方式。<br />
+Kubernetes的版本为 V1.10。<br />
+Docker版本为18.03.1-ce。<br />
+etcd 版本为 V3.3.8。</p>
+</blockquote>
+<h2 id="准备规划">1. 准备规划</h2>
+<h3 id="node-规划">1.1 Node 规划</h3>
+<table>
+<thead>
+<tr class="header">
+<th>主机名</th>
+<th>地址</th>
+<th>角色</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>devops-101</td>
+<td>192.168.0.101</td>
+<td>k8s master</td>
+</tr>
+<tr class="even">
+<td>devops-102</td>
+<td>192.168.0.102</td>
+<td>k8s node</td>
+</tr>
+</tbody>
+</table>
+<h3 id="network-网络">1.2 Network 网络</h3>
+<h3 id="安装文件">1.3 安装文件</h3>
+<p>Kubernetes安装需要以下二进制文件：</p>
+<ul>
+<li>etcd</li>
+<li>docker</li>
+<li>Kubernetes
+<ul>
+<li>kubelet</li>
+<li>kube-proxy</li>
+<li>kube-apiserver</li>
+<li>kube-controller-manager</li>
+<li>kube-scheduler</li>
+</ul></li>
+</ul>
+<p>我们可以下载编译好的二进制文件，也可以下载源码自己编译，源码编译可以参考<a href="https://git.k8s.io/community/contributors/devel/">这里</a>本文只讨论二进制的安装方式。在Kubernetes的Github <a href="https://github.com/kubernetes/kubernetes/releases/latest">Latest</a> 页面，可以看到最新打包的版本。也可以到 Tag 页面中找到自己需要的版本，我下载的是 <a href="https://github.com/kubernetes/kubernetes/releases/tag/v1.11.0">V1.11</a>。</p>
+<blockquote>
+<p>注意这个页面有可能不是最新的版本，我查看的时候显示的版本是 V1.9.9，但是最新的版本是 V1.11，这时就需要切换到 Tag 页面查找。</p>
+</blockquote>
+<p>服务器上需要的二进制文件并不在下载的 tar 包中，需要解压tar包，然后执行<code>cluster/get-kube-binaries.sh</code>。下载需要访问 storage.googleapis.com，因为大家都知道的原因，可能无法正常访问，需要大家科学的获取安装文件。下载完成后，解压<code>kubernetes-server-linux-amd64.tar.gz</code>。</p>
+<p>可以看到文件列表</p>
+<pre class="sh"><code>[root@devops-101 bin]# pwd
+/root/kubernetes/server/bin
+[root@devops-101 bin]# ls -lh
+total 1.8G
+-rwxr-xr-x. 1 root root  57M Jun 28 04:55 apiextensions-apiserver
+-rwxr-xr-x. 1 root root 132M Jun 28 04:55 cloud-controller-manager
+-rw-r--r--. 1 root root    8 Jun 28 04:55 cloud-controller-manager.docker_tag
+-rw-r--r--. 1 root root 134M Jun 28 04:55 cloud-controller-manager.tar
+-rwxr-xr-x. 1 root root 218M Jun 28 04:55 hyperkube
+-rwxr-xr-x. 1 root root  56M Jun 28 04:55 kube-aggregator
+-rw-r--r--. 1 root root    8 Jun 28 04:55 kube-aggregator.docker_tag
+-rw-r--r--. 1 root root  57M Jun 28 04:55 kube-aggregator.tar
+-rwxr-xr-x. 1 root root 177M Jun 28 04:55 kube-apiserver
+-rw-r--r--. 1 root root    8 Jun 28 04:55 kube-apiserver.docker_tag
+-rw-r--r--. 1 root root 179M Jun 28 04:55 kube-apiserver.tar
+-rwxr-xr-x. 1 root root 147M Jun 28 04:55 kube-controller-manager
+-rw-r--r--. 1 root root    8 Jun 28 04:55 kube-controller-manager.docker_tag
+-rw-r--r--. 1 root root 149M Jun 28 04:55 kube-controller-manager.tar
+-rwxr-xr-x. 1 root root  50M Jun 28 04:55 kube-proxy
+-rw-r--r--. 1 root root    8 Jun 28 04:55 kube-proxy.docker_tag
+-rw-r--r--. 1 root root  96M Jun 28 04:55 kube-proxy.tar
+-rwxr-xr-x. 1 root root  54M Jun 28 04:55 kube-scheduler
+-rw-r--r--. 1 root root    8 Jun 28 04:55 kube-scheduler.docker_tag
+-rw-r--r--. 1 root root  55M Jun 28 04:55 kube-scheduler.tar
+-rwxr-xr-x. 1 root root  55M Jun 28 04:55 kubeadm
+-rwxr-xr-x. 1 root root  53M Jun 28 04:56 kubectl
+-rwxr-xr-x. 1 root root 156M Jun 28 04:55 kubelet
+-rwxr-xr-x. 1 root root 2.3M Jun 28 04:55 mounter</code></pre>
+<h3 id="系统配置">1.4 系统配置</h3>
+<ul>
+<li>配置Hosts</li>
+<li>关闭防火墙</li>
+</ul>
+<pre class="sh"><code>$ systemctl stop firewalld
+$ systemctl disable firewalld</code></pre>
+<ul>
+<li>关闭selinux</li>
+</ul>
+<pre class="sh"><code>$ vim /etc/selinux/config</code></pre>
+<p>将SELINUX=enforcing改为SELINUX=disabled，wq保存退出。</p>
+<ul>
+<li>关闭swap</li>
+</ul>
+<pre class="sh"><code>$ swapoff -a
+$ vim /etc/fstab #修改自动挂载配置，注释掉即可
+#/dev/mapper/centos-swap swap   swap    defaults    0 0</code></pre>
+<ul>
+<li></li>
+</ul>
+<h2 id="安装-node">2. 安装 Node</h2>
+<p>我们需要在Node机器上安装以下应用：</p>
+<ul>
+<li>Docker</li>
+<li>kubelet</li>
+<li>kube-proxy</li>
+</ul>
+<h3 id="docker">2.1 Docker</h3>
+<p>Docker的版本需要与kubelete版本相对应，最好都使用最新的版本。Redhat 中需要使用 Static Binary 方式安装，具体可以参考我之前的<a href="https://www.cnblogs.com/cocowool/p/install_docker_ce_in_redhat_73.html">一篇文章</a>。</p>
+<h3 id="拷贝-kubeletkube-proxy">2.2 拷贝 kubelet、kube-proxy</h3>
+<p>在之前解压的 kubernetes 文件夹中拷贝二进制文件</p>
+<pre class="sh"><code>$ cp /root/kubernetes/server/bin/kubelet /usr/bin/
+$ cp /root/kubernetes/server/bin/kube-proxy /usr/bin/</code></pre>
+<h3 id="安装-kube-proxy-服务">2.3 安装 kube-proxy 服务</h3>
+<pre class="sh"><code>$ vim /usr/lib/systemd/system/kube-proxy.service
+[Unit]
+Description=Kubernetes Kube-Proxy Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+ 
+[Service]
+EnvironmentFile=/etc/kubernetes/config
+EnvironmentFile=/etc/kubernetes/proxy
+ExecStart=/usr/bin/kube-proxy \
+            $KUBE_LOGTOSTDERR \
+            $KUBE_LOG_LEVEL \
+            $KUBE_MASTER \
+            $KUBE_PROXY_ARGS
+Restart=on-failure
+LimitNOFILE=65536
+ 
+[Install]
+WantedBy=multi-user.target</code></pre>
+<p>创建配置目录，并添加配置文件</p>
+<pre class="sh"><code>$ mkdir -p /etc/kubernetes
+$ vim /etc/kubernetes/proxy
+KUBE_PROXY_ARGS=&quot;&quot;
+$ vim /etc/kubernetes/config
+KUBE_LOGTOSTDERR=&quot;--logtostderr=true&quot;
+KUBE_LOG_LEVEL=&quot;--v=0&quot;
+KUBE_ALLOW_PRIV=&quot;--allow_privileged=false&quot;
+KUBE_MASTER=&quot;--master=http://192.168.0.101:8080&quot;</code></pre>
+<p>启动服务</p>
+<pre class="sh"><code>[root@devops-102 ~]# systemctl daemon-reload
+[root@devops-102 ~]# systemctl start kube-proxy.service
+[root@devops-102 ~]# netstat -lntp | grep kube-proxy
+tcp        0      0 127.0.0.1:10249         0.0.0.0:*               LISTEN      10522/kube-proxy    
+tcp6       0      0 :::10256                :::*                    LISTEN      10522/kube-proxy  </code></pre>
+<h3 id="安装-kubelete-服务">2.4 安装 kubelete 服务</h3>
+<pre class="sh"><code>$ vim /usr/lib/systemd/system/kubelet.service
+[Unit]
+Description=Kubernetes Kubelet Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=docker.service
+Requires=docker.service
+ 
+[Service]
+WorkingDirectory=/var/lib/kubelet
+EnvironmentFile=/etc/kubernetes/kubelet
+ExecStart=/usr/bin/kubelet $KUBELET_ARGS
+Restart=on-failure
+KillMode=process
+ 
+[Install]
+WantedBy=multi-user.target
+$ mkdir -p /var/lib/kubelet
+$ vim /etc/kubernetes/kubelet
+KUBELET_ADDRESS=&quot;--address=0.0.0.0&quot;
+KUBELET_HOSTNAME=&quot;--hostname-override=192.168.0.102&quot;
+KUBELET_API_SERVER=&quot;--api-servers=http://192.168.0.101:8080&quot;
+KUBELET_POD_INFRA_CONTAINER=&quot;--pod-infra-container-image=reg.docker.tb/harbor/pod-infrastructure:latest&quot;
+KUBELET_ARGS=&quot;--enable-server=true --enable-debugging-handlers=true --fail-swap-on=false --kubeconfig=/var/lib/kubelet/kubeconfig&quot;</code></pre>
+<p>创建配置文件 <code>vim /var/lib/kubelet/kubeconfig</code></p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Config
+users:
+- name: kubelet
+clusters:
+- name: kubernetes
+  cluster:
+    server: http://192.168.0.101:8080
+contexts:
+- context:
+    cluster: kubernetes
+    user: kubelet
+  name: service-account-context
+current-context: service-account-context</code></pre>
+<p>启动kubelet并进习验证。</p>
+<pre class="sh"><code>$ swapoff -a
+$ systemctl daemon-reload
+$ systemctl start kubelet.service
+$ netstat -tnlp | grep kubelet
+tcp        0      0 127.0.0.1:10248         0.0.0.0:*               LISTEN      10630/kubelet       
+tcp        0      0 127.0.0.1:37865         0.0.0.0:*               LISTEN      10630/kubelet       
+tcp6       0      0 :::10250                :::*                    LISTEN      10630/kubelet       
+tcp6       0      0 :::10255                :::*                    LISTEN      10630/kubelet</code></pre>
+<h2 id="安装-master">3. 安装 Master</h2>
+<h3 id="安装etcd">3.1 安装etcd</h3>
+<p>本文采用二进制安装方法，首先<a href="https://github.com/coreos/etcd/releases">下载</a>安装包。<br />
+之后进行解压，文件拷贝，编辑 etcd.service、etcd.conf文件夹</p>
+<pre class="sh"><code>$ tar zxf etcd-v3.2.11-linux-amd64.tar.gz
+$ cd etcd-v3.2.11-linux-amd64
+$ cp etcd etcdctl /usr/bin/
+$ vim /usr/lib/systemd/system/etcd.service
+[Unit]
+Description=etcd.service
+ 
+[Service]
+Type=notify
+TimeoutStartSec=0
+Restart=always
+WorkingDirectory=/var/lib/etcd
+EnvironmentFile=-/etc/etcd/etcd.conf
+ExecStart=/usr/bin/etcd
+ 
+[Install]
+WantedBy=multi-user.target
+$ mkdir -p /var/lib/etcd &amp;&amp; mkdir -p /etc/etcd/
+$ vim /etc/etcd/etcd.conf
+ETCD_NAME=ETCD Server
+ETCD_DATA_DIR=&quot;/var/lib/etcd/&quot;
+ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+ETCD_ADVERTISE_CLIENT_URLS=&quot;http://192.168.0.101:2379&quot;
+# 启动etcd
+$ systemctl daemon-reload
+$ systemctl start etcd.service</code></pre>
+<p>查看etcd状态是否正常</p>
+<pre class="sh"><code>$ etcdctl cluster-health
+member 8e9e05c52164694d is healthy: got healthy result from http://192.168.0.101:2379
+cluster is healthy</code></pre>
+<h3 id="安装kube-apiserver">3.2 安装kube-apiserver</h3>
+<p>添加启动文件</p>
+<pre class="sh"><code>[Unit]
+Description=Kubernetes API Server
+After=etcd.service
+Wants=etcd.service
+ 
+[Service]
+EnvironmentFile=/etc/kubernetes/apiserver
+ExecStart=/usr/bin/kube-apiserver  \
+        $KUBE_ETCD_SERVERS \
+        $KUBE_API_ADDRESS \
+        $KUBE_API_PORT \
+        $KUBE_SERVICE_ADDRESSES \
+        $KUBE_ADMISSION_CONTROL \
+        $KUBE_API_LOG \
+        $KUBE_API_ARGS
+Restart=on-failure
+Type=notify
+LimitNOFILE=65536
+ 
+[Install]
+WantedBy=multi-user.target</code></pre>
+<p>创建配置文件</p>
+<pre class="sh"><code>$ vim /etc/kubernetes/apiserver 
+KUBE_API_ADDRESS=&quot;--insecure-bind-address=0.0.0.0&quot;
+KUBE_API_PORT=&quot;--port=8080&quot;
+KUBELET_PORT=&quot;--kubelet-port=10250&quot;
+KUBE_ETCD_SERVERS=&quot;--etcd-servers=http://192.168.0.101:2379&quot;
+KUBE_SERVICE_ADDRESSES=&quot;--service-cluster-ip-range=10.0.0.0/24&quot;
+KUBE_ADMISSION_CONTROL=&quot;--admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ResourceQuota&quot;
+KUBE_API_ARGS=&quot;&quot;</code></pre>
+<p>启动服务</p>
+<pre class="sh"><code>$ systemctl daemon-reload
+$ systemctl start kube-apiserver.service</code></pre>
+<p>查看启动是否成功</p>
+<pre class="sh"><code>$ netstat -tnlp | grep kube
+tcp6       0      0 :::6443                 :::*                    LISTEN      10144/kube-apiserve 
+tcp6       0      0 :::8080                 :::*                    LISTEN      10144/kube-apiserve </code></pre>
+<h3 id="安装kube-controller-manager">3.3 安装kube-controller-manager</h3>
+<p>创建启动文件</p>
+<pre class="sh"><code>$ vim /usr/lib/systemd/system/kube-controller-manager.service
+[Unit]
+Description=Kubernetes Scheduler
+After=kube-apiserver.service
+Requires=kube-apiserver.service
+ 
+[Service]
+EnvironmentFile=-/etc/kubernetes/controller-manager
+ExecStart=/usr/bin/kube-controller-manager \
+        $KUBE_MASTER \
+        $KUBE_CONTROLLER_MANAGER_ARGS
+Restart=on-failure
+LimitNOFILE=65536
+ 
+[Install]
+WantedBy=multi-user.target</code></pre>
+<p>创建配置文件</p>
+<pre class="sh"><code>$ vim /etc/kubernetes/controller-manager
+KUBE_MASTER=&quot;--master=http://192.168.0.101:8080&quot;
+KUBE_CONTROLLER_MANAGER_ARGS=&quot; &quot;</code></pre>
+<p>启动服务</p>
+<pre class="sh"><code>$ systemctl daemon-reload
+$ systemctl start kube-controller-manager.service</code></pre>
+<p>验证服务状态</p>
+<pre class="sh"><code>$ netstat -lntp | grep kube-controll
+tcp6       0      0 :::10252                :::*                    LISTEN      10163/kube-controll </code></pre>
+<h3 id="安装kube-scheduler">3.4 安装kube-scheduler</h3>
+<p>创建启动文件</p>
+<pre class="sh"><code>$ vim /usr/lib/systemd/system/kube-scheduler.service
+[Unit]
+Description=Kubernetes Scheduler
+After=kube-apiserver.service
+Requires=kube-apiserver.service
+
+[Service]
+User=root
+EnvironmentFile=/etc/kubernetes/scheduler
+ExecStart=/usr/bin/kube-scheduler \
+        $KUBE_MASTER \
+        $KUBE_SCHEDULER_ARGS
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+<p>修改配置</p>
+<pre class="sh"><code>$ vim /etc/kubernetes/scheduler
+KUBE_MASTER=&quot;--master=http://192.168.0.101:8080&quot;
+KUBE_SCHEDULER_ARGS=&quot;--logtostderr=true --log-dir=/home/log/kubernetes --v=2&quot;</code></pre>
+<p>启动服务</p>
+<pre class="sh"><code>$ systemctl daemon-reload
+$ systemctl start kube-scheduler.service</code></pre>
+<p>验证服务状态</p>
+<pre class="sh"><code>$ netstat -lntp | grep kube-schedule
+tcp6       0      0 :::10251                :::*                    LISTEN      10179/kube-schedule </code></pre>
+<h3 id="配置profile">3.5 配置Profile</h3>
+<pre class="sh"><code>$ sed -i &#39;$a export PATH=$PATH:/root/kubernetes/server/bin/&#39; /etc/profile
+$ source /etc/profile</code></pre>
+<h3 id="安装-kubectl-并查看状态">3.6 安装 kubectl 并查看状态</h3>
+<pre class="sh"><code>$ cp /root/kubernetes/server/bin/kubectl /usr/bin/
+$ kubectl get cs
+NAME                 STATUS    MESSAGE             ERROR
+etcd-0               Healthy   {&quot;health&quot;:&quot;true&quot;}   
+controller-manager   Healthy   ok                  
+scheduler            Healthy   ok </code></pre>
+<p>到这里Master节点就配置完毕。</p>
+<h2 id="配置flannel网络">4. 配置flannel网络</h2>
+<p>Flannel可以使整个集群的docker容器拥有唯一的内网IP，并且多个node之间的docker0可以互相访问。<a href="">下载地址</a></p>
+<h2 id="集群验证">5. 集群验证</h2>
+<p>在101上执行命令，检查nodes，如果能看到，表明集群现在已经OK了。</p>
+<pre class="sh"><code>$ kubectl get nodes
+NAME         STATUS    ROLES     AGE       VERSION
+devops-102   Ready     &lt;none&gt;    12s       v1.11.0</code></pre>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" /></p>
+<h2 id="参考资料">参考资料</h2>
+<ol>
+<li><a href="https://kubernetes.io/docs/setup/scratch/">Creating a Custom Cluster from Scratch</a></li>
+<li><a href="https://coreos.com/etcd/docs/latest/dev-guide/local_cluster.html">etcd</a></li>
+<li><a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">Creating a single master cluster with kubeadm</a></li>
+<li><a href="https://github.com/coreos/etcd/releases">etcd download</a></li>
+<li><a href="http://blog.51cto.com/13120271/2115310">离线安装k8s</a></li>
+<li><a href="https://www.jianshu.com/p/9c7e1c957752">centos7.3 kubernetes/k8s 1.10 离线安装</a></li>
+<li><a href="https://github.com/kelseyhightower/kubernetes-the-hard-way">Kubernetes the hardest way</a></li>
+<li><a href="https://www.cnblogs.com/fengjian2016/p/6392900.html">kubernetes 安装学习</a></li>
+<li><a href="https://linuxacademy.com/community/posts/show/topic/19040-kubectl-get-nodes-returns-no-resources-found">kubectl get nodes returns &quot;No resources found.&quot;</a></li>
+<li><a href="https://github.com/kubernetes/kubeadm/issues/102">nodes with multiple network interfaces can fail to talk to services</a></li>
+</ol>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-07-19 11:15</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9334708" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9334708);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9334708,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/7/19 11:15:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

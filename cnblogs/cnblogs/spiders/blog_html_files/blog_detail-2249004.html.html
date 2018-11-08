@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="never" />
+<title>如何使用GunPGP加密Apple Mail的邮件 - Cocowool - 博客园</title>
+<meta property="og:description" content="我和火星人也很好奇如何能够更安全的传输邮件，所以决定试一试。他的环境是 Linux Ubuntu ，我的环境是 Mac OS X Lion。GnuPG全称GNU PrivacyGuard，它是基于公钥" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2011/11/14/2249004.html">如何使用GunPGP加密Apple Mail的邮件</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><style type="text/css" isprelink="true">@import url(http://www.cnblogs.com/Load.ashx?type=style&file=SyntaxHighlighter.css);</style><style type="text/css">@import url(/css/cuteeditor.css);</style>
+<!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+<span style="font-family: Arial; line-height: normal; font-size: medium; ">我和火星人也很好奇如何能够更安全的传输邮件，所以决定试一试。他的环境是 Linux Ubuntu ，我的环境是 Mac OS X Lion。</span>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">GnuPG全称GNU PrivacyGuard，它是基于公钥/私钥体系的加密工具PGP（Pretty Good Privacy）的开源版本它遵循OpenPGP标准。你可以免费使用，自由传播，并可以获得它的源代码。可以用于对Email、文件及其他数据的加密与验证，确保通信数据的保密性、完整性和真实性。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><span style="font-size: 18px; "><strong>PGP原理及规则</strong></span></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+<div>PGP使用双密匙来加密数据。每个使用PGP加密技术的人都要创建一对密匙，一个叫做公匙，另一个叫做私匙。公匙可被广泛传播，你可以贴在自己的网页上或发到专门的公钥管理网站上等等。私匙属于个人信息，绝不应该泄漏给其他人。
+<div><br />
+</div>
+<div>公匙和私匙相互作用对数据进行加密及解密。被公匙加密的数据只能被私匙解密，被私匙加密的数据也只能被一个公匙解密。这样就可以实现双重认证。</div>
+</div>
+<div><br />
+</div>
+<div>例如，A要给B发信息：
+<div><br />
+</div>
+<div>* A不想信息被其他人看见，怎么办？</div>
+<div><br />
+</div>
+<div>首先A必须通过某些途径得到B的公钥。</div>
+<div>在发送信息前，使用B的公匙对信息进行加密。</div>
+<div>这样只有B用对应的私匙才能解密收到的信息。所以就保证了信息传输的安全，这就是PGP所谓的加密(encryption)与解密(decryption)。</div>
+<div><br />
+</div>
+<div>* B收到信息后如何确定这信息是A发的呢？</div>
+<div><br />
+</div>
+<div>首先A必须通过某种途径把自己的公钥发给B。</div>
+<div>在发送信息前，A先用自己的密钥加密信息。</div>
+<div>B收到信息后就可以使用A的公钥来对收到的信息进行验证。这样就能确定信息来自A，这就是PGP所谓的签名(signature)与验证(verification)。</div>
+</div>
+<div><br />
+</div>
+<div><span style="font-size: 18px; "><strong>如何在Lion中使用PGP加密你的邮件</strong></span></div>
+<div><br />
+</div>
+<div>当前，gpgtools.org 上已经提供了集成的工具包来进行GPG的加密等相关工作。</div>
+<div><br />
+</div>
+<div>1、下载 GPGTools，并进行安装。</div>
+<div><br />
+</div>
+<div>首先从&nbsp;<a href="http://www.gpgtools.org/">http://www.gpgtools.org/</a>&nbsp;下载 gpgtools，下载后进行安装。工具包中包括了如下软件：</div>
+<div><br />
+</div>
+<div>GPGMail、GPG Keychain Access、MacGPG1、MacGPG2、GPGService、GPGPreference、Mobile OpenGPG。</div>
+<div><br />
+</div>
+<div>安装之后，你就可以在 terminal 中看到 gpg 命令已经被安装好了。&nbsp;</div>
+<div><br />
+</div>
+<div><br />
+</div>
+<div>2、打开 GPG Keychain Access 生成自己的公钥和密钥对。</div>
+<div><br />
+</div>
+<div><img src="https://images.cnblogs.com/cnblogs_com/cocowool/20111115-macgpg/55555.png" border="0" alt="" width="1021" height="641" /><br />
+</div>
+<div>正常情况下，第一次打开的时候，列表中应该是个空白的界面，紧接着会提醒用户生成自己的密钥对。</div>
+<div><br />
+</div>
+<div><img src="file:///Users/shiqiang/Library/Application%20Support/Evernote/data/101370/content/p2888/3238ff599993c574d5467df292dfc302.png" alt="" /><br />
+</div>
+<div><img src="https://images.cnblogs.com/cnblogs_com/cocowool/20111115-macgpg/44444.png" border="0" alt="" width="456" height="349" /><br />
+</div>
+<div>创建密钥对，默认会用你的电脑帐号对应的邮箱，你也可以选择或者输入其他的邮箱。Full name部分注意用户名要大于五个字符，所以中文姓名会有提示。Length 一般选择2048,也可以选择4096这样安全性能够更高一些。完成后，点击 Generate Key，生成自己的密钥对。</div>
+<div><br />
+</div>
+<div>3、将自己的公钥导出并发送给其他人。</div>
+<div><br />
+</div>
+<div>选中自己的密钥对，点击右键，选择导出。</div>
+<div><br />
+</div>
+<div><img src="file:///Users/shiqiang/Library/Application%20Support/Evernote/data/101370/content/p2888/5f5fa6c82beb577bc9804f14ff7dd3e0.png" alt="" /><br />
+</div>
+<div><img src="https://images.cnblogs.com/cnblogs_com/cocowool/20111115-macgpg/33333.png" border="0" alt="" width="419" height="343" /><br />
+</div>
+<div><br />
+</div>
+<div><img src="file:///Users/shiqiang/Library/Application%20Support/Evernote/data/101370/content/p2888/160200b2b49b1cccca3995828cd9aa35.png" alt="" /><br />
+</div>
+<div><img src="https://images.cnblogs.com/cnblogs_com/cocowool/20111115-macgpg/22222.png" border="0" alt="" width="600" height="486" /><br />
+</div>
+<div>导出的格式选项中，选择 binary 的格式。笔者试验了 ASCII 格式好像不能够正确导出。将导出的公钥发送给其他人，同时将别人的公钥 Import 到 GPG keychain Access 中。</div>
+<div><br />
+</div>
+<div>4、最后，就可以在Mail中使用GPG进行邮件加密和签名。</div>
+<div><img src="https://images.cnblogs.com/cnblogs_com/cocowool/20111115-macgpg/11111.png" border="0" alt="" width="564" height="286" /><br />
+</div>
+<div><img src="file:///Users/shiqiang/Library/Application%20Support/Evernote/data/101370/content/p2888/1c874d7fdd11a9138e543c9d1fd03917.png" alt="" /><br />
+</div>
+<div>大功告成！</div>
+<div><br />
+</div>
+<div>参考资料：</div>
+<div>1、<a href="http://gpgtools.org/">GpGTools</a></div>
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">2、<a href="https://github.com/GPGTools/GPGMail/wiki/Not-working-anymore-after-an-OS-update">GpGMail Not working after an os update</a></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">3、密码学简介</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">4、<a href="http://lagignition.blog.163.com/blog/static/1287300232009101082517154/">GPG签名和加密</a></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">5、<a href="http://blog.sina.com.cn/s/blog_5595d514010008xe.html">Apple Mail PGP</a></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">6、<a href="http://www.wasuvi.com/?page_id=2368">Using GNUPG encryption with Mac OS X Mail</a></div>
+<style type="text/css" isprelink="true">@import url(http://www.cnblogs.com/Load.ashx?type=style&file=SyntaxHighlighter.css);</style><style type="text/css">@import url(/css/cuteeditor.css);</style></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2011-11-14 22:37</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2249004" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2249004);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2249004,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2011/11/14 22:37:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

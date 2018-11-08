@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>利用AWStat+JAWStat进行Apache访问日志分析 - Cocowool - 博客园</title>
+<meta property="og:description" content="Apache日志的几种形式：  Apache的访问日志中会记录服务器所处理的所有请求，对apache的访问日志进行分析是一种比较传统的形式。虽然现在很多第三方的统计分析工具提供了嵌入到页面中的JS脚本" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2010/09/10/1823504.html">利用AWStat+JAWStat进行Apache访问日志分析</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p><strong>Apache日志的几种形式</strong>：</p>  <p>Apache的访问日志中会记录服务器所处理的所有请求，对apache的访问日志进行分析是一种比较传统的形式。虽然现在很多第三方的统计分析工具提供了嵌入到页面中的JS脚本来进行分析的方式，但是因为两种分析方式的侧重点不同，目前两种形式的日志分析仍并行存在。</p>  <p>不同版本的Apache httpd使用了不同的模块和指令来控制对访问的记录，包括mod_log_referer, mod_log_agent和<code>TransferLog</code>指令。现在，<code><a href="http://lamp.linux.gov.cn/Apache/ApacheMenu/mod/mod_log_config.html#customlog">CustomLog</a></code>指令包含了旧版本中相关指令的所有功能。日志分析与服务器产生的日志形式紧密相关，下面就是总结的一些常用的Apache访问日志的形式。</p>  <p>1、Common Log Format（CLF log format）</p>  <p>这是一种典型的记录格式：</p>  <blockquote>   <p>LogFormat “%h %l %u %t \”%r\” %&gt;s %b” common</p>    <p>CustomLog logs/access_log common</p> </blockquote>  <p>上例中第一行先定义了日志的格式，后面一行再定义日志产生的位置和格式。最后产生的结果如下：</p>  <blockquote>   <p>127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] &quot;GET /apache_pb.gif HTTP/1.0&quot; 200 2326</p> </blockquote>  <p>日志格式中具体字符代表的含义，我们可以在参考资料2中看到。</p>  <p>2、NCSA Combined log format</p>  <p>组合日志格式是另外一种常用的日志格式，如下：</p>  <blockquote>   <p>LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{User-agent}i\&quot;&quot; combined     <br />CustomLog log/access_log combined</p> </blockquote>  <p>记录的形式如下：</p>  <blockquote>   <p>127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] &quot;GET /apache_pb.gif HTTP/1.0&quot; 200 2326 &quot;http://www.example.com/start.html&quot; &quot;Mozilla/4.08 [en] (Win98; I ;Nav)&quot;</p> </blockquote>  <p><strong>AWStat的安装</strong></p>  <p>AWStat的安装比较简单。可以使用tools文件下的配置工具，按照提示一步步进行安装，也可以自行创建一个配置文件并且进行配置。具体的过程<a href="http://awstats.sourceforge.net/docs/awstats_setup.html" target="_blank">官方网站</a>上介绍的都比较清楚，就不再赘述了。</p>  <p>安装完成后，配置好 LogFile/LogFormat等几个必须配置的选项，确保你所要分析的Apache访问日志的格式和定义的格式一致，如果已经预定义的几种格式不能满足你的要求，也可以进行自己定义。例如我自己的Apache日志不属于某种规范，所以必须自己定义。</p>  <blockquote>   <p>Apache日志：</p>    <p>LogFormat &quot;%h %l %u %t %T \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{User-Agent}i\&quot; \&quot;%{Cookie}i\&quot;&quot; combined</p>    <p>AWStats日志格式：</p>    <p>LogFormat=&quot;%host %other %logname %time1 %other %methodurl %code %bytesd %refererquot %uaquot %otherquota&quot;</p> </blockquote>  <p>这样就确保了AWStats可以正确分析我的日志，然后就执行日志分析命令。</p>  <blockquote>   <p>perl awstats.pl -config=baiduleju update</p> </blockquote>  <p>我所分析的日志，是从各个Web服务器上统一汇总过来的，所以LogFile配置中如果写成固定的文件名，则会不能适应日志文件的变化，我们日志文件存放的格式为：自定义目录/100910/100910_log_1[2.3.4].gz。与日期相关，并且进行了压缩，为此，我编写了一个脚本，让他来处理这些日志文件。</p>  <blockquote>   <p>#!/bin/bash </p>    <p>DAY=$1     <br />if [[ ! $DAY ]]      <br />then      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; DAY=`date -d '1 day ago' +%y%m%d`      <br />fi </p>    <p>`cd /awstats的目录/awstats/wwwroot/cgi-bin`     <br />`cp /data0/dpoolapachelog/$DAY/$DAY.house.baidu.com_* ./log_tmp/`      <br />`gzip -d ./log_tmp/*`      <br />`/awstats的目录/awstats/tools/logresolvemerge.pl ./log_tmp/* &gt; ./log_tmp/newlog`      <br />perl awstats.pl -config=baiduleju -update      <br />`rm log_tmp/*`</p> </blockquote>  <p>主要过程就是将日志文件先拷贝到一个临时目录，然后利用logresolvemerge合并后进行分析，完成后删除。</p>  <p>最后在我指定的数据目录 ./data/ 下得到更新后的分析日志。</p>  <p>分析完成后，其实就可以通过web方式或者脚本生成静态的分析报告来查看结果了，但是awstats分析出来的结果呈现方式确实不是太好看，于是就用到了JAWStat。</p>  <p><strong>JAWStat的安装</strong></p>  <p>JAWStat需要Apache和PHP的支持，所以需要已经配置了相应的环境。它提供了一个非常友好的界面和方便的操作服务，而且支持不同的语言版本。截图如下：</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/WindowsLiveWriter/7487a811a680_12308/image_2.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/WindowsLiveWriter/7487a811a680_12308/image_thumb.png" width="671" height="235" /></a> </p>  <p>配置也非常简单，只需要在程序的config.php文件中修改相应的参数就可以了。但是我发现在分析日志文件大的时候，会产生内存溢出的问题，需要修改一下最大内存限制。感觉处理方式上海由改进的可能，但是作者对这个的开发已经停滞了好久了。</p>  <p>&#160;</p>  <p>参考资料：</p>  <p>1、<a href="http://lamp.linux.gov.cn/Apache/ApacheMenu/logs.html" target="_blank">Apache日志文件</a></p>  <p>2、<a href="http://lamp.linux.gov.cn/Apache/ApacheMenu/mod/mod_log_config.html" target="_blank">Apache模块mod_log_config</a></p>  <p>3、<a href="http://awstats.sourceforge.net/" target="_blank">AWStats</a></p>  <p>4、<a href="http://www.jawstats.com/" target="_blank">JAWStats</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2010-09-10 17:33</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1823504" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1823504);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1823504,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2010/9/10 17:33:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

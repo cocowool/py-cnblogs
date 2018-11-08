@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Yeoman学习与实践笔记 - Cocowool - 博客园</title>
+<meta property="og:description" content="Yeoman是Google的团队和外部贡献者团队合作开发的，他的目标是通过Grunt（一个用于开发任务自动化的命令行工具）和Bower（一个HTML、CSS、Javascript和图片等前端资源的包管" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2013/03/09/2952003.html">Yeoman学习与实践笔记</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p><span style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">Yeoman是Google的团队和外部贡献者团队合作开发的，他的目标是通过Grunt（一个用于开发任务自动化的命令行工具）和Bower（一个HTML、CSS、Javascript和图片等前端资源的包管理器）的包装为开发者创建一个易用的工作流。</span></p>
+<!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"> <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  Yeoman的目的不仅是要为新项目建立工作流，同时还是为了解决前端开发所面临的诸多严重问题，例如零散的依赖关系。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  Yeoman主要有三部分组成：yo（脚手架工具）、grunt（构建工具）、bower（包管理器）。这三个工具是分别独立开发的，但是需要配合使用，来实现我们高效的工作流模式。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  下面这幅图很形象的表明了他们三者之间的协作关系。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"><img src="https://images0.cnblogs.com/blog/39469/201303/09214923-27fe6dea6eb34f468e601589ea83a675.png" alt="" /></div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <strong>YOMAN的特性</strong>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  闪电般的初始化：项目开始阶段，可以基于现有的模板框架（例如：HTML5 Bolierplate、Twitter Bootstrap）进行项目初始化的快速构建。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  了不起的构建流程：不仅仅包括JS、CSS代码的压缩、合并，还可以对图片和HTML文件进行优化，同时对CoffeScript和Compass的文件进行编译。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  自动编译CoffeScript和Compass：通过LiveReload进程可以对源文件发生的改动自动编译，完成后刷新浏览器。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  自动Lint代码：对于JS代码会自动进行JSLint测试，确保代码符合最佳编程实践。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  内置的预览服务器：不再需要自己配置服务器了，使用内置的就可以快速预览。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  惊人的图片优化：通过使用OptiPNG和JPEGTran来优化图片，减少下载损耗。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  杀手级包管理：通过bower search jQuery，可以快速安装和更新相关的文件，不再需要打开浏览器自己搜索了。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  PhantomJS单元测试：可以非常方便的使用PhantomJS进行单元测试，一切在项目初始的时候都准备好了。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; text-align: -webkit-auto; font-size: 15px;">
+  <strong>安装前的准备工作</strong>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  检查系统中是否安装了：Node.js、Ruby、Compass。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  Mac下安装Node.js非常方便，首页提供了一个pkg下载，双击后可以默认安装node、npm到/usr/local/bin下，我们只需要确保/usr/local/bin包含在PATH变量中就可以。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  Mac Mountain Lion 下自带了Ruby，所以也就不需要再单独安装了。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  Compass安装需要依赖于Ruby Gems，执行下面的步骤：
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  sudo gem update --system
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  sudo gem install compass
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; text-align: -webkit-auto; font-size: 15px;">
+  <strong>安装</strong>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  环境准备好之后，就可以进行安装了，执行：
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  sudo npm install -g yo grunt-cli bower
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  安装成功后，会看到下面的提示：
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"><img src="https://images0.cnblogs.com/blog/39469/201303/09214959-ab7a06cafa054e23b9b0bcd2a2a9e823.png" alt="" /></div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">&nbsp;</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">&nbsp;</div>
+<div style="font-family: Arial; text-align: -webkit-auto; font-size: 15px;">
+  <strong>使用</strong>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  执行 yo webapp 我们就可以快速的创建一个新的Web应用的框架，一个通常的工作流程如下：
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"><img src="https://images0.cnblogs.com/blog/39469/201303/09215029-0e373ecbed66473789272c4699425e6a.png" alt="" /></div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; text-align: -webkit-auto; font-size: 15px;">
+  <strong>项目实践</strong>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  本篇以一个实际项目为例，通过Yeoman来构建一个简单的Blog页面：
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  环境准备好之后，我们开始自己的项目开发了，首先为自己的项目准备一个目录，我这里是: rivertown.sinaapp.com。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  然后第一步，使用 yo 进行快速的初始化，初始化时会询问我们是否使用Bootstrap和RequireJS框架，我这里都选择了是。完成后一个Web应用的基础框架就建立好了。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"><img src="https://images0.cnblogs.com/blog/39469/201303/09215059-cb58523abf2d4acf958a3b76ea2a3e15.png" alt="" /></div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">&nbsp;</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">&nbsp;</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  初始化的WebApp目录结构如下，app目录是我们项目的主目录，test目录中对应的一些JS的单元测试文件。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"><img src="https://images0.cnblogs.com/blog/39469/201303/09215127-478ec4003df249619923158eecb0b4d7.png" alt="" /></div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  注意我们需要安装黄色字体的提示，将npm和bower安装到项目本地。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  修改页面文件以及样式。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  对页面进行预览和测试。当代码编辑到一定程度，我们就需要对页面进行测试了，这个时候需要Grunt派上用场，执行下面的命令：
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"><img src="https://images0.cnblogs.com/blog/39469/201303/09215153-ce88f2339c8e474496446908d2f6ce38.png" alt="" /></div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  很快，浏览器中就可以看到我们的页面了。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"><img src="https://images0.cnblogs.com/blog/39469/201303/09215212-679713b408474d1db70976d25011fc26.png" alt="" /></div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  更神奇的是，一旦我们编辑了项目源文件之后，切换到Safari窗口，就马上能够看到修改所带来的变化，根本不用手工刷新页面！
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">&nbsp;</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  如果我们想对JS进行测试，那么必须利用npm将PhantomJS安装到本地，然后执行grunt test。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  最后的步骤就是编译生成项目了，执行 grunt 就可以将项目编译生成在 dist 目录下，有可能生成的时候会提示 phantomjs 没有的错误，这个时候执行 grunt --force 强制跳过这一步就可以了。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"><img src="https://images0.cnblogs.com/blog/39469/201303/09215247-a611b7f409bf427c831ae476bc7991a9.png" alt="" /></div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  查看具体的main.css和main.js中的内容，可以发现里面的内容都是经过优化之后的。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"><img src="https://images0.cnblogs.com/blog/39469/201303/09215303-7bddc52fb2974029b17d7d0f896e57aa.png" alt="" /></div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; text-align: -webkit-auto; font-size: 15px;">
+  <strong>使用体验</strong>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  经过一下午的试用，第一对于有这么一个集成化的构建、开发、编译流程，感觉非常新奇，相比于传统的开发方式。我需要首先确定用哪些框架，然后各个网站收集源代码，进行整合，还要部署一个测试的Web服务器，不管是用（Apache、Nginx还是Xampp），最后还要做代码的优化。而现在使用了Yeoman之后，所有的这些工作都被自动化、流程化了，我只需要按照既定的步骤来做，很多事情Yeoman都帮我做好了，对于前端开发来说，节省了非常多的力气。而且，生成项目的代码质量也都很不错。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  遗憾的地方在于目前Yeoman的相关资料还比较少，中文的资料也非常少，对于如何深入的学习和定制化，还需要继续的钻研。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  PS：吐槽一下百度，不得不说对于IT工作者来说，百度真的不是一个好的选择，输入Yeoman，除了Infoq的两篇介绍性的内容，其他的内容几乎与我需要的都相隔万里，也许是国内关注Yeoman太少的原因，但愿如此。
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;"><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" alt="" width="320" height="380" /></div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">&nbsp;</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  参考资料：
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  1、<a href="http://dl.cdn.chip.eu/downloads/224463/Snow_Leopard_EN.zip?cid=5721758&amp;platform=dcu&amp;1362754176-1362761676-1c6561-B-a3c135af25f380ada9886c5071a2a788">Yeoman：适合现代Web应用的现代工作流</a>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  2、<a href="http://yeoman.io/">Yeoman.io</a>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  3、<a href="http://nodejs.org/">Nodejs.org</a>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  4、<a href="http://compass-style.org/install/">Compass</a>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  5、<a href="https://github.com/yeoman/yeoman/wiki/Getting-started-with-1.0">Yeoman Get Started with 1.0</a>
+</div>
+<div style="font-family: Arial; font-size: medium; text-align: -webkit-auto;">
+  <br />
+</div>
+<div class="posttagsblock"><a href="http://technorati.com/tag/%E5%89%8D%E7%AB%AF" rel="tag">前端</a>, <a href="http://technorati.com/tag/%E5%B7%A5%E4%BD%9C%E6%B5%81" rel="tag">工作流</a></div></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2013-03-09 21:38</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2952003" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2952003);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2952003,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2013/3/9 21:38:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

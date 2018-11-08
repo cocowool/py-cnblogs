@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Linux下创建可执行bin安装文件 - Cocowool - 博客园</title>
+<meta property="og:description" content="需求及应用场景 1、 简化操作 。一般的软件安装过程，如果想要精简步骤，我们一般会将需要在命令行中输入的命令写成一个脚本，同时将安装介质准备好。我们将脚本和安装介质上传到生产环境，然后通过执行脚本来完" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/7733089.html">Linux下创建可执行bin安装文件</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><h3 id="需求及应用场景">需求及应用场景</h3>
+<p>1、<em>简化操作</em>。一般的软件安装过程，如果想要精简步骤，我们一般会将需要在命令行中输入的命令写成一个脚本，同时将安装介质准备好。我们将脚本和安装介质上传到生产环境，然后通过执行脚本来完成安装。如果能够将这两个文件合并为一个可执行文件，那安装的过程就更简单明了。</p>
+<p>2、<em>代码保护</em>。对于一段脚本，提供给用户使用，但是不希望用户看到脚本的内容，可以通过将脚本发布为.bin的形式。这样用户在环境中可以执行、安装，但是无法看到里面的内容，也无法修改，从而达到保护脚本内容的目的。</p>
+<h3 id="实现方法">实现方法</h3>
+<p>1、本文以在Redhat系统中安装ftp命令为例说明，如何将安装脚本和安装介质整合成一个文件，简化操作。</p>
+<p>首先，编写一个脚本，包含安装的命令。</p>
+<pre class="sh"><code>#!/bin/sh
+
+echo &quot;Hello World&quot;
+dir_installation=/root/create_bin
+sed -n -e &#39;1,/^exit 0$/!p&#39; $0 &gt; &quot;${dir_installation}/ftp-0.17-54.el6.x86_64.rpm&quot; 2&gt;/dev/null
+cd $dir_installation
+rpm -ivh ftp-0.17-54.el6.x86_64.rpm
+rm ftp-0.17-54.el6.x86_64.rpm
+
+exit 0</code></pre>
+<p>注意，这个脚本的关键在于<code>sed</code>，他会把exit 0后面的内容提取出来，另存为rpm包，然后执行安装，安装完成后删掉rpm。</p>
+<p>最后，我们用<code>cat</code>命令将脚本和安装包生成一个新的文件。</p>
+<p><img src="//upload-images.jianshu.io/upload_images/3736984-d613c9b747cabf36.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" /></p>
+<p>这时，如果用<code>file</code>命令查看install-rpm.bin文件，可以发现它的类型还是文本类型，用vim编辑器打开，还是可以看到脚本内容的，也可进行修改。</p>
+<p><img src="//upload-images.jianshu.io/upload_images/3736984-5a8e4f934b3eabd5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" /></p>
+<p>2、对于第二个隐藏代码内容的需求，有一款工具叫做 <a href="http://www.datsi.fi.upm.es/~frosal/sources/shc-3.8.9b.tgz">shc</a> ，可以用它来将脚本编程二进制文件。</p>
+<p>shc的用法比较简单，下载后make生成可执行文件，然后直接对脚本进行加密，会生成两个文件。一个以.x结尾，为可执行的二进制文件。另一个以.x.c结尾，为生成的中间c文件。shc还能指定可执行脚本的过期时间。</p>
+<pre class="sh"><code>wget http://www.datsi.fi.upm.es/~frosal/sources/shc-3.8.9b.tgz
+
+tar xvfz shc-3.8.9b.tgz
+
+cd shc-3.8.9b
+make
+
+./shc -v
+shc parse(-f): No source file specified
+
+shc Usage: shc [-e date] [-m addr] [-i iopt] [-x cmnd] [-l lopt] [-rvDTCAh] -f script
+
+./shc -f install-rpm.bin</code></pre>
+<p>通过 shc 可以将脚本文件编译成二进制文件，隐藏了脚本的内容，对于一般的用户是没办法查看和修改的。当然，还是有办法可以再将二进制文件转换为纯文本的脚本的，具体的方法大家可以关注我的微信号获得。</p>
+<p><em>本文为作者原创，如果您觉得本文对您有帮助，请随意打赏，您的支持将鼓励我继续创作。</em></p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170825142904777-1467390737.png" /></p>
+<p>参考资料：<br />
+1、<a href="http://www.cnblogs.com/itech/archive/2010/02/01/1661248.html">Linux .bin安装文件制作</a><br />
+2、<a href="http://codingstandards.iteye.com/blog/810900">dos2unix</a><br />
+3、<a href="http://blog.sina.com.cn/s/blog_4d3833cf0100yjen.html">linux下制作二进制bin 文件制做方法</a><br />
+4、<a href="http://www.datsi.fi.upm.es/~frosal/">shc</a><br />
+5、<a href="http://www.thegeekstuff.com/2012/05/encrypt-bash-shell-script/">How to Encrypt Your Bash Shell Script on Linux Using SHC</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2017-10-25 23:35</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=7733089" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(7733089);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=7733089,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2017/10/25 23:35:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

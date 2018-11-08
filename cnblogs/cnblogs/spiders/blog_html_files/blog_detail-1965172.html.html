@@ -1,0 +1,483 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Analog使用中的一些技巧和总结 - Cocowool - 博客园</title>
+<meta property="og:description" content="Analog是一款用来快速处理日志的开源工具，具有很高的效率，但是生成的结果并不美观，本文就analog使用过程中的一些问题进行总结，讨论如何对analog进行深度的定制使用。 处理经过压缩的多个日志" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2011/02/25/1965172.html">Analog使用中的一些技巧和总结</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>Analog是一款用来快速处理日志的开源工具，具有很高的效率，但是生成的结果并不美观，本文就analog使用过程中的一些问题进行总结，讨论如何对analog进行深度的定制使用。</p>  <p><strong>处理经过压缩的多个日志文件</strong></p>  <p>analog可以读取gz格式压缩的日志文件，并且支持读取多个文件。这个选项在我们有多台前端Web服务器的时候可以用上，读取多个日志文件，可以通过两种方式实现：在配置文件中指定多行LOGFILE，或者在单个文件中使用通配符，后一种方法是最常用到的。</p>  <blockquote>   <pre>LOGFILE new1.log,old*.log
+LOGFILE new2.log</pre>
+</blockquote>
+
+<p><strong>Analog配置文件相关的设置技巧</strong></p>
+
+<p>Analog启动时，会读取配置文件和命令行中的配置信息，配置文件默认是 analog.cfg ，如果想要命令行中的配置信息优先级比较高，需要加上 &#8211;G 参数，这样才能在有重复的配置项时，以命令行中的为准。</p>
+
+<p>analog支持读多个配置文件，但是如果多个配置文件中的配置项不同，就会发生混乱。如果真的需要读取多个配置文件，建议将一些基础性的配置信息放在默认配置文件中，一些个性的配置信息通过 +ganalog.x.cfg 包含进来。</p>
+
+<p>analog中的配置项信息非常多，有些在命令行下有缩写的形式，有一些则没有，如果希望在命令行中指定没有缩写的配置信息，可以使用下面的形式，注意命令之间不能有空格。</p>
+
+<blockquote>
+  <p>+C&#8221;UNCOMPRESS *.gz gzcat&#8221;</p>
+</blockquote>
+
+<blockquote>
+  <p>./analog/analog -G +ganalog.cfg +Oanalog_reports/bizhouse/bizhouse-110221.html /data0/dpoolapachelog/110221/110221.biz.house.sina.com.cn_*.gz +C"HOSTNAME biz.house.sina.com.cn"</p>
+</blockquote>
+
+<p>analog中关于日志文件和日志文件格式的配置项都是 cumulative （累加）的。如果我们的日志有两种格式，那么配置文件中写两行 LOGFORMAT 就可以保证不管遇到什么样的日志格式，都可以正常执行，这个特性在处理情况复杂的日志文件时非常有用。</p>
+
+<p><strong>配置HTML报告界面</strong></p>
+
+<p>图标和图标的链接</p>
+
+<blockquote>
+  <p>LOGO <a href="http://watchdog.com.cn/static/v1.0/logo.png">http://watchdog.com.cn/static/v1.0/logo.png</a>
+
+    <br />LOGOURL <a href="http://watchdog.com.cn/">http://watchdog.com.cn</a></p>
+</blockquote>
+
+<p><strong>如何处理多个网站的日志文件</strong></p>
+
+<p>在我们的环境中，有很多个项目，日志的存储方式如下</p>
+
+<blockquote>
+  <p>/data/logs/2011-02-23/domain.a.com.cn-2011-02-23.ip1.tar.gz</p>
+
+  <p>/data/logs/2011-02-23/domain.a.com.cn-2011-02-23.ip2.tar.gz</p>
+
+  <p>/data/logs/2011-02-23/domain.b.com.cn-2011-02-23.ip1.tar.gz</p>
+
+  <p>/data/logs/2011-02-23/domain.b.com.cn-2011-02-23.ip2.tar.gz</p>
+</blockquote>
+
+<p>目录中存在很多日志文件，使用analog进行分析比较麻烦的问题是这些日志的日志格式如果不一样，就不太好办。幸好 analog 的配置文件中对于日志格式的支持是累加的，可以在配置文件中使用这种方式进行配置。</p>
+
+<blockquote>
+  <p>APACHEDEFAULTLOGFORMAT (%h %l %u %t %T \"%r\" %&gt;s %b \"%{Referer}i\" \"%{User-Agent}i\" \"%{Cookie}i\")
+    <br />APACHEDEFAULTLOGFORMAT (%h %l %u %t \"%r\" %&gt;s %b \"%{Referer}i\" \"%{User-Agent}i\")</p>
+</blockquote>
+
+<p>只要配置的日志格式包括了所有可能的日志格式，我们就可以使用一个配置文件来进行所有日志文件的分析了。为了分析众多的日志文件，我写了一个脚本，通过读取一个项目列表文件，分析目录中对应的项目日志。然后汇总到一个数据库中进行展示，这样就方便我们查看多个网站的日志统计数据。分享如下：<a href="http://files.cnblogs.com/cocowool/wd_analog.pl.rar" title="Wd_analog.pl">Wd_analog.pl</a></p>
+
+<blockquote>
+  <p>#!/usr/bin/perl -w </p>
+
+  <p># This script use analog to analyze all the apache logs and send main result to watchdog.sample.com.cn site
+    <br /># Author:shiqiang at 2011-2-24
+
+    <br /># Revision History:
+
+    <br /># 2011-02-25 shiqiang Use Getopt::Long to parse parameters
+
+    <br /># 2011-02-25 shiqiang add some parameters to make this script common to use
+
+    <br /># 2011-02-24 shiqiang create file </p>
+
+  <p>use strict;
+    <br />use Getopt::Long;
+
+    <br />use diagnostics;
+
+    <br />use LWP;
+
+    <br />my $version = "1.0";
+
+    <br />my $usage = "Welcome to use wd_analog.pl $version\n";
+
+    <br />my $help = 0; </p>
+
+  <p>#Declare default values for variables
+    <br />my $verbose = 0;
+
+    <br />my $debug = -1;
+
+    <br />my $config = "project_list";
+
+    <br />chomp(my $date = `date -d '1 day ago' +%y%m%d`);
+
+    <br />chomp(my $report_date = `date -d '1 day ago' +%Y-%m-%d`); </p>
+
+  <p>chomp(my $base_path = `pwd`);
+    <br /># Analog binary path
+
+    <br />my $analog = ("/data0/vhosts/analog.sample.com.cn/htdocs/analog/analog");
+
+    <br />my $log_store_path = $base_path . "/computer_result/";
+
+    <br />my $log_file = $base_path . "/computer_result/wd_analog_log";
+
+    <br />my $apache_log_path = "/data0/dpoolapachelog/"; </p>
+
+  <p>#process options from command line
+    <br />GetOptions(
+
+    <br />&nbsp;&nbsp;&nbsp; 'verbose+' =&gt; \$verbose,
+
+    <br />&nbsp;&nbsp;&nbsp; 'config|f=s' =&gt; \$config,
+
+    <br />&nbsp;&nbsp;&nbsp; 'date|d=s' =&gt; \$date,
+
+    <br />&nbsp;&nbsp;&nbsp; 'help|?' =&gt; \$help,
+
+    <br />&nbsp;&nbsp;&nbsp; 'debug:i' =&gt; \$debug
+
+    <br />); </p>
+
+  <p>if( $help ){
+    <br />&nbsp;&nbsp;&nbsp; print $usage;
+
+    <br />&nbsp;&nbsp;&nbsp; print "Sample:wd_analog.pl -config=config_file_path -date=cur_date\n";
+
+    <br />&nbsp;&nbsp;&nbsp; exit(0);
+
+    <br />} </p>
+
+  <p>die "Config file doesn't exists or incorrupt" if ! -f $config;
+    <br />my @content = `cat $config`;
+
+    <br />my %project_list = (); </p>
+
+  <p>#
+    <br /># Parse the project domain and generate the module name
+
+    <br /># we trim the "www" prefix and ".com\.cn\" suffix to create the module name
+
+    <br />#
+
+    <br />for my $value ( @content ){
+
+    <br />&nbsp;&nbsp;&nbsp; chomp( $value );
+
+    <br />&nbsp;&nbsp;&nbsp; my $module = $value;
+
+    <br />&nbsp;&nbsp;&nbsp; $module =~ s/www|sina\.com\.cn|\.com\.cn|\.cn|\.com|\.//g;
+
+    <br />&nbsp;&nbsp;&nbsp; $project_list{$value} = $module;
+
+    <br />} </p>
+
+  <p>#
+    <br /># Iterate all the project and run analog
+
+    <br />#
+
+    <br />my $browser = LWP::UserAgent-&gt;new();
+
+    <br />my @keys = sort keys %project_list;
+
+    <br />for my $key ( @keys ) {
+
+    <br />&nbsp;&nbsp;&nbsp; # Define trhee parameters used for analog
+
+    <br />&nbsp;&nbsp;&nbsp; my $module = $project_list{$key};
+
+    <br />&nbsp;&nbsp;&nbsp; my $domain_keyword = $key;
+
+    <br />&nbsp;&nbsp;&nbsp; my $cur_date = $date;
+
+    <br />&nbsp;&nbsp;&nbsp; $log_store_path .= $module;
+
+    <br />&nbsp;&nbsp;&nbsp; `mkdir -p $log_store_path` if ! -d $log_store_path;
+
+    <br />&nbsp;&nbsp;&nbsp; #`echo "=================================" &gt;&gt; $log_file 2&gt;1&amp;`;
+
+    <br />&nbsp;&nbsp;&nbsp; `echo $key=$project_list{$key} &gt;&gt; $log_file 2&gt;1&amp;`;
+
+    <br />&nbsp;&nbsp;&nbsp; `./analog/analog -G +ganalog.cfg +O$log_store_path/$module-$cur_date.txt $apache_log_path$date/$date.*${domain_keyword}_*.gz +C"HOSTNAME $domain_keyword" +C"OUTPUT COMPUTER"`; </p>
+
+  <p>&nbsp;&nbsp;&nbsp; # Parse the stat result and do some post processing
+    <br />&nbsp;&nbsp;&nbsp; my %stat;
+
+    <br />&nbsp;&nbsp;&nbsp; my $k;
+
+    <br />&nbsp;&nbsp;&nbsp; foreach $k ("B7", "BT", "CL", "F7", "FL", "FRd", "FRh", "FRmi", "FRmo", "FRy", "H7", "LRd", "LRh", "LRmi", "LRmo", "LRy", "N7", "NF", "NH", "P7", "PR", "R7", "RR", "S7", "SR", "UL") { $stat{$k} = 0; }
+
+    <br />&nbsp;&nbsp;&nbsp; $stat{HN} = "";
+
+    <br />&nbsp;&nbsp;&nbsp; # Analog doesn't necessarily create lines for all values
+
+    <br />&nbsp;&nbsp;&nbsp; open(INPUT, "$log_store_path/$module-$cur_date.txt" ) or die "Faile to open stat result file $domain_keyword:$log_store_path/$module-$cur_date.txt";
+
+    <br />&nbsp;&nbsp;&nbsp; while (&lt;INPUT&gt;) {
+
+    <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; chomp;
+
+    <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (m{^x&nbsp;&nbsp;&nbsp; FR&nbsp;&nbsp;&nbsp; (\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)$}) {
+
+    <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ($stat{FRy}, $stat{FRmo}, $stat{FRd}, $stat{FRh}, $stat{FRmi}) = ($1, $2, $3, $4, $5)
+
+    <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+    <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; elsif (m{^x&nbsp;&nbsp;&nbsp; LR&nbsp;&nbsp;&nbsp; (\d+)\t(\d+)\t(\d+)\t(\d+)\t(\d+)$}) {
+
+    <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ($stat{LRy}, $stat{LRmo}, $stat{LRd}, $stat{LRh}, $stat{LRmi}) = ($1, $2, $3, $4, $5)
+
+    <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+    <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; elsif (m{^x&nbsp;&nbsp;&nbsp; ([A-Z][A-Z7])&nbsp;&nbsp;&nbsp; ([^/]+)$}) { $stat{$1} = $2; }
+
+    <br />&nbsp;&nbsp;&nbsp; } </p>
+
+  <p>&nbsp;&nbsp;&nbsp; my $pv = 0;
+    <br />&nbsp;&nbsp;&nbsp; $pv = $stat{PR}/$stat{NH} if $stat{NH} ne '0';
+
+    <br />&nbsp;&nbsp;&nbsp; my $response = $browser-&gt;post("<a href="http://watchdog.sample.com.cn/log/save%22">http://watchdog.sample.com.cn/log/save"</a>, ["domain"=&gt;$stat{HN},"requests"=&gt;$stat{SR},"pages"=&gt;$stat{PR},"pv"=&gt; $pv,"traffic"=&gt;$stat{BT},"uip"=&gt;$stat{NH},"stats_date"=&gt;"$report_date"]);;
+
+    <br />&nbsp;&nbsp;&nbsp; die "Post data failed : $response-&gt;content !" if $response-&gt;content ne '0';
+
+    <br />&nbsp;&nbsp;&nbsp; $log_store_path = $base_path . "/computer_result/";
+
+    <br />} </p>
+
+  <p>&nbsp;</p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><strong>Analog中几种固定的日志格式</strong></p>
+
+<blockquote>
+  <p>&nbsp;</p>
+  <dt><a name="commonfmtex">Common format</a>, <kbd>LOGFORMAT COMMON</kbd>
+
+    <p>&nbsp;</p>
+  </dt><dd>
+    <pre>jay.bird.com - fred [25/Dec/1998:17:45:35 +0000]
+      "GET /~sret1/ HTTP/1.0" 200 1243
+LOGFORMAT (%S %j %u [%d/%M/%Y:%h:%n:%j] "%j%w%r%wHTTP%j" %c %b)
+LOGFORMAT (%S %j %u [%d/%M/%Y:%h:%n:%j] "%j%w%r" %c %b)
+LOGFORMAT (%S %j %u [%d/%M/%Y:%h:%n:%j] "%r" %c %b)</pre>
+  </dd><dt><a name="mscommonfmtex">Microsoft common format</a>, <kbd>LOGFORMAT MS-COMMON</kbd></dt><dd>
+    <pre>jay.bird.com - fred [25/Dec/1998:17:45:35 +0000]
+      "GET /~sret1/ "HTTP/1.0" 200 1243
+LOGFORMAT (%S %j %u [%d/%M/%Y:%h:%n:%j] "%j%w%r%w"HTTP%j" %c %b)
+LOGFORMAT (%S %j %u [%d/%M/%Y:%h:%n:%j] "%j%w%r" %c %b)
+LOGFORMAT (%S %j %u [%d/%M/%Y:%h:%n:%j] "%r" %c %b)</pre>
+  </dd><dt><a name="combinedfmtex">Combined log</a>, <kbd>LOGFORMAT COMBINED</kbd></dt><dd>
+    <pre>jay.bird.com - fred [25/Dec/1998:17:45:35 +0000] "GET /~sret1/ HTTP/1.0" 200
+      1243 "http://www.site.com/" "Mozilla/2.0 (X11; I; HP-UX A.09.05)"
+LOGFORMAT (%S %j %u [%d/%M/%Y:%h:%n:%j] "%j%w%r%wHTTP%j" %c %b "%f" "%B")
+LOGFORMAT (%S %j %u [%d/%M/%Y:%h:%n:%j] "%j%w%r" %c %b "%f" "%B")
+LOGFORMAT (%S %j %u [%d/%M/%Y:%h:%n:%j] "%r" %c %b "%f" "%B")</pre>
+  </dd><dt><a name="reffmtex">Referrer log</a>, <kbd>LOGFORMAT REFERRER</kbd></dt><dd>
+    <pre>[25/Dec/1998:17:45:35] http://www.site.com/ -&gt; /~sret1/
+<em>or</em> http://www.site.com/ -&gt; /~sret1/
+LOGFORMAT ([%d/%M/%Y:%h:%n:%j] %f -&gt; %*r)
+LOGFORMAT (%f -&gt; %*r)</pre>
+  </dd><dt><a name="browfmtex">Browser log</a>, <kbd>LOGFORMAT BROWSER</kbd></dt><dd>
+    <pre>[25/Dec/1998:17:45:35] Mozilla/2.0 (X11; I; HP-UX A.09.05)
+LOGFORMAT ([%d/%M/%Y:%h:%n:%j] %B)</pre>
+  </dd><dt><a name="msnafmtex">Microsoft log, North American dates</a>, <kbd>LOGFORMAT MICROSOFT-NA</kbd></dt><dd>
+    <pre>192.64.25.41, -, 12/25/98, 17:45:35, W3SVC1, HOST1, 192.16.225.10,
+      2178, 303, 1243, 200, 0, GET, /~sret1/, -,
+192.64.25.41, -, 12/25/2001, 17:45:35, W3SVC1, HOST1, 192.16.225.10,
+      2178, 303, 1243, 200, 0, GET, /~sret1/, -,
+LOGFORMAT (%S, %u, %m/%d/%Z, %h:%n:%j, W3SVC%j, %j, %v,
+      %T, %j, %b, %c, %j, %j, %r, %q,)
+LOGFORMAT (%*S, %*u, %m/%d/%Z, %h:%n:%j, %j)</pre>
+  </dd><dt><a name="msintfmtex">Microsoft log, international dates</a>, <kbd>LOGFORMAT MICROSOFT-INT</kbd></dt><dd>
+    <pre>192.64.25.41, -, 25/12/98, 17:45:35, W3SVC1, HOST1, 192.16.225.10,
+      2178, 303, 1243, 200, 0, GET, /~sret1/, -,
+192.64.25.41, -, 25/12/2001, 17:45:35, W3SVC1, HOST1, 192.16.225.10,
+      2178, 303, 1243, 200, 0, GET, /~sret1/, -,
+LOGFORMAT (%S, %u, %d/%m/%Z, %h:%n:%j, W3SVC%j, %j, %v,
+      %T, %j, %b, %c, %j, %j, %r, %q,)
+LOGFORMAT (%*S, %*u, %d/%m/%Z, %h:%n:%j, %j)</pre>
+  </dd><dt><a name="websitenafmtex">WebSite log, North American dates</a>, <kbd>LOGFORMAT WEBSITE-NA</kbd></dt><dd>
+    <pre>12/25/98 17:45:35  jay.bird.com  host1  Server  fred  GET  /~sret1/
+   http://www.site.com/    Mozilla/2.0 (X11; I; HP-UX A.09.05)  200  1243  2178
+LOGFORMAT (%m/%d/%y %h:%n:%j\t%S\t%v\t%j\t%u\t%j\t%r\t%f\t%j\t%B\t%c\t%b\t%T)</pre>
+  </dd><dt><a name="websiteintfmtex">WebSite log, international dates</a>, <kbd>LOGFORMAT WEBSITE-INT</kbd></dt><dd>
+    <pre>25/12/98 17:45:35  jay.bird.com  host1  Server  fred  GET  /~sret1/
+   http://www.site.com/    Mozilla/2.0 (X11; I; HP-UX A.09.05)  200  1243  2178
+LOGFORMAT (%d/%m/%y %h:%n:%j\t%S\t%v\t%j\t%u\t%j\t%r\t%f\t%j\t%B\t%c\t%b\t%T)</pre>
+  </dd><dt><a name="machttpfmtex">MacHTTP format</a>, <kbd>LOGFORMAT MACHTTP</kbd></dt><dd>
+    <pre>12/25/98  17:45:35   OK    jay.bird.com  /~sret1/  1243
+LOGFORMAT (%m/%d/%y\t%h:%n:%j \t%C%w%S\t%r\t%b)</pre>
+  </dd></blockquote>
+
+<p>参考资料： 
+  <br />1、<a href="http://www.analog.cx/docs/index.html" target="_blank">Analog Docs</a>
+
+  <br />2、<a href="http://www.reppep.com/~pepper/analog/logwrangler/" target="_blank">Logwrangler</a>
+
+  <br />3、<a href="http://perldoc.perl.org/Getopt/Long.html#Documentation-and-help-texts" target="_blank">Perl Doc Getopt::Long</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2011-02-25 16:58</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1965172" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1965172);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1965172,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2011/2/25 16:58:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

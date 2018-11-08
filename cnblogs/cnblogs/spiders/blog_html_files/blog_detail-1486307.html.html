@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>使用Jsonp解决跨域数据访问问题 - Cocowool - 博客园</title>
+<meta property="og:description" content="简介符合Web2.0特征的众多网站一个明显的特点就是采用Ajax。Ajax提供了在后台提交请求访问数据的功能。其实现主要使用的是XMLHttpRequest函数，这个函数允许客户端的Javascrip" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2009/05/21/1486307.html">使用Jsonp解决跨域数据访问问题</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body">简介<br />
+符合Web2.0特征的众多网站一个明显的特点就是采用Ajax。Ajax提供了在后台提交请求访问数据的功能。其实现主要使用的是XMLHttpRequest函数，这个函数允许客户端的Javascript<br />
+发送到服务器端的HTTP请求并获得返回数据。Ajax同时也是目前众多的Mashup背后的驱动力量，他们都利用Ajax来聚合不同来源的信息。<br />
+<br />
+理解同源策略的限制<br />
+同源策略是指阻止代码获得或者更改从另一个域名下获得的文件或者信息。也就是说我们的请求地址必须和当前网站的地指相同。同源策略通过隔离来实现对资源的保护。这个策略的历史非常悠久<br />
+从Netscape Navigator 2.0时代就开始了。<br />
+<br />
+解决这个限制的一个相对简单的办法就是在服务器端发送请求，服务器充当一个到达第三方资源的代理中继。虽然是用广泛但是这个方法却不够灵活。<br />
+另一个办法就是使用框架(frames)，将第三方站点的资源包含进来，但是包含进来的资源同样要受到同源策略的限制。<br />
+<br />
+有一个很巧妙的办法就是在页面中使用动态代码元素，代码的源指向服务地址并在自己的代码中加载数据。当这些代码加载执行的时候，同源策略就不会起到限制。但是如果代码试图下载文件的时候<br />
+执行还是会失败，幸运的是，我们可以使用JSON(JavaScript Object Notation)来改进这个应用。<br />
+<br />
+JSON和JSONP<br />
+与XML相比，JSON是一个轻量级的数据交换格式。JSON对于JavaScript开发人员充满魅力的原因在于JSON本身就是Javascript中的对象。<br />
+例如一个ticker对象<br />
+&nbsp;&nbsp; &nbsp;var ticker = {symbol:'IBM',price:100}<br />
+而JSON串就是&nbsp;&nbsp; &nbsp;{symbol:'IBM',price:100}<br />
+这样我们就可以在函数的参数中传递JSON数据。我们很容易掌握在函数中使用动态的JSON参数数据，但是我们的目的并不是这个。<br />
+通过使我们的函数能够加载动态的JSON数据，我们就能够处理动态的数据，这项技术叫做 Dynamic Javascript Insertion。<br />
+我们看下面的例子<br />
+index.html中<br />
+&nbsp;&nbsp; &nbsp;&lt;script type="text/javascript"&gt;<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;function showPrice(data){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;alert("Symbol:" + data.symbol + ", Price:" + data.price);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;var url = "ticker.js";&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;//Outer JS URL<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;var script = document.createElement('script');<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;script.setAttribute('src', url);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;//load javascript<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;document.getElementsByTagName('head')[0].appendChild(script);<br />
+&nbsp;&nbsp; &nbsp;&lt;/script&gt;<br />
+ticker.js中<br />
+&nbsp;&nbsp; &nbsp;var data = {symbol:'IBM', price:100};<br />
+&nbsp;&nbsp; &nbsp;showPrice(data);<br />
+<br />
+上面的代码通过动态加入Javascript代码，来执行函数加载数据。<br />
+正如之前提到过的，同源策略对于动态插入的代码不适用。也就是你可以从不同的域中加载代码，来执行在他们代码中的JSON数据。<br />
+这就是JSONP(JSON with Padding)。注意，使用这种方法时，你必须在页面中定义回调函数，就像上例中的showPrice一样。<br />
+<br />
+我们通常所说的JSONP服务(远程JSON服务)，实际上就是一种扩展的支持在用户定义函数中包含返回数据的能力。这种方法依赖于必须接受一个回调函数的名字作为参数。<br />
+然后执行这个函数，处理JSON数据，并显示在客户页面上。<br />
+<br />
+JQuery的JSONP支持<br />
+<br />
+从JQery 1.2以后，就开始支持JSONP的调用。在另外的一个域名中指定好回调函数名称，你就可以用下面的形式来就加载JSON数据。<br />
+&nbsp;&nbsp; &nbsp;url?callback=?<br />
+<br />
+示例：<br />
+&nbsp;&nbsp; &nbsp;jQuery.getJSON(url + "&amp;callbak=?", function(data){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;alert("Symbol:" + data.symbol + ", Price:" + data.price);<br />
+&nbsp;&nbsp; &nbsp;});<br />
+jquery会在window对象中加载一个全局的函数，当代码插入时函数执行，执行完毕后就会被移除。同时jquery还对非跨域的请求进行了优化，如果这个请求是在同一个域名下<br />
+那么他就会像正常的Ajax请求一样工作。<br />
+<br />
+上例中我们在动态插入到页面的代码中使用了静态的json数据，虽然完成了依次JSONP返回，但仍不是JSONP服务，因为不支持在URL中定义回调函数名称。下面是一个将其变成JSONP服务的一个方法<br />
+服务器端使用PHP。<br />
+<br />
+首先我们来定义接口的规范，就像这样：http://www.mydomain.com/jsonp/ticker?symbol=IBM&amp;callback=showPrice<br />
+symbol是请求条件，callback是回调函数名称。<br />
+<br />
+在页面文件中，我们使用JQuery的支持：<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;//JQuery JSONP Support<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;var url = "http://www.mydomain.com/api/suggest.php?symbol=IBM&amp;callback=?";<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;jQuery.getJSON(url, function(data){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;alert("Symbol:" + data.symbol + ", Price:" + data.price);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;});<br />
+<br />
+在suggest.php中<br />
+&nbsp;&nbsp; &nbsp; $jsondata = "{symbol:'IBM', price:120}";<br />
+&nbsp;&nbsp; &nbsp; echo $_GET['callback'].'('.$jsondata.')';<br />
+&nbsp;&nbsp; &nbsp;<br />
+现在，如果我们想制作一些mashup，或者将第三方的资源整合到一个页面中，我们就很容易想到JSONP的解决方法了。<br />
+<br />
+现有的JSONP服务<br />
+&nbsp;&nbsp; &nbsp;既然我们已经知道如何使用JSONP，那么我们也就可以使用一些现有的JSONP服务了，下面是一些例子：<br />
+&nbsp;&nbsp; &nbsp;Digg API:http://services.digg.com/stories/top?appkey=http%3A%2F%2Fmashup.com&amp;type=javascript&amp;callback=?<br />
+&nbsp;&nbsp; &nbsp;Geonames API:http://www.geonames.org/postalCodeLookupJSON?postalcode=10504&amp;country=US&amp;callback=?<br />
+&nbsp;&nbsp; &nbsp;Flickr API:http://api.flickr.com/services/feeds/photos_public.gne?tags=cat&amp;tagmode=any&amp;format=json&amp;jsoncallback=?<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br />
+注意：<br />
+&nbsp;&nbsp; &nbsp;JSONP是一个非常强大的构建mashp的方法，可是不是一个解决跨域访问问题的万能药。它也有一些缺点<br />
+&nbsp;&nbsp; &nbsp;第一也是最重要的：JSONP不提供错误处理。如果动态插入的代码正常运行，你可以得到返回，但是如果失败了，那么什么都不会发生。你无法获得一个404的错误，也不能取消这个请求<br />
+&nbsp;&nbsp; &nbsp;另外一个重要的缺点是如果使用了不信任的服务会造成很大的安全隐患。&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp; &nbsp;<br />
+<br />
+[参考资料]<br />
+1、Cross-domain communication with jsonp&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;http://www.ibm.com/developerworks/library/wa-aj-jsonp1/<br />
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2009-05-21 14:38</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1486307" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1486307);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1486307,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2009/5/21 14:38:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>使用PHP的正则抓取页面中的网址 - Cocowool - 博客园</title>
+<meta property="og:description" content="最近有一个任务，从页面中抓取页面中所有的链接，当然使用PHP正则表达式是最方便的办法。要写出正则表达式，就要先总结出模式，那么页面中的链接会有几种形式呢？ 链接也就是超级链接，是从一个元素（文字、图片" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/5736449.html">使用PHP的正则抓取页面中的网址</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><div>
+<div>最近有一个任务，从页面中抓取页面中所有的链接，当然使用PHP正则表达式是最方便的办法。要写出正则表达式，就要先总结出模式，那么页面中的链接会有几种形式呢？</div>
+<div>&nbsp;</div>
+<div>链接也就是超级链接，是从一个元素（文字、图片、视频等）链接到另一个元素（文字、图片、视频等）。网页中的链接一般有三种，一种是绝对URL超链接，也就是一个页面的完整路径；另一种是相对URL超链接，一般都链接到同一网站的其他页面；还有一种是页面内的超链接，这种一般链接到同一页面内的其他位置。</div>
+<div>&nbsp;</div>
+<div>搞清楚了链接的种类，就知道要抓链接，主要还是绝对URL超链接和相对URL超链接。要写出正确的正则表达式，就必须要了解我们查找的对象的模式。</div>
+<div>&nbsp;</div>
+<div>先说绝对链接，也叫作URL（Uniform Resource Locator），标识了互联网上的唯一资源。URL的结构包含三部分：协议、服务器名称、路径和文件名。</div>
+<div>&nbsp;</div>
+<div>协议是告诉浏览器如何处理将要打开文件的标识，最常见的就是 http 协议。本文也只考虑HTTP协议，至于其他的 https、ftp、mailto、telnet协议等，根据需要也可以添加。</div>
+<div>&nbsp;</div>
+<div>服务器名称是告诉浏览器如何到达这个服务器的方式，通常是域名或者IP地址，有时还会包含端口号（默认为80）。FTP协议中，也可以包含用户名和密码，本文就不考虑了。</div>
+<div>&nbsp;</div>
+<div>路径和文件名，一般以 / 分割，指出到达这个文件的路径和文件本身的名称。如果没有具体的文件名，则访问这个文件夹下的默认文件（可以在服务器端设置）。</div>
+<div>&nbsp;</div>
+<div>那么现在清楚了，要抓取的绝对链接的典型形式可以概括为&nbsp;</div>
+<div>&nbsp;</div>
+<div>http://www.xxx.com/xxx/yyy/zzz.html</div>
+<div>&nbsp;</div>
+<div>每个部分可以使用的字符范围有明确的规范，具体可以参考RFC1738。那么正则表达式就可以写出来了。</div>
+<div>&nbsp;</div>
+<div>/(http|https):\/\/([\w\d\-_]+[\.\w\d\-_]+)[:\d+]?([\/]?[\w\/\.]+)/i</div>
+<div>&nbsp;</div>
+<div>解释如下：</div>
+<div>&nbsp;</div>
+<div>(http|https)第一个括号内匹配的是协议部分。</div>
+<div>&nbsp;</div>
+<div>([\w\d\-_]+[\.\w\d\-_]+)第二个括号内匹配的是域名部分。</div>
+<div>&nbsp;</div>
+<div>([\/]?[\w\/\.]+)第三个括号内匹配的是相对路径。</div>
+<div>&nbsp;</div>
+<div>写到这个时候，基本上大部分的网址都能匹配到了，但是对于URL中带有参数的还不能抓取，这样有可能造成再次访问的时候页面报错。关于参数RFC1738规范中要求是用？来分割，后面带上参数，但是现代的RIA应用有可能使用其他奇怪的形式进行分割。</div>
+<div>&nbsp;</div>
+<div>稍微修改一下，这样就可以将查询参数部分搜索出来。这里仍然没有涵盖全部的情况，例如URL中有中文、有空格及其他特殊字符的情况，但是基本上能够满足我的需求了，就没有继续深化。</div>
+<div>&nbsp;</div>
+<div>/(http|ftp|https):\/\/([\w\d\-_]+[\.\w\d\-_]+)[:\d+]?([\/]?[\w\/\.\?=&amp;;%@#\+,]+)/i</div>
+<div>&nbsp;</div>
+<div>&nbsp;
+<div>
+<div>使用括号的好处是，在处理结果时，可以很容易的获取到协议、域名、相对路径这些内容，方便后续的处理。</div>
+<div>&nbsp;</div>
+<div>例如使用 preg_match_all() 匹配时，结果数组索引0为全部结果、1为协议、2为域名、3为相对路径。</div>
+<div>&nbsp;</div>
+</div>
+</div>
+参考资料：
+<div>1、<a href="http://baike.baidu.com/link?url=TYEHZIbJPnJNGCkh19Vp2Btg3KTlL_taFJpHIMv3_4LxCKh0augU9OaPXDzeiLP_732NP8cYzWzmdGg5X1Fxza">百度百科：链接</a></div>
+<div>2、<a href="http://baike.baidu.com/view/245485.htm">百度百科：统一资源定位符 URL</a></div>
+<div>3、<a href="https://www.ietf.org/rfc/rfc1738.txt">RFC1738</a></div>
+<div>4、<a href="https://segmentfault.com/q/1010000000584340">https://segmentfault.com/q/1010000000584340</a></div>
+</div></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2016-08-04 13:52</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=5736449" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(5736449);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=5736449,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2016/8/4 13:52:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Kubernetes部署ELK并使用Filebeat收集容器日志 - Cocowool - 博客园</title>
+<meta property="og:description" content="本文的试验环境为CentOS 7.3，Kubernetes集群为1.11.2，安装步骤参见 "kubeadm安装kubernetes V1.11.1 集群" 1. 环境准备 Elasticsearch" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/deploy_elk_and_collect_logs_via_filebeat.html">Kubernetes部署ELK并使用Filebeat收集容器日志</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>本文的试验环境为CentOS 7.3，Kubernetes集群为1.11.2，安装步骤参见<a href="https://www.cnblogs.com/cocowool/p/kubeadm_install_kubernetes.html">kubeadm安装kubernetes V1.11.1 集群</a></p>
+</blockquote>
+<h2 id="环境准备">1. 环境准备</h2>
+<p>Elasticsearch运行时要求<code>vm.max_map_count</code>内核参数必须大于262144，因此开始之前需要确保这个参数正常调整过。</p>
+<pre class="sh"><code>$ sysctl -w vm.max_map_count=262144</code></pre>
+<p>也可以在ES的的编排文件中增加一个initContainer来修改内核参数，但这要求kublet启动的时候必须添加了<code>--allow-privileged</code>参数，但是一般生产中不会给加这个参数，因此最好在系统供给的时候要求这个参数修改完成。</p>
+<h3 id="es的配置方式">ES的配置方式</h3>
+<ul>
+<li>使用Cluster Update Setting API动态修改配置</li>
+<li>使用配置文件的方式，配置文件默认在 config 文件夹下，具体位置取决于安装方式。
+<ul>
+<li>elasticsearch.yml 配置Elasticsearch</li>
+<li>jvm.options 配置ES JVM参数</li>
+<li>log4j.properties 配置ES logging参数</li>
+</ul></li>
+<li>使用Prompt方式在启动时输入</li>
+</ul>
+<p>最常使用的配置方式为使用配置文件，ES的配置文件为yaml格式，格式要求和Kubernetes的编排文件一样。配置文件中可以引用环境变量，例如<code>node.name: ${HOSTNAME}</code></p>
+<h3 id="es的节点">ES的节点</h3>
+<p>ES的节点<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html">Node</a>可以分为几种角色：</p>
+<ul>
+<li>Master-eligible node，是指有资格被选为Master节点的Node，可以统称为Master节点。设置<code>node.master: true</code></li>
+<li>Data node，存储数据的节点，设置方式为<code>node.data: true</code>。</li>
+<li>Ingest node，进行数据处理的节点，设置方式为<code>node.ingest: true</code>。</li>
+<li>Trible node，为了做集群整合用的。</li>
+</ul>
+<p>对于单节点的Node，默认是master-eligible和data，对于多节点的集群，就要仔细规划每个节点的角色。</p>
+<h2 id="单实例方式部署elk">2. 单实例方式部署ELK</h2>
+<p>单实例部署ELK的方法非常简单，可以参考我Github上的<a href="https://github.com/cocowool/k8s-go/blob/master/elk/elk-single.yaml">elk-single.yaml</a>文件，整体就是创建一个ES的部署，创建一个Kibana的部署，创建一个ES的Headless服务，创建一个Kiana的NodePort服务，本地通过节点的NodePort访问Kibana。</p>
+<pre class="sh"><code>[root@devops-101 ~]# curl -L -O https://raw.githubusercontent.com/cocowool/k8s-go/master/elk/elk-single.yaml
+[root@devops-101 ~]# kubectl apply -f elk-single.yaml 
+deployment.apps/kb-single created
+service/kb-single-svc unchanged
+deployment.apps/es-single created
+service/es-single-nodeport unchanged
+service/es-single unchanged
+[root@devops-101 ~]# kubectl get all
+NAME                             READY     STATUS    RESTARTS   AGE
+pod/es-single-5b8b696ff8-9mqrz   1/1       Running   0          26s
+pod/kb-single-69d6d9c744-sxzw9   1/1       Running   0          26s
+
+NAME                         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+service/es-single            ClusterIP   None             &lt;none&gt;        9200/TCP,9300/TCP               19m
+service/es-single-nodeport   NodePort    172.17.197.237   &lt;none&gt;        9200:31200/TCP,9300:31300/TCP   13h
+service/kb-single-svc        NodePort    172.17.27.11     &lt;none&gt;        5601:32601/TCP                  19m
+service/kubernetes           ClusterIP   172.17.0.1       &lt;none&gt;        443/TCP                         14d
+
+NAME                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/es-single   1         1         1            1           26s
+deployment.apps/kb-single   1         1         1            1           26s
+
+NAME                                   DESIRED   CURRENT   READY     AGE
+replicaset.apps/es-single-5b8b696ff8   1         1         1         26s
+replicaset.apps/kb-single-69d6d9c744   1         1         1         26s</code></pre>
+<p>可以看看效果如下：<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201809/39469-20180910182121558-1067453160.png" /></p>
+<h2 id="集群部署elk">3. 集群部署ELK</h2>
+<h3 id="不区分集群中的节点角色">3.1 不区分集群中的节点角色</h3>
+<pre class="sh"><code>[root@devops-101 ~]# curl -L -O https://raw.githubusercontent.com/cocowool/k8s-go/master/elk/elk-cluster.yaml
+[root@devops-101 ~]# kubectl apply -f elk-cluster.yaml 
+deployment.apps/kb-single created
+service/kb-single-svc created
+statefulset.apps/es-cluster created
+service/es-cluster-nodeport created
+service/es-cluster created</code></pre>
+<p>效果如下<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201809/39469-20180910182150309-194695122.png" /></p>
+<h3 id="区分集群中节点角色">3.2 区分集群中节点角色</h3>
+<p>如果需要区分节点的角色，就需要建立两个StatefulSet部署，一个是Master集群，一个是Data集群。Data集群的存储我这里为了简单使用了<code>emptyDir</code>，可以使用<code>localStorage</code>或者<code>hostPath</code>，关于存储的介绍，可以参考<a href="https://www.cnblogs.com/cocowool/p/kubernetes_storage.html">Kubernetes存储系统介绍</a>。这样就可以避免Data节点在本机重启时发生数据丢失而重建索引，但是如果发生迁移的话，如果想保留数据，只能采用共享存储的方案了。具体的编排文件在这里<a href="https://github.com/cocowool/k8s-go/blob/master/elk/elk-cluster-with-role.yaml">elk-cluster-with-role</a></p>
+<pre class="sh"><code>[root@devops-101 ~]# curl -L -O https://raw.githubusercontent.com/cocowool/k8s-go/master/elk/elk-cluster-with-role.yaml 
+[root@devops-101 ~]# kubectl apply -f elk-cluster-with-role.yaml 
+deployment.apps/kb-single created
+service/kb-single-svc created
+statefulset.apps/es-cluster created
+statefulset.apps/es-cluster-data created
+service/es-cluster-nodeport created
+service/es-cluster created
+[root@devops-101 ~]# kubectl get all
+NAME                             READY     STATUS              RESTARTS   AGE
+pod/es-cluster-0                 1/1       Running             0          13s
+pod/es-cluster-1                 0/1       ContainerCreating   0          2s
+pod/es-cluster-data-0            1/1       Running             0          13s
+pod/es-cluster-data-1            0/1       ContainerCreating   0          2s
+pod/kb-single-5848f5f967-w8hwq   1/1       Running             0          14s
+
+NAME                          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+service/es-cluster            ClusterIP   None             &lt;none&gt;        9200/TCP,9300/TCP               13s
+service/es-cluster-nodeport   NodePort    172.17.207.135   &lt;none&gt;        9200:31200/TCP,9300:31300/TCP   13s
+service/kb-single-svc         NodePort    172.17.8.137     &lt;none&gt;        5601:32601/TCP                  14s
+service/kubernetes            ClusterIP   172.17.0.1       &lt;none&gt;        443/TCP                         16d
+
+NAME                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/kb-single   1         1         1            1           14s
+
+NAME                                   DESIRED   CURRENT   READY     AGE
+replicaset.apps/kb-single-5848f5f967   1         1         1         14s
+
+NAME                               DESIRED   CURRENT   AGE
+statefulset.apps/es-cluster        3         2         14s
+statefulset.apps/es-cluster-data   2         2         13s</code></pre>
+<p>效果如下<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201809/39469-20180910182220529-48582025.png" /></p>
+<h2 id="使用filebeat监控收集容器日志">4. 使用Filebeat监控收集容器日志</h2>
+<p>使用Logstash，可以监测具有一定命名规律的日志文件，但是对于容器日志，很多文件名都是没有规律的，这种情况比较适合使用Filebeat来对日志目录进行监测，发现有更新的日志后上送到Logstash处理或者直接送入到ES中。</p>
+<p>每个Node节点上的容器应用日志，默认都会在<code>/var/log/containers</code>目录下创建软链接，这里我遇到了两个小问题，第一个就是当时挂载<code>hostPath</code>的时候没有挂载软链接的目的文件夹，导致在容器中能看到软链接，但是找不到对应的文件；第二个问题是宿主机上这些日志权限都是root，而Pod默认用filebeat用户启动的应用，因此要单独设置下。</p>
+<p>效果如下<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201809/39469-20180910182334500-531866919.png" /><br />
+<img src="https://images2018.cnblogs.com/blog/39469/201809/39469-20180910182345566-25819522.png" /></p>
+<p>具体的编排文件可以参考我的Github主页，提供了<a href="https://github.com/cocowool/k8s-go/blob/master/elk/filebeat-dp.yml">Deployment</a>方式的编排和<a href="https://github.com/cocowool/k8s-go/blob/master/elk/filebeat-ds.yml">DaemonSet</a>方式的编排。</p>
+<p>对于具体日志的格式，因为时间问题没有做进一步的解析，这里如果有朋友做过，可以分享出来。</p>
+<p>主要的编排文件内容摘抄如下。</p>
+<pre class="yaml"><code>kind: List
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: filebeat-config
+    labels:
+      k8s-app: filebeat
+      kubernetes.io/cluster-service: &quot;true&quot;
+      app: filebeat-config
+  data:
+    filebeat.yml: |
+      processors:
+        - add_cloud_metadata:
+      filebeat.modules:
+      - module: system
+      filebeat.inputs:
+      - type: log
+        paths:
+          - /var/log/containers/*.log
+        symlinks: true
+        # json.message_key: log
+        # json.keys_under_root: true
+      output.elasticsearch:
+        hosts: [&#39;es-single:9200&#39;]
+      logging.level: info        
+- apiVersion: extensions/v1beta1
+  kind: DaemonSet 
+  metadata:
+    name: filebeat
+    labels:
+      k8s-app: filebeat
+      kubernetes.io/cluster-service: &quot;true&quot;
+  spec:
+    template:
+      metadata:
+        name: filebeat
+        labels:
+          app: filebeat
+          k8s-app: filebeat
+          kubernetes.io/cluster-service: &quot;true&quot;
+      spec:
+        containers:
+        - image: docker.elastic.co/beats/filebeat:6.4.0
+          name: filebeat
+          args: [
+            &quot;-c&quot;, &quot;/home/filebeat-config/filebeat.yml&quot;,
+            &quot;-e&quot;,
+          ]
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+          - name: filebeat-storage
+            mountPath: /var/log/containers
+          - name: varlogpods
+            mountPath: /var/log/pods
+          - name: varlibdockercontainers
+            mountPath: /var/lib/docker/containers
+          - name: &quot;filebeat-volume&quot;
+            mountPath: &quot;/home/filebeat-config&quot;
+        nodeSelector:
+          role: front
+        volumes:
+          - name: filebeat-storage
+            hostPath:
+              path: /var/log/containers
+          - name: varlogpods
+            hostPath:
+              path: /var/log/pods
+          - name: varlibdockercontainers
+            hostPath:
+              path: /var/lib/docker/containers
+          - name: filebeat-volume
+            configMap:
+              name: filebeat-config</code></pre>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" /></p>
+<h2 id="参考资料">参考资料：</h2>
+<ol>
+<li><a href="https://github.com/pires/kubernetes-elasticsearch-cluster">Elasticsearch cluster on top of Kubernetes made easy</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html">Install Elasticseaerch with Docker</a></li>
+<li><a href="https://docs.docker.com/samples/library/elasticsearch/">Docker Elasticsearch</a></li>
+<li><a href="https://www.elastic.co/guide/en/kibana/current/docker.html">Running Kibana on Docker</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.3/settings.html">Configuring Elasticsearch</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html">Elasticsearch Node</a></li>
+<li><a href="https://kubernetes.io/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/">Loggin Using Elasticsearch and kibana</a></li>
+<li><a href="https://www.elastic.co/guide/en/logstash/current/docker-config.html">Configuring Logstash for Docker</a></li>
+<li><a href="https://www.elastic.co/guide/en/beats/filebeat/current/running-on-docker.html">Running Filebeat on Docker</a></li>
+<li><a href="http://www.cnblogs.com/kerwinC/p/6227768.html">Filebeat中文指南</a></li>
+<li><a href="https://github.com/elastic/beats/pull/2478">Add experimental symlink support</a></li>
+</ol>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-09-10 18:25</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9621662" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9621662);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9621662,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/9/10 18:25:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

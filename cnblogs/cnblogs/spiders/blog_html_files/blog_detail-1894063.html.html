@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Awstats性能问题及其他工具的对比分析 - Cocowool - 博客园</title>
+<meta property="og:description" content="在之前的一篇文章中，我通过资料的查阅分析了一些比较流行的日志分析工具，最后选用了 Awstats + Jawstats 的组合，既能够对现有的日志进行分析，也能够提供比较美观的报表界面。但是，随着使用" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2010/12/03/1894063.html">Awstats性能问题及其他工具的对比分析</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>在之前的一篇文章中，我通过资料的查阅分析了一些比较流行的日志分析工具，最后选用了 Awstats + Jawstats 的组合，既能够对现有的日志进行分析，也能够提供比较美观的报表界面。但是，随着使用的深入发现，awstats 的分析速度实在是无法接受。大概的介绍一下我的环境，我们有几个产品群，有着不同的流量。每天都要进行分析。最大的产品群产生的日志记录，在合并后会超过几个G，这时候用 awstats 进行分析就非常的痛苦。甚至出现过分析过程中产生的临时目录将磁盘占满的情况。</p>  <p>查阅了一些资料后了解，原来awstats官方推荐当访问超过 4,000,000/月的时候，可以使用 analog 或者 webalizer 这两个应用。因此，本篇中记录了对Awstats进行的一些优化以及其他两个软件的试用。</p>  <p><strong>1、Awstats 的性能优化</strong></p>  <p>网上搜索的话，关于 Awstats 优化的文章很多，基本上就是 关闭 DNS 解析，增大 $LimitFlush 的数量，尽可能的利用内存，以及升级 Perl 版本之类的。经过我的实验，发现如果是机器性能本身不是很高的话，特别是内存有限时，想要优化 awstats 的速度是非常困难的。类似于巧妇难为无米之炊，Out of memory 的事情是经常发生的。</p>  <p>Awstats还有一个不太方便的地方，就是对于旧日志不能够进行追加的分析。Awstats每次分析完成后，将当前分析的日期和位置记录在他的数据文件中，进行新的分析之前，会和这个数值进行比较，如果比这个日期早的，会认为是旧日志而PASS过去。经常，为了追加之前某一天的日志，我们需要删除整个月的数据，进行重新的分析。或者我们可以通过手工修改数据文件中的日期和位置，来达到这个目的。不管怎样，都不是一个非常人性化的解决方案。</p>  <p>2、<strong>Analog 的试用</strong></p>  <p>Analog是一款小巧的日志分析工具，它具有快速、高可配置性、可扩展、支持32种语言、支持任何平台、免费软件。</p>  <p>Analog的安装比较简单，以至于在官方都没有找到专门的安装介绍。我在CentOS的机器上，只需要进行一次 make 软件就可以使用了。但是，在这之前少不了一些配置。按照文档，我们可以将 make 后的analog 放在我们的web目录下，这样，生成的分析报告，便于通过web进行访问。</p>  <p>拷贝完成后，对目录下的 analog.cfg 进行编辑，以适应我们本地的环境。默认情况下，Analog会自动探测日志的格式，默认自动搜索的日志格式包括<span style="font-family: &#39;Times New Roman&#39;; font-size: medium">the common log format, the NCSA combined format, referrer log and browser log, the W3 extended log format, the Microsoft IIS format, the Netscape format, the WebSTAR format, the WebSite format and the MacHTTP format.</span>，但是如果做了修改或者用了和上述格式不一致的日志，有可能无法探测出来，从而发生下面的错误：</p>  <p style="padding-left: 30px">[root@localhost analog]# ./analog </p>  <p style="padding-left: 30px">./analog: analog version 6.0/Unix</p>  <p style="padding-left: 30px">./analog: Warning F: Can't auto-detect format of logfile</p>  <p>默认的 analog.cfg 配置项非常简单，实际上我们可以有丰富的选项可以配置，比如日志格式、语言类型，analog也支持gz格式的日志和通配符匹配日志。所有这些问题，通过阅读 analog 自带的文档可以得到很好的解决。（文档位于 analog/docs 下，其中默认的 index.html 写成了 indx.html ）。</p>  <p>在Analog的配置文件中，通过LOGFILE来指定需要分析的日志，支持多个日志，也支持通配符，还可以在命令行中加入日志文件的位置，非常方便。甚至可以在日志名中支持日期的匹配，这点我觉得挺贴心的。<span style="font-family: monospace; white-space: pre; font-size: medium">LOGFILE access_log%Y%M.log。对于格式不同的日志，我们既可以单独为某个日志指定格式，也可以统一指定格式。如果我们需要分析 Apache 的日志，通过 APACHELOGFORMT 甚至可以方便将 httpd.conf 定义的日志格式拷贝过来使用。</span></p>  <p><span style="font-family: monospace"><span style="white-space: pre; font-size: medium">例如httpd.conf中定义的格式为</span></span><span style="font-family: &#39;Times New Roman&#39;; font-size: medium">&#160;</span></p>  <pre><span style="font-family: monospace">LogFormat &quot;%h %l %u %t %v \&quot;%r\&quot; %&gt;s %b&quot; myformat
+CustomLog /var/log/apache/access.log myformat</span></pre>
+
+<pre><span style="font-family: monospace">配置中就可以这样指定</span></pre>
+
+<pre><span style="font-family: monospace"><span style="font-family: &#39;Times New Roman&#39;; white-space: normal"><pre>APACHELOGFORMAT (%h %l %u %t %v \&quot;%r\&quot; %&gt;s %b)
+LOGFILE /var/log/apache/access.log</pre></span></span></pre>
+
+<p><span style="font-family: monospace"><span style="white-space: pre; font-size: medium">经过试用，<span style="text-decoration: line-through">一个单独的800M的日志文件，使用Analog进行分析，几乎就是瞬间完成了统计</span>，总计9.6G的gz日志文件，Analog用了十分钟就能够全部分析完成，速度和awstats真的是不可同日而语。但是如何更方便的处理多日志、多主机的问题，生成便于管理的列表，还需要继续深入研究一下。</span></span></p>
+
+<p>3、<strong>Webalizer的试用</strong></p>
+
+<p>Webalizer是一款快速的,免费的日志分析软件。能够提供详细的HTML格式的分析报告。他的特点包括：</p>
+
+<p>使用C语言编写，执行速度快，并且是Portable的。在1.6G的笔记本上，每秒钟可以处理70,000条记录。</p>
+
+<p>支持CLF Common Log File 日志格式,NCSA Combined 日志格式,ftp, squid等日志格式，以及gz,bz2日志格式</p>
+
+<p>支持通过配置文件或者命令行进行报告的配置。</p>
+
+<p>支持多种语言，包括中文。</p>
+
+<p>对日志文件的大小没有限制。</p>
+
+<p>支持IPV4和IPV6，支持GeoLocation。</p>
+
+<p>当前的稳定版本是 2.23-03</p>
+
+<p><strong>缺点</strong>：不支持多文件分析。在官方的FAQ中看到，webalizer 不支持一个负载均衡系统下的多文件分析。</p>
+
+<p>Webalizer 的安装也比较简单</p>
+
+<p>./configure --prefix=path --with-language=chinese</p>
+
+<p>make</p>
+
+<p>make install</p>
+
+<p>就能够完成安装，webalizer 需要gd库,png库等一些库的支持，如果安装没有成功，可以看到对应的错误提示。我用的centos系统，直接yum install 就可以了。</p>
+
+<p>使用过程中发现一个很杯具的事情，Webalizer不支持自定义的Log日志格式。也就是说，如果我们对默认的apache日志格式进行改变或调整，就没有办法使用webalizer。这是我最终决定弃用他的原因。</p>
+
+<p>但是同样有一件欣慰的事情，就是Webalizer有一个兄弟，Stone Step Webalizer. 这款软件是Webalizer的分支，添加了很多实用的功能。更新也比较活跃，最近一次更新就在上个月。</p>
+
+<p>4、<strong>Analog的深入使用</strong>&#160;</p>
+
+<p>Analog还是很好用的，当然，有一个致命的缺点，就是无法统计Unique Visit 独立访问用户数量。特别是按照每周、每月、每年进行统计的数字。这个统计涉及到大量的计算，对服务器的要求会非常高，而且计算的过程会产生很大量的临时文件，可能作者基于这方面的考虑，没有提供这个数字。</p>
+
+<p>Analog的一些默认配置，我们在编译指出可以通过修改 anlghead.h 文件进行修改，也可以后续通过配置文件进行指定，配置文件可以不止一个，Analog会自动处理合并多个配置文件。虽然有多个配置文件，但是analog还是只生产一份报告。同时可以在命令行中使用 +gother.cfg 的方式调用其他的配置文件，但这样不会阻止读取默认的配置文件。如果我们不希望 analog 读取默认的配置文件，则应该使用 –G 参数。</p>
+
+<p>如果只是希望修改配置文件中的某些配置，可以使用 +C 参数，例如 +C”UNCOMPRESS *.gz gzcat”。 </p>
+
+<p>通过 ./analog/analog –settings 我们可以将当前 analog 的配置打印出来，方便我们进行查看。</p>
+
+<blockquote>
+  <p>The <kbd>LOGFORMAT</kbd> and <kbd>APACHELOGFORMAT</kbd> commands only apply to logfiles specified with a <kbd>LOGFILE</kbd> command <em>later</em> in the <em>same</em> configuration file. So you must put the<kbd>LOGFORMAT</kbd> above the <kbd>LOGFILE</kbd> to which it refers. If you declare your logfiles on the command line, or drag them onto the app on the Mac, you must use<a href="http://www.analog.cx/docs/logfmt.html#DEFAULTLOGFORMAT"><kbd>DEFAULTLOGFORMAT</kbd> or <kbd>APACHEDEFAULTLOGFORMAT</kbd></a> instead.</p>
+</blockquote>
+
+<p>上面这个部分，指出了Analog曾经困惑我几个小时的问题。因为，我在配置文件中制定了日志的格式，然后再命令行中指定了使用哪些日志，但是分析的结果总是报 Warning F 错误：Can't auto-detect format of logfile 。问题原来出在，APACHELOGFORMAT 只能紧跟在 LOGFILE 上面，如果是命令行，就需要使用 APACHEDEFAULTLOGFORMAT 替代了。</p>
+
+<p>需要注意一点的是，虽然我们可以在日志名中使用通配符，但是在文件夹路径上，是不可以使用，这个是analog的限制所在。</p>
+
+<p>&#160;</p>
+
+<p>&#160;</p>
+
+<p>参考资料： 
+  <br />1、<a href="http://5ih.org/?post=170">Awstats性能优化的几个方面</a> 
+
+  <br />2、<a href="http://www.douban.com/note/21441846/">Awstats性能优化</a>&#160; <br />3、Awstats旧日志统计 
+
+  <br />4、<a href="http://www.analog.cx/download.html">Analog下载</a>&#160; <br />5、<a href="http://www.webalizer.org/">Webalizer</a>&#160; <br />6、<a href="http://www.stonesteps.ca/">Stone Step Webalizer</a>&#160; <br />7、<a href="http://www.miotour.com/2010/06/19/10-%E4%B8%AA%E5%BC%BA%E5%A4%A7%E7%9A%84%E5%BC%80%E6%BA%90-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/">十款强大的开源日志分析工具</a> 
+
+  <br />8、<a href="http://analog.cx/docs/logfmt.html" target="_blank">各种日志格式</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2010-12-03 15:16</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1894063" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1894063);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1894063,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2010/12/3 15:16:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

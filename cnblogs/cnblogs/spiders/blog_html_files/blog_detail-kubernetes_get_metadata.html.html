@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Metadata获取的三种方式 - Cocowool - 博客园</title>
+<meta property="og:description" content="本文的试验环境为CentOS 7.3，Kubernetes集群为1.11.2，安装步骤参见 "kubeadm安装kubernetes V1.11.1 集群" 0. Metadata 每个Pod都有一些" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/kubernetes_get_metadata.html">Metadata获取的三种方式</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>本文的试验环境为CentOS 7.3，Kubernetes集群为1.11.2，安装步骤参见<a href="https://www.cnblogs.com/cocowool/p/kubeadm_install_kubernetes.html">kubeadm安装kubernetes V1.11.1 集群</a></p>
+</blockquote>
+<h2 id="metadata">0. Metadata</h2>
+<p>每个Pod都有一些信息，包括但不限于以下的内容：</p>
+<ul>
+<li>Pod 名称</li>
+<li>Pod IP</li>
+<li>Pod 所属的命名空间</li>
+<li>Pod 所在的 Node</li>
+<li>Pod 对应的 service account</li>
+<li>每个容器的CPU、内存请求</li>
+<li>每个容器的CPU、内存上限</li>
+<li>Pod 的标签</li>
+<li>Pod 的 annotations</li>
+</ul>
+<p>这些信息都可以通过kubectl命令获取，但是有的情况下，我们需要从应用内获取，例如获取当前Pod的地址、主机名等一些信息，这就要求我们必须知道如何在应用内获取Pod的metadata，本文介绍三种应用内获取Pod的metadata的方式，供大家参考。</p>
+<h2 id="通过环境变量暴露metadata">1. 通过环境变量暴露Metadata</h2>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: downward
+spec:
+  containers:
+  - name: main
+    image: docker.io/busybox
+    command: [&quot;sleep&quot;, &quot;99999&quot;]
+    resources:
+      requests:
+        cpu: 15m
+        memory: 100Ki
+      limits:
+        cpu: 100m
+        memory: 4Mi
+    env:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+    - name: SERVICE_ACCOUNT
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.serviceAccountName
+    - name: CONTAINER_CPU_REQUEST_MILLICORES
+      valueFrom:
+        resourceFieldRef:
+          resource: requests.cpu
+          divisor: 1m
+    - name: CONTAINER_MEMORY_LIMIT_KIBIBYTES
+      valueFrom:
+        resourceFieldRef:
+          resource: limits.memory
+          divisor: 1Ki</code></pre>
+<p>在设置资源请求情况的变量时，会设置一个除数，所以环境变量最后显示计算后的结果。CPU的除数可以是1或者1m，内存的除数可以是1、1k、1Ki、1M、1Mi。<br />
+可以看到实际执行的情况<br />
+<img src="https://img2018.cnblogs.com/blog/39469/201811/39469-20181105194658945-1388935092.png" /></p>
+<h2 id="以文件的形式传递参数">2. 以文件的形式传递参数</h2>
+<p>通过定义<code>downwardAPI</code>卷，可以将环境变量以配置文件的方式暴露给容器的应用。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: downward
+  labels:
+    foo: bar
+  annotations:
+    key1: value1
+    key2: |
+      multi
+      line
+      value
+spec:
+  containers:
+  - name: main
+    image: busybox
+    command: [&quot;sleep&quot;, &quot;9999999&quot;]
+    resources:
+      requests:
+        cpu: 15m
+        memory: 100Ki
+      limits:
+cpu: 100m
+        memory: 4Mi
+    volumeMounts:
+    - name: downward
+      mountPath: /etc/downward
+  volumes:
+  - name: downward
+  downwardAPI:
+      items:
+      - path: &quot;podName&quot;
+        fieldRef:
+          fieldPath: metadata.name
+      - path: &quot;podNamespace&quot;
+        fieldRef:
+          fieldPath: metadata.namespace
+      - path: &quot;labels&quot;
+        fieldRef:
+          fieldPath: metadata.labels
+      - path: &quot;annotations&quot;
+        fieldRef:
+          fieldPath: metadata.annotations
+      - path: &quot;containerCpuRequestMilliCores&quot;
+        resourceFieldRef:
+          containerName: main
+          resource: requests.cpu
+          divisor: 1m
+      - path: &quot;containerMemoryLimitBytes&quot;
+        resourceFieldRef:
+          containerName: main
+          resource: limits.memory
+          divisor: 1</code></pre>
+<p>创建Pod后可以查看挂载的文件。</p>
+<pre class="sh"><code>$ kubectl exec downward ls -lL /etc/downward</code></pre>
+<p>利用环境变量的方式无法将labels和annotations导入为环境变量，使用挂载文件的方式就可以，我们因此可以查看Pod具有的labels和annotations。当labels和annotations在Pod运行期间被修改后，修改也可以反映到文件上。这也就是为什么不能用作环境变量的原因。</p>
+<pre class="sh"><code>$ kubectl exec downward cat /etc/downward/labels
+$ kubectl exec downward cat /etc/downward/annotations</code></pre>
+<p><img src="https://img2018.cnblogs.com/blog/39469/201811/39469-20181105194628401-872467247.png" /></p>
+<p>在获取容器的资源请求数据时，我们必须指定容器的名称。不管一个Pod中有一个还是多个容器，我们都需要明确指定容器的名称。利用这种方式，如果一个Pod含有多个容器，我们可以将其他容器的资源使用情况传递到另外一个容器中。</p>
+<h2 id="容器外通过api-server获取metadata">3. 容器外通过API server获取metadata</h2>
+<p>上面介绍的两种方法可以获取Pod的相关信息，但是这些信息并不是完整的，如果我们需要更多的信息，就需要用到API server。</p>
+<pre class="sh"><code>$ kubectl cluster-info #查看API Server的位置
+$ curl http://ip:port/ #查看API列表，如果是https就不行了
+[root@devops-101 ~]# kubectl cluster-info
+Kubernetes master is running at https://192.168.0.101:6443
+KubeDNS is running at https://192.168.0.101:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy</code></pre>
+<p><img src="https://img2018.cnblogs.com/blog/39469/201811/39469-20181105194605439-2013216055.png" /></p>
+<p>对于https的情况，可以设置代理，通过代理来访问，具体如下：</p>
+<pre class="sh"><code>[root@devops-101 ~]#kubectl proxyk
+Starting to serve on 127.0.0.1:8001
+# 换一个终端窗口
+[root@devops-101 ~]# curl http://localhost:8001
+{
+  &quot;paths&quot;: [
+    &quot;/api&quot;,
+    &quot;/api/v1&quot;,
+    &quot;/apis&quot;,
+    &quot;/apis/&quot;,
+    &quot;/apis/admissionregistration.k8s.io&quot;,
+    &quot;/apis/admissionregistration.k8s.io/v1beta1&quot;,
+    &quot;/apis/apiextensions.k8s.io&quot;,
+    &quot;/apis/apiextensions.k8s.io/v1beta1&quot;,
+    ...</code></pre>
+<p>能够看到一个列表，通过API的路径，可以访问我们想要找到的任何资源。例如查找一个deployment。</p>
+<pre class="sh"><code>[root@devops-101 ~]# curl http://localhost:8001/apis/apps/v1/deployments
+{
+  &quot;kind&quot;: &quot;DeploymentList&quot;,
+  &quot;apiVersion&quot;: &quot;apps/v1&quot;,
+  &quot;metadata&quot;: {
+    &quot;selfLink&quot;: &quot;/apis/apps/v1/deployments&quot;,
+    &quot;resourceVersion&quot;: &quot;326381&quot;
+  },
+...</code></pre>
+<h2 id="容器内访问-api-server">4. 容器内访问 API Server</h2>
+<p>容器内访问API server需要认证，并且需要通过环境变量获取API Server的地址和端口。<br />
+地址的获取方式如下：</p>
+<pre class="sh"><code>root@curl:/# env | grep KUBERNETES_SERVICE
+KUBERNETES_SERVICE_PORT=443
+KUBERNETES_SERVICE_HOST=10.0.0.1
+KUBERNETES_SERVICE_PORT_HTTPS=443</code></pre>
+<p>认证主要通过ca.cert及用户名，ca.cert文件默认挂载在<code>/var/run/secrets/kubernetes.io/serviceaccount/</code>。<br />
+具体方法：</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl exec -it img-curl  /bin/sh 
+/ # TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+/ # curl --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -H &quot;Authorization: Bearer $TOKEN&quot; https://kubernetes
+{
+  &quot;paths&quot;: [
+    &quot;/api&quot;,
+    &quot;/api/v1&quot;,
+    &quot;/apis&quot;,
+    &quot;/apis/&quot;,
+    &quot;/apis/admissionregistration.k8s.io&quot;,
+    &quot;/apis/admissionregistration.k8s.io/v1beta1&quot;,
+    &quot;/apis/apiextensions.k8s.io&quot;,</code></pre>
+<p>如果遇到了下图中的错误，需要创建RBAC的角色绑定并且重新执行一下上面的命令。<br />
+<img src="https://img2018.cnblogs.com/blog/39469/201811/39469-20181105194534342-171050123.png" /></p>
+<p>接下来就可以在Pod的容器中查看metadata的信息，如下查看当前命名空间所有运行的Pods<br />
+<img src="https://img2018.cnblogs.com/blog/39469/201811/39469-20181105194521465-2032230383.png" /></p>
+<p>有了访问API server的能力，就为我们定义容器内应用的行为提供了无限的想象力，我们可以通过curl来访问API server，同时也有很多语言的客户端库，让我们方便的在自己的应用中调用API server</p>
+<ul>
+<li><a href="https://github.com/fabric8io/kubernetes-client">Java client</a></li>
+<li><a href="https://github.com/tenxcloud/node-kubernetes-client">Node.js</a></li>
+<li><a href="https://github.com/devstub/kubernetes-api-php-client">PHP</a></li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" /></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-11-05 19:47</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9911077" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9911077);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9911077,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/11/5 19:47:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

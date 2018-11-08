@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Fedora 11 的安装以及 LAMP环境的搭建(一) - Cocowool - 博客园</title>
+<meta property="og:description" content="最近，重新安装了一次系统，为了以后不再做无谓的重复查询的工作，特将本次安装及配置的过程记录下来，做为自己以后的一个参考，亦可以为想要安装 Fedora 桌面的同学的一个参考，有任何不对或者可以节省安装" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2009/09/20/1570556.html">Fedora 11 的安装以及 LAMP环境的搭建(一)</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body">最近，重新安装了一次系统，为了以后不再做无谓的重复查询的工作，特将本次安装及配置的过程记录下来，做为自己以后的一个参考，亦可以为想要安装 Fedora 桌面的同学的一个参考，有任何不对或者可以节省安装时间的方法，都可以在这里讨论。 <br /><br />一、安装系统<br />&nbsp;&nbsp; &nbsp;这个很简单，我使用的是Fedora Live cd KDE 的版本，其实是喜欢和习惯gnome的，只是手边上没有现成的。<br />&nbsp;&nbsp; &nbsp;系统安装完成后，稍微体验了一下KDE的dolphine和Konquer，还是不是很习惯，需要上gnome<br /><br />&nbsp;&nbsp; &nbsp;yum groupinstall 'GNOME Desktop Environment'<br /><br />&nbsp;&nbsp; &nbsp;安装完成后，Logout 然后重新登录进来就能看到熟悉的 gnome 界面了，只不过，这样安装的 gnome 很多默认的软件还是和直接的 gnome 不太一样，比如Office 套件就保留了 Koffice，游戏也有很多是K下的，这个影响不大，暂且不表。<br /><br />二、配置权限和网络连接及其他<br />&nbsp;&nbsp; &nbsp;<br />(1)、配置权限<br />&nbsp;&nbsp; &nbsp;需要为经常使用的用户配置权限，需要修改 /etc/sudoers ，添加：<br />&nbsp;&nbsp; &nbsp;cipher&nbsp; ALL=(ALL)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ALL<br />&nbsp;&nbsp; &nbsp;cipher&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ALL=(ALL)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NOPASSWD: ALL<br /><br />&nbsp;&nbsp; &nbsp;这样，用户 cipher 就获得了 sudo 权限而且不需要输入每次都输入密码。<br /><br />(2)、配置RPM Fusion<br /><br />&nbsp;&nbsp; &nbsp;因为专利许可证的原因，Fedora 软件仓库不包含 MP3, DVD和视频播放及解码库支持。正因为如此，你必须从第三方软件仓库中安装那些软件。RPM Fusion 是 Fedora 和 Red Hat 企业版的软件仓库，是由 Dribble, Freshrpms 和 RPM Fusion 合并而来的。各种各样的应用程序包含在这个软件仓库中，比如MP3、未加密的 DVD 、Mplayer, VLX, Xine 等多媒体应用程序使用的解码库，以及闭源的 Nvidia 和 ATI 显卡驱动，RPM Fusion 包含以下两个主要的软件仓库：<br />&nbsp;&nbsp; &nbsp;* 一个被命名为&#8220;自由&#8221;，主要是开源软件（开源软件的含义通过 Fedora授权指引定义），但因为美国专利保护法案又不能包含在 Fedora 中。<br />&nbsp;&nbsp; &nbsp;* 另一个被命名为&#8220;非自由&#8221;，主要是非自由软件，就是其它所有那些不能非自由软件，包括公开源代码的软件，但是有&#8220;非商业使用&#8221;之类的限制。<br /><br />&nbsp;&nbsp; &nbsp;sudo rpm -ivh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm<br />&nbsp;&nbsp; &nbsp;sudo rpm -ivh http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;安装presto插件：sudo yum install yum-presto<br />&nbsp;&nbsp; &nbsp;安装镜像自动选择插件：sudo yum install yum-fastestmirror<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;<br /><br />三、安装常用软件<br /><br />(0)、输入法 -- SCIM<br /><br />&nbsp;&nbsp; &nbsp;Fedora 11 下默认了 ibus 作为输入法，但是我在将系统语言切换为英文后，又经过 yum remove ibus， yum install ibus 反反复复的几次，始终无法终端中切换出中文来，所以最后又投入了我所熟悉的 scim 的怀抱。<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;yum install scim*<br /><br />(1)、Firefox<br /><br />&nbsp;&nbsp; &nbsp;Firefox 的安装很简单：&nbsp;&nbsp; &nbsp;yum install firefox，只是之后需要安装一些插件，下面这些插件，能够在我日后使用 Firefox 进行上网冲浪的时候提供更好的帮助。<br /><br />&nbsp;&nbsp; &nbsp;Firefox Addons<br />&nbsp;&nbsp; &nbsp;1、Vimperator<br />&nbsp;&nbsp; &nbsp;2、Firebug<br />&nbsp;&nbsp; &nbsp;3、YSlow<br />&nbsp;&nbsp; &nbsp;4、DownThem All<br />&nbsp;&nbsp; &nbsp;5、xmarks<br />&nbsp;&nbsp; &nbsp;6、Greasemonkey<br />&nbsp;&nbsp; &nbsp;7、Httpfox<br />&nbsp;&nbsp; &nbsp;8、FireGesture<br />&nbsp;&nbsp; &nbsp;9、All in one gestures<br />&nbsp;&nbsp; &nbsp;10、Easy Drag and go<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;Flash插件的安装，下载最新的Flash 10 的插件进行安装：flash-plugin-10.0.15.3-release.i386.rpm<br /><br />(2)、QQ<br /><br />&nbsp;&nbsp; &nbsp;qq 的安装需要从官方下载 Linux 的安装包：http://im.qq.com/qq/linux/download.shtml，完成后执行：<br />&nbsp;&nbsp; &nbsp;rpm -ivh linuxqq-v1.0.2-beta1.i386.rpm<br />&nbsp;&nbsp; &nbsp;Linux版的QQ自发布到现在一直都没有更新过，不知道是不是现在这个版本就是为了挡当时北航学生的提问的，有了以后就不思更新了。<br />&nbsp;&nbsp; &nbsp;<br />(3)、邮件客户端 Thunderbird<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;邮件客户端选用了 Thunderbird，系统自带的 Evolution 虽然也可以用，但是你终究会发现有些功能他无法支持的那一天，下载地址为：http://www.mozillamessaging.com/en-US/thunderbird/<br />&nbsp;&nbsp; &nbsp;完成后对包进行解压缩：tar -xvzf thunderbird-2.0.0.23.tar.gz<br />&nbsp;&nbsp; &nbsp;解压完成后：cd thunderbird<br />&nbsp;&nbsp; &nbsp;执行：./thunderbird 的时候提示：./thunderbird-bin: error while loading shared libraries: libstdc++.so.5: cannot open shared object file: No such file or directory<br />&nbsp;&nbsp; &nbsp;看来是一些基础的库不存在，按照提示：&nbsp;&nbsp; &nbsp;sudo yum install libstdc++.so.5<br />&nbsp;&nbsp; &nbsp;完成后，通过：./thunderbird 就可以打开邮件客户端，进行用户名和POP、SMTP服务器配置后就可以使用进行邮件的发送。<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;我们可以为其建立桌面的快捷方式<br />&nbsp;&nbsp; &nbsp;命令行方式为：&nbsp;&nbsp; &nbsp;ln -s&nbsp;&nbsp; ~/Download/software/misc/thunderbird/thunderbird ./thunderbird<br />&nbsp;&nbsp; &nbsp;图形界面的方式为点击右键-&gt;Create Launcher-&gt;选择相应的位置和图标，这样建立的好处是没有那个快捷键。<br /><br />(4)、VPN连接<br /><br />&nbsp;&nbsp; &nbsp;因为单位有的时候需要 VPN 连接，所以安装了 pptp 方式的VPN连接：yum install NetworkManager-pptp<br />&nbsp;&nbsp; &nbsp;安装完成后要重新启动才可以进行VPN连接的设置，否则不会生效，这个问题的原因暂时不明。<br />&nbsp;&nbsp; &nbsp;<br />(5)、飞信<br /><br />&nbsp;&nbsp; &nbsp;Linux下的飞信，我使用了 Libfeition 提供的安装包，下载地址：http://www.libfetion.cn/Linux_demoapp_download.html<br />&nbsp;&nbsp; &nbsp;在安装之前，需要下面的这些包来确保接下来的安装正常进行：<br />&nbsp;&nbsp; &nbsp;sudo yum install qt4 qt4-devel libcurl libcurl-devel kernel-devel automake gcc-c++ glibc glibc-devel openssl-devel<br />&nbsp;&nbsp; &nbsp;具体的安装有说明，这里就不赘述了，很容易，这样我们就能享受飞信的服务了。<br />&nbsp;&nbsp; &nbsp;<br />(6)、Office<br /><br />&nbsp;&nbsp; &nbsp;使用系统自带的Office套件。<br /><br />(7)、MSN客户端<br /><br />&nbsp;&nbsp; &nbsp;这种方式安装的系统中没有自带pidgin，所以需要自己手工安装：sudo yum install pidgin<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;到目前位置，这个系统就基本上能满足我们日常的办公和沟通需要了。&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;<br />四、影音娱乐以及系统美化<br /><br />(1)、视频播放器 Mplayer<br /><br />&nbsp;&nbsp; &nbsp;首先安装DVD的解码库支持：sudo yum install libdvdread libdvdnav lsdvd<br />&nbsp;&nbsp; &nbsp;接下来安装livdvdcss支持：<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;sudo rpm -Uvh http://rpm.livna.org/livna-release.rpm<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;sudo yum install libdvdcss<br />&nbsp;&nbsp; &nbsp;安装其他视频文件格式支持：sudo yum install ffmpeg ffmpeg-libs gstreamer-ffmpeg libmatroska xvidcore<br />&nbsp;&nbsp; &nbsp;安装播放器：sudo yum install mplayer smplayer<br /><br />&nbsp;&nbsp; &nbsp;===========================================================================<br />&nbsp;&nbsp; &nbsp;<strike>进行了编译安装mplayer的尝试，不过最后编译完成后，皮肤没有安装好，最后还是采用了简单粗暴的 yum 方法</strike><br />&nbsp;&nbsp; &nbsp;<strike>首先查看官方的安装说明：http://www.mplayerhq.hu/DOCS/HTML/en/softreq.html</strike><br />&nbsp;&nbsp; &nbsp;<strike>大部分的软件包都可以通过 yum 来进行安装，有些需要单独安装，包括：</strike><br />&nbsp;&nbsp; &nbsp;<strike>lame&nbsp;&nbsp; &nbsp;http://lame.sourceforge.net/download.php,&nbsp;&nbsp; &nbsp;然后按照 INSTALL 中的提示进行编译安装就可以了。</strike><br />&nbsp;&nbsp; &nbsp;===========================================================================<br /><br />(2)、音频播放器 Rhythmbox<br /><br />&nbsp;&nbsp; &nbsp;默认的Feodra 11 KDE中并没有提供 rhythmbox，需要我们独立安装<br />&nbsp;&nbsp; &nbsp;安装命令：sudo yum install gstreamer rhythmbox<br />&nbsp;&nbsp; &nbsp;安装MP3格式支持：sudo yum install gstreamer-plugins-good gstreamer-plugins-bad gstreamer-plugins-ugly<br />&nbsp;&nbsp; &nbsp;这样就可以使用 Rhythmbox 来欣赏 Mp3 音乐了。&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;当然除此之外，还有诸如 Amarok，Songbird 等非常好的音频播放器，基本上都可以通过 yum 安装，当然前提是需要已经添加了 RPM Fusion。<br /><br />(3)、Compiz-Fusion<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;Compiz Fusion， 非常酷的3d立方体桌面，在很多截图和视频中你应该看到过了，Fedora 10 自带 Compiz-Fusion ，但不包含它所有的特性。你可以通过运行 系统 -&gt; 首选项-&gt; 感官 -&gt; 桌面特效找到它。<br />&nbsp;&nbsp; &nbsp;如果需要所有的特效，需要先检查系统是否支持 direct 渲染：glxinfo | grep direct<br />&nbsp;&nbsp; &nbsp;如果结果是yes我们就可以直接安装 Compiz-Fusion：sudo yum install ccsm emerald-themes compizconfig-backend-gconf fusion-icon-gtk emerald compiz-fusion compiz-fusion-gnome libcompizconfig compiz-gnome compiz-bcop compiz compizconfig-python compiz-fusion-extras compiz-fusion-extras-gnome<br /><br />(4)、安装 avant-window-navigator<br /><br />&nbsp;&nbsp; &nbsp;这个类似于Mac的Dock，可以将底部的 Panel删除掉，而且可以自动隐藏，用起来十分方便。<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;完成后，将3和4两个加入到系统启动里。<br />&nbsp;&nbsp; &nbsp;启动进程的添加，可以从菜单里找到 SESSION 进行添加，也可以编辑 /etc/rc.local，也可以编辑 ~/.config/ ，方法很多，就看个人爱好了。<br /><br />(5)、安装 gnome-do<br /><br />&nbsp;&nbsp; &nbsp;这个工具可以让我们快速搜索菜单中的工具，而无须使用鼠标去点击，能够提高工作的效率，很实用。<br />&nbsp;&nbsp; &nbsp;sudo yum install gnome-do gonme-do-plugins*<br /><br />最后，附上现在的桌面和主题。<br /><br /><img alt="" style="border-color: #000000;" src="https://images.cnblogs.com/cnblogs_com/cocowool/misc/Screenshot-1.png" height="320" width="400" align="absMiddle" border="1" /><br /><br /><img alt="" style="border-color: #000000;" src="https://images.cnblogs.com/cnblogs_com/cocowool/misc/Screenshot.png" height="320" width="400" align="center" border="1" /><br /><br />参考资料：<br />1、<a href="http://www.ownlinux.cn/2009/06/14/fedora-11-install-configure.html">Fedora11 安装配置指南中文版</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />2、<a href="http://www.mplayerhq.hu/DOCS/HTML/en/rtc.html">Mpalyer</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />3、<a href="http://audacity.sourceforge.net/help/faq?s=install&amp;item=lame-mp3">Lame Install</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />4、<a href="http://fixunix.com/slackware/513045-did-you-compiled-mplayer-1-0rc2-slack-12-1-a.html">Mplayer Compile Error</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />5、<a href="http://slackbuilds.org/repository/12.1/multimedia/mplayer/">Mplayer Slack Build</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />6、<a href="http://www.virtualbox.org/manual/UserManual.html#hostossupport">Sun Virtual Box</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />7、<a href="http://hi.baidu.com/yonggangli/blog/item/30087eed2f0970d0b21cb158.html">Yum 补充用法</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br />8、<a href="http://hi.baidu.com/yxdark/blog/item/98d5ed1fe484f616413417db.html">Linux下编译安装飞信&nbsp;</a>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2009-09-20 19:58</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1570556" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1570556);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1570556,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2009/9/20 19:58:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,339 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Kubernetes中Pod的健康检查 - Cocowool - 博客园</title>
+<meta property="og:description" content="本文介绍 Pod 中容器健康检查相关的内容、配置方法以及实验测试，实验环境为 Kubernetes 1.11，搭建方法参考 "kubeadm安装kubernetes V1.11.1 集群" 0. 什么" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/kubernetes_container_probe.html">Kubernetes中Pod的健康检查</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>本文介绍 Pod 中容器健康检查相关的内容、配置方法以及实验测试，实验环境为 Kubernetes 1.11，搭建方法参考<a href="https://www.cnblogs.com/cocowool/p/kubeadm_install_kubernetes.html">kubeadm安装kubernetes V1.11.1 集群</a></p>
+</blockquote>
+<h2 id="什么是-container-probes">0. 什么是 Container Probes</h2>
+<p>我们先来看一下Kubernetes的架构图，每个Node节点上都有 <code>kubelet</code> ，Container Probe 也就是容器的健康检查是由 <code>kubelet</code> 定期执行的。</p>
+<p>Kubelet通过调用Pod中容器的<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#probe-v1-core">Handler</a>来执行检查的动作，Handler有三种类型。</p>
+<ul>
+<li>ExecAction，在容器中执行特定的命令，命令退出返回0表示成功</li>
+<li>TCPSocketAction，根据容器IP地址及特定的端口进行TCP检查，端口开放表示成功</li>
+<li>HTTPGetAction，根据容器IP、端口及访问路径发起一次HTTP请求，如果返回码在200到400之间表示成功<br />
+每种检查动作都可能有三种返回状态。</li>
+<li>Success，表示通过了健康检查</li>
+<li>Failure，表示没有通过健康检查</li>
+<li>Unknown，表示检查动作失败</li>
+</ul>
+<p>在创建Pod时，可以通过<code>liveness</code>和<code>readiness</code>两种方式来探测Pod内容器的运行情况。<code>liveness</code>可以用来检查容器内应用的存活的情况来，如果检查失败会杀掉容器进程，是否重启容器则取决于Pod的<a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy">重启策略</a>。<code>readiness</code>检查容器内的应用是否能够正常对外提供服务，如果探测失败，则Endpoint Controller会将这个Pod的IP从服务中删除。</p>
+<h2 id="应用场景">1. 应用场景</h2>
+<p>我们都知道Kubernetes会维持Pod的状态及个数，因此如果你只是希望保持Pod内容器失败后能够重启，那么其实没有必要添加健康检查，只需要合理配置Pod的重启策略即可。更适合健康检查的场景是在我们根据检查结果需要主动杀掉容器并重启的场景，还有一些容器在正式提供服务之前需要加载一些数据，那么可以采用<code>readiness</code>来检查这些动作是否完成。</p>
+<h2 id="liveness-检查实例">2. liveness 检查实例</h2>
+<h3 id="container-exec">2.1 Container Exec</h3>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: liveness-exec
+spec:
+  containers:
+  - name: liveness
+    image: docker.io/alpine
+    args:
+    - /bin/sh
+    - -c
+    - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5</code></pre>
+<p>本例创建了一个容器，通过检查一个文件是否存在来判断容器运行是否正常。容器运行30秒后，将文件删除，这样容器的liveness检查失败从而会将容器重启。</p>
+<h3 id="http-health-check">2.2 HTTP Health Check</h3>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+    app: httpd
+  name: liveness-http
+spec:
+  containers:
+  - name: liveness
+    image: docker.io/httpd
+    ports:
+    - containerPort: 80
+    livenessProbe:
+      httpGet:
+        path: /index.html
+        port: 80
+        httpHeaders:
+        - name: X-Custom-Header
+          value: Awesome
+      initialDelaySeconds: 5
+      periodSeconds: 5</code></pre>
+<p>本例通过创建一个Apache服务器，通过访问 index 来判断服务是否存活。通过手工删除这个文件的方式，可以导致检查失败，从而重启容器。</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl exec -it liveness-http /bin/sh
+# 
+# ls
+bin  build  cgi-bin  conf  error  htdocs  icons  include  logs  modules
+# ps -ef
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 11:39 ?        00:00:00 httpd -DFOREGROUND
+daemon       6     1  0 11:39 ?        00:00:00 httpd -DFOREGROUND
+daemon       7     1  0 11:39 ?        00:00:00 httpd -DFOREGROUND
+daemon       8     1  0 11:39 ?        00:00:00 httpd -DFOREGROUND
+root        90     0  0 11:39 ?        00:00:00 /bin/sh
+root        94    90  0 11:39 ?        00:00:00 ps -ef
+#              
+# cd /usr/local/apache2
+# ls
+bin  build  cgi-bin  conf  error  htdocs  icons  include  logs  modules
+# cd htdocs
+# ls
+index.html
+# rm index.html
+# command terminated with exit code 137
+[root@devops-101 ~]# kubectl describe pod liveness-http
+Events:
+  Type     Reason     Age               From                 Message
+  ----     ------     ----              ----                 -------
+  Normal   Scheduled  1m                default-scheduler    Successfully assigned default/liveness-http to devops-102
+  Warning  Unhealthy  8s (x3 over 18s)  kubelet, devops-102  Liveness probe failed: HTTP probe failed with statuscode: 404
+  Normal   Pulling    7s (x2 over 1m)   kubelet, devops-102  pulling image &quot;docker.io/httpd&quot;
+  Normal   Killing    7s                kubelet, devops-102  Killing container with id docker://liveness:Container failed liveness probe.. Container will be killed and recreated.
+  Normal   Pulled     1s (x2 over 1m)   kubelet, devops-102  Successfully pulled image &quot;docker.io/httpd&quot;
+  Normal   Created    1s (x2 over 1m)   kubelet, devops-102  Created container
+  Normal   Started    1s (x2 over 1m)   kubelet, devops-102  Started container</code></pre>
+<h3 id="tcp-socket">2.3 TCP Socket</h3>
+<p>这种方式通过TCP连接来判断是否存活，Pod编排示例。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+    app: node
+  name: liveness-tcp
+spec:
+  containers:
+  - name: goproxy
+    image: docker.io/googlecontainer/goproxy:0.1
+    ports:
+    - containerPort: 8080
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 20</code></pre>
+<h2 id="readiness-检查实例">3. readiness 检查实例</h2>
+<p>另一种 <code>readiness</code>配置方式和<code>liveness</code>类似，只要修改<code>livenessProbe</code>改为<code>readinessProbe</code>即可。</p>
+<h2 id="配置参数">4. 配置参数</h2>
+<p>我们可以通过<code>kubectl explain</code>命令来查看具体的配置属性，在这里还是简单列一下主要的属性。<br />
+<img src="https://images2018.cnblogs.com/blog/39469/201808/39469-20180823092634108-1558225741.png" /></p>
+<ul>
+<li>initialDelaySeconds：检查开始执行的时间，以容器启动完成为起点计算</li>
+<li>periodSeconds：检查执行的周期，默认为10秒，最小为1秒</li>
+<li>timeoutSeconds：检查超时的时间，默认为1秒，最小为1秒</li>
+<li>successThreshold：从上次检查失败后重新认定检查成功的检查次数阈值（必须是连续成功），默认为1</li>
+<li>failureThreshold：从上次检查成功后认定检查失败的检查次数阈值（必须是连续失败），默认为1</li>
+<li>httpGet的属性
+<ul>
+<li>host：主机名或IP</li>
+<li>scheme：链接类型，HTTP或HTTPS，默认为HTTP</li>
+<li>path：请求路径</li>
+<li>httpHeaders：自定义请求头</li>
+<li>port：请求端口</li>
+</ul></li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" /></p>
+<h2 id="参考资料">参考资料</h2>
+<ol>
+<li><a href="https://kubernetes.io/docs/tutorials/k8s201/">Kubernetes 201</a></li>
+<li><a href="https://kubernetes.io/docs/user-guide/pod-states/#container-probes">Container Probes</a></li>
+<li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/">Kubernetes Task Probe</a></li>
+<li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/">Configure Liveness and Readiness Probes</a></li>
+<li><a href="https://godoc.org/sigs.k8s.io/controller-runtime/pkg/handler">package handler</a></li>
+<li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#probe-v1-core">Kubernetes Reference Probe</a></li>
+</ol>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-08-23 09:28</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9521842" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9521842);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9521842,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/8/23 9:28:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

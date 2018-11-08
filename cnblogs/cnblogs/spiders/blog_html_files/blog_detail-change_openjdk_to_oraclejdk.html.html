@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>将Linux默认的OpenJDK替换为Oracle JDK - Cocowool - 博客园</title>
+<meta property="og:description" content="在使用Logstash安装插件的时候，发生了一个错误，如下： 经查可能是与系统自带的OpenJDK有关，解决方案是将系统自带的OpenJDK更新为Oracle的JDK。 下载 Oracle JDK 首" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/change_openjdk_to_oraclejdk.html">将Linux默认的OpenJDK替换为Oracle JDK</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><p>在使用Logstash安装插件的时候，发生了一个错误，如下：</p>
+<pre class="sh"><code>ERROR: Something went wrong when installing logstash-input-jdbc, message: java.security.KeyException</code></pre>
+<p>经查可能是与系统自带的OpenJDK有关，解决方案是将系统自带的OpenJDK更新为Oracle的JDK。</p>
+<pre class="sh"><code>[cloud@localhost ~]$ java -version
+openjdk version &quot;1.8.0_141&quot;
+OpenJDK Runtime Environment (build 1.8.0_141-b16)
+OpenJDK 64-Bit Server VM (build 25.141-b16, mixed mode)</code></pre>
+<h3 id="下载-oracle-jdk">下载 Oracle JDK</h3>
+<p>首先从 <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">Oracle网站</a>下载所需的JDK。</p>
+<p>我下载的是 1.8 版本的 rpm 安装包，因为 Elasticsearch 套装需要Java 1.8。</p>
+<h3 id="安装oracle-jdk">安装Oracle JDK</h3>
+<p>使用如下命令进行安装</p>
+<pre class="sh"><code>[root@localhost cloud]# rpm -ivh jdk-8u144-linux-x64.rpm 
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:jdk1.8.0_144-2000:1.8.0_144-fcs  ################################# [100%]
+Unpacking JAR files...
+    tools.jar...
+    plugin.jar...
+    javaws.jar...
+    deploy.jar...
+    rt.jar...
+    jsse.jar...
+    charsets.jar...
+    localedata.jar...</code></pre>
+<h3 id="使用update-alternative配置java">使用update-alternative配置java</h3>
+<p>首先执行 <code>update-alternative —list java</code> 看一下系统中有几个java版本。</p>
+<pre class="sh"><code>[root@localhost cloud]# update-alternatives --display java
+java - status is auto.
+ link currently points to /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.el7_3.x86_64/jre/bin/java
+/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.51-2.4.5.5.el7.x86_64/jre/bin/java - priority 170051
+ slave ControlPanel: (null)
+ slave javaws: (null)
+ slave jcontrol: (null)
+ slave jjs: (null)
+/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.el7_3.x86_64/jre/bin/java - family java-1.8.0-openjdk.x86_64 priority 1800141
+ slave ControlPanel: (null)
+ slave javaws: (null)
+ slave jcontrol: (null)
+ slave jjs: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.el7_3.x86_64/jre/bin/jjs
+/usr/java/jdk1.8.0_144/jre/bin/java - priority 180144
+ slave ControlPanel: /usr/java/jdk1.8.0_144/jre/bin/ControlPanel
+ slave javaws: /usr/java/jdk1.8.0_144/jre/bin/javaws
+ slave jcontrol: /usr/java/jdk1.8.0_144/jre/bin/jcontrol
+ slave jjs: /usr/java/jdk1.8.0_144/jre/bin/jjs
+Current `best&#39; version is /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.el7_3.x86_64/jre/bin/java.</code></pre>
+<p>输出的内容省略了一部分，可以看到，系统中存在OpenJDK 和 Oracle的JDK，下面选择Oracle JDK为默认</p>
+<pre class="sh"><code>[root@localhost cloud]# update-alternatives --config java
+
+There are 3 programs which provide &#39;java&#39;.
+
+  Selection    Command
+-----------------------------------------------
+   1           /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.51-2.4.5.5.el7.x86_64/jre/bin/java
+*+ 2           java-1.8.0-openjdk.x86_64 (/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.el7_3.x86_64/jre/bin/java)
+   3           /usr/java/jdk1.8.0_144/jre/bin/java
+
+Enter to keep the current selection[+], or type selection number: 3
+[root@localhost cloud]# java -version
+java version &quot;1.8.0_144&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
+Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)</code></pre>
+<p>update-alternatives 提供了交互界面，我们选择3之后会车，配置就会生效，可以看到已经改过来了。</p>
+<h3 id="update-alternatives-介绍">update-alternatives 介绍</h3>
+<p>如果我们用<code>ls -l /usr/bin/java</code> 查看，可以发现命令其实都是软链接，现在java会定期升级，版本也特别多，所以很多命令都是软链接，update-alternatives就是管理这些软链接，这样版本切换的时候，可以将所有的链接同时进行更新。</p>
+<blockquote>
+<p>本文操作系统为 CentOS release 6.5(final)，本文是用 rpm 方式安装的jdk，如果下载的源码，可能需要配置 profile 并用 update-alternative —install 命令安装，本文没有尝试。</p>
+</blockquote>
+<p>参考资料：<br />
+1、<a href="http://blog.csdn.net/rj042/article/details/72034650">linux下如何使用自己安装的SunJDK替换默认的OpenJDK</a><br />
+2、<a href="http://blog.csdn.net/kkdelta/article/details/50365323">如何更改Linux中默认的openjdk为自己安装的JDK</a><br />
+3、<a href="http://www.cnblogs.com/gavinyinyuan/p/4227720.html">Linux安装Oracle JDK替换OpenJDK详解</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2017-08-18 09:08</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=7387718" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(7387718);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=7387718,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2017/8/18 9:08:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

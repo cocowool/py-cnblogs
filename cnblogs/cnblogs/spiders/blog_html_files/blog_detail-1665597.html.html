@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>YUI3 Overlay的使用 - Cocowool - 博客园</title>
+<meta property="og:description" content="YUI3的Overlay为我们提供了一个创建叠加层的方便的方（从名字就可以看出来），他扩展自Widget类。目前的版本，仅支持简单的页面XY定位、相对于一个Node或者viewport对其或居中。下面" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2010/02/07/1665597.html">YUI3 Overlay的使用</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>YUI3的Overlay为我们提供了一个创建叠加层的方便的方（从名字就可以看出来），他扩展自Widget类。目前的版本，仅支持简单的页面XY定位、相对于一个Node或者viewport对其或居中。下面来体验一下Overlay。</p>  <p>最简单的引用YUI3的方法自然是引用Yahoo服务器上的种子文件，地址如下：</p>  <blockquote>   <pre>&lt;script src=&quot;http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js&quot;&gt;&lt;/script&gt;</pre>
+</blockquote>
+
+<p>引用了种子文件之后，我们就可以在我们的应用中使用Overlay了，建立一个新的YUI的命名空间，如下：</p>
+
+<p>YUI().use(‘overlay’,function(Y){ 
+  <br />&#160;&#160;&#160; var overlay = Y.Overlay({ 
+
+  <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; contentBox:“#MyContent”, 
+
+  <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; visible:true, 
+
+  <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; width:“20em”, 
+
+  <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; height:“20em”, 
+
+  <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; xy:[200,200]&#160;&#160;&#160;&#160; <br />&#160;&#160;&#160; }); 
+
+  <br />&#160;&#160;&#160; overlay.render(); 
+
+  <br />}); 
+
+  <br />先来熟悉一下overlay所支持的属性：</p>
+
+<table><tbody>
+    <tr>
+      <th>Attribute</th>
+
+      <th>Description</th>
+    </tr>
+
+    <tr>
+      <td><code>x</code>, <code>y</code> and <code>xy</code></td>
+
+      <td>Positioning attributes, to set the XY position in page co-ordinates on the Overlay's bounding box. Set to [0,0] by default</td>
+    </tr>
+
+    <tr>
+      <td><code>zIndex</code></td>
+
+      <td>Sets the z-index on the Overlay's bounding box. Set to 0 by default.</td>
+    </tr>
+
+    <tr>
+      <td><code>shim</code></td>
+
+      <td>Boolean, indicating whether or not an iframe shim should be added to the Overlay to protect against select box bleed through. It is only enabled by default for IE6.</td>
+    </tr>
+
+    <tr>
+      <td><code>align</code></td>
+
+      <td>Used to align a specific point on the Overlay's bounding box to a specific point on another node, or the viewport. Set to null by default.</td>
+    </tr>
+
+    <tr>
+      <td><code>centered</code></td>
+
+      <td>Used to center the Overlay inside another node, or inside the viewport. Set to false by default.</td>
+    </tr>
+
+    <tr>
+      <td><code>headerContent</code></td>
+
+      <td>Used to set the content of the Overlay's header section. No default value set.</td>
+    </tr>
+
+    <tr>
+      <td><code>bodyContent</code></td>
+
+      <td>Used to set the content of the Overlay's body section. No default value set.</td>
+    </tr>
+
+    <tr>
+      <td><code>footerContent</code></td>
+
+      <td>Used to set the content of the Overlay's footer section. No default value set.</td>
+    </tr>
+
+    <tr>
+      <td><code>fillHeight</code></td>
+
+      <td>Specifies which of the 3 sections - header, body or footer, should be automatically sized to fill out the height of the Overlay, if a fixed height has been set. Set to WidgetStdMod.BODY by default. Can be disabled by setting to null.</td>
+    </tr>
+  </tbody></table>
+
+<p><strong></strong></p>
+
+<p><strong>内容</strong>： 
+
+  <br />overlay的内容既可以是我们事先写在页面中的，也可以通过script在后期创建。因为使用了标准的模块，所以内容基本上有三个部分：headerContent、bodyContent、footerContent。通过脚本设置内容的时候，既可以直接填入innerHTML，也可以通过传入一个node对象来实现，使用的方式非常的灵活。</p>
+
+<p><strong>定位</strong>：</p>
+
+<p>Overlay的定位有三种方式，xy、对齐、居中。</p>
+
+<p>xy定位的方式是通过指定x,y或者xy来为叠加层定位，这个定位是基于页面的xy坐标，比如[200,200]是相对于页面左上角分别200px的位置。</p>
+
+<p>对齐(align)，可以将overlay与页面中的某个node进行对齐，通过传入一个两个属性的对象来实现，如下例：</p>
+
+<blockquote>
+  <p>YUI().use(‘overlay’,function(Y){ 
+    <br />&#160; var overlay = Y.overlay({ 
+
+    <br />&#160;&#160;&#160;&#160;&#160;&#160; contentBox:“MyContent” 
+
+    <br />&#160;&#160;&#160;&#160;&#160;&#160; align:{ 
+
+    <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; node:“MyAchor” 
+
+    <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; points:[Y.WidgetPositionExt.TL,Y.WidgetPositionExt.TR]</p>
+</blockquote>
+
+<p>}); 
+  <br />其中points表示叠加层和要对其的node的位置关系，第一个参数为叠加层，第二个为对齐node，上例的参数表示叠加层的左上角和node的右上角对齐。 
+
+  <br />
+
+  <br /><strong>层叠顺序</strong>： 
+
+  <br />IE6下有一个著名的bug，就是select控件默认总是zindex高于其他所有的层，overlay的shim属性正是考虑了这个问题存在的。这个选项默认在IE6下是打开的，会通过创建iframe的方式来规避这个bug。</p>
+
+<p>使用overlay也好，其他的yui特性也好，感觉非常的方便和灵活，可以说是一个真真正正为开发者考虑的js框架，而我们也应该学习YUI3的这种设计思想和风格，让自己的应用也变得更加灵活和方便。</p>
+
+<p>总体来看，目前YUI3的Overlay基本能够满足我们日常创建一些叠加层的需要，但是还有一些更高级的属性或者控制功能期待在后续的版本中加入进来。</p>
+
+<div class="wlWriterEditableSmartContent" id="scid:0767317B-992E-4b12-91E0-4F059A8CECA8:38cb9a6e-4dd9-4b41-aaa8-4083c9caa4ca" style="padding-right: 0px; display: inline; padding-left: 0px; float: none; padding-bottom: 0px; margin: 0px; padding-top: 0px">Technorati Tags: <a href="http://technorati.com/tags/YUI3" rel="tag">YUI3</a>,<a href="http://technorati.com/tags/Overlay" rel="tag">Overlay</a>,<a href="http://technorati.com/tags/%e6%b5%ae%e5%8a%a8%e5%b1%82" rel="tag">浮动层</a></div>
+
+<p>参考资料： 
+  <br />1、<a href="http://developer.yahoo.com/yui/3/overlay/">YAHOO YUI3 Overlay</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2010-02-07 23:54</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1665597" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1665597);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1665597,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2010/2/7 23:54:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

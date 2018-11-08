@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>如何向回调函数中传入其他参数 - Cocowool - 博客园</title>
+<meta property="og:description" content="如何向回调函数中传参数 最近写JS经常会因为向回调函数中传参而头疼，今天总结一下向回调函数中传参的方法，以后的应用中就不用在到处去找了。 首先构建一个需要向回调函数中传入参数的典型应用。在一个页面中产" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2008/11/03/1325916.html">如何向回调函数中传入其他参数</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p><span style="font-family: 宋体;">
+<div>
+<p><span style="font-family: 宋体;">如何向回调函数中传参数</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: 宋体;">最近写</span>JS<span style="font-family: 宋体;">经常会因为向回调函数中传参而头疼，今天总结一下向回调函数中传参的方法，以后的应用中就不用在到处去找了。</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: 宋体;">首先构建一个需要向回调函数中传入参数的典型应用。在一个页面中产生了一系列的向</span>Ajax Proxy<span style="font-family: 宋体;">的请求，传入的是一个</span>ID<span style="font-family: 宋体;">，根据</span>ID<span style="font-family: 宋体;">返回了不同的内容值，我们需要把这些内容打印在页面上，同时给页面元素赋予</span>ID<span style="font-family: 宋体;">，这个时候就需要向回调函数中传入</span>ID<span style="font-family: 宋体;">，以产生带</span>ID<span style="font-family: 宋体;">的页面元素。</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: 宋体;">第一种方法就是使用全局变量，能够被函数和回调函数同时访问。这种方法虽然不够优雅，但是确实能够完成任务。</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: 宋体;">这种方法在传入单个的变量时没什么问题，但是当我们在一个循环的结构中，不断的传入变量到回调函数，这个时候传入的变量会采用最后一次传入的变量值，这就与我们预想的结果有了出入。</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: 宋体;">第二种办法是使用</span>Closure<span style="font-family: 宋体;">，这种方法更加优雅一些。通过使用</span>Closure<span style="font-family: 宋体;">，我们通过匿名函数来重新包装返回的对象，同时将需要传入的参数做为新的属性传给回调函数。</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: 宋体;">第三种方法假设你需要为你的回调函数使用不同的签名，例如</span>Ajax.Net<span style="font-family: 宋体;">的专家们允许你在回调中使用额外的参数，如果你想从一个换到另外一个并且保持兼容性的话，就要用到下面的写法：</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: 宋体;">第四种办法其实就是</span>Closure<span style="font-family: 宋体;">的一种变体，你不需要显示的声明一个回调函数，而是使用一个匿名函数直接进行你所需要的处理。</span></p>
+</div>
+如何向回调函数中传参数</span></p>
+<p>&nbsp;</p>
+<p>总结一下：向回调函数中传入参数的终极办法其实就是利用Closure，这个看来是唯一可行而且比较优雅的方法，下面将Closure的写法列在下面：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp; var callback = {<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;success:function(data){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;var item = document.createElement("li");<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; item.id = data.id;<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; item.innerHTML = "The id is : " + data.id;<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; item.innerHTML += " The value is : " + data.value;<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;var parent = document.getElementById("result");<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;parent.appendChild(item);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;failure:function(){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;alert('failure:');<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />
+&nbsp;&nbsp; &nbsp;}<br />
+<br />
+&nbsp;&nbsp; &nbsp;xhr = new QueuedHandler();<br />
+&nbsp;&nbsp; &nbsp;for(var i=0;i&lt;20;i++){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; xhr.request('get','ajaxproxy.php?id='+i,function(data){&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;//第二种办法：利用Closure<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; data = eval('(' + data + ')');<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; data.id = i;<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; callback.success(data);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; });<br />
+<br />
+&nbsp;&nbsp; &nbsp;}</p>
+<p> <br />
+</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2008-11-03 23:44</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1325916" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1325916);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1325916,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2008/11/3 23:44:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

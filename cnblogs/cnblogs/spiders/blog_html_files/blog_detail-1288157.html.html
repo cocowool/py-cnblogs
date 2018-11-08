@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Javascript设计模式学习（二）封装续 - Cocowool - 博客园</title>
+<meta property="og:description" content="有一个避免其他程序员无意间写出重名函数的办法，在你想作为私有属性或者私有方法的命名前加一个下划线，像这样 this._name = name;，这样虽然不能避免所有的错误，但是能够避免绝大多数的无意识" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2008/09/10/1288157.html">Javascript设计模式学习（二）封装续</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>
+&nbsp;</p>
+<p>有一个避免其他程序员无意间写出重名函数的办法，在你想作为私有属性或者私有方法的命名前加一个下划线，像这样 this._name = name;，这样虽然不能避免所有的错误，但是能够避免绝大多数的无意识命名引起的冲突。
+</p>
+<p>
+&nbsp;</p>
+<p>Scope，Nested Functions，and Closures
+</p>
+<p>
+&nbsp;</p>
+<p>在实现私有属性的封装之前，我们需要一些基础的概念支持。在Javascript中，只有函数拥有作用域，也就是说，函数内部定义的变量，在外部是无法访问的。只有函数外部定义的变量，在函数内部才能访问。下面是一个说明的例子：
+</p>
+<p>function foo(){
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;var = 10;
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;function bar(){
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;a *= 2;
+</p>
+<p>}
+</p>
+<p>bar();
+</p>
+<p>return  a;
+</p>
+<p>}
+</p>
+<p>在这个例子中，a被定义在foo函数中，可是函数bar中可以访问a，是因为bar函数被定义在了foo函数中。当bar被执行时，他就能够使a的值翻倍，这是bar在foo内部执行，如果bar在foo外部执行会怎么样呢，看下面的例子：
+</p>
+<p>function foo(){
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;var a = 10;
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;function bar(){
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a *= 2;
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return  a;
+</p>
+<p>}
+</p>
+<p>return bar;
+</p>
+<p>}
+</p>
+<p>
+&nbsp;</p>
+<p>var baz = foo();
+</p>
+<p>baz();&nbsp;&nbsp;&nbsp;&nbsp;//返回20；
+</p>
+<p>baz();&nbsp;&nbsp;&nbsp;&nbsp;//返回40；
+</p>
+<p>baz();&nbsp;&nbsp;&nbsp;&nbsp;//返回80；
+</p>
+<p>
+&nbsp;</p>
+<p>上例中函数返回的是一个对于bar的引用，把这个引用传递给baz，在执行的时候，他仍可以访问变量a。这是为什么呢？因为Javascript支持语义上作用域，函数运行是在他被定义的域中，而不是他在被执行的域中。这个例子中bar因为被定义在foo的内部，所以当他在外部被执行时，仍然可以访问内部的变量a。
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;以上就是一个Closure的例子，只有foo中被返回的函数能够访问foo中的变量，最常见的创建Closure的方法就是返回一个Nested Function。
+</p>
+<p>
+&nbsp;</p>
+<p>利用Closure创建私有方法
+</p>
+<p>有了上面的基础，我们就能够实现私有方法了，如下：
+</p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>var</strong></span>
+<span style="color: black;">NewHouse</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: #0000c0;"><strong>function</strong></span><span style="color: #5c5c5c;">(</span><span style="color: black;">hid</span><span style="color: #5c5c5c;">,</span><span style="color: black;">hname</span><span style="color: #5c5c5c;">,</span><span style="color: black;">address</span><span style="color: #5c5c5c;">){</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>var</strong></span>
+<span style="color: black;">_hid</span><span style="color: #5c5c5c;">,</span><span style="color: black;">_hname</span><span style="color: #5c5c5c;">,</span><span style="color: black;">_address</span><span style="color: #5c5c5c;">;</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>function</strong></span>
+<span style="color: black;">isValid</span><span style="color: #5c5c5c;">(</span><span style="color: black;">hid</span><span style="color: #5c5c5c;">){</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>if</strong></span><span style="color: #5c5c5c;">(</span><span style="color: black;">hid</span>
+<span style="color: #5c5c5c;">!=</span>
+<span style="color: #800040;">null</span>
+<span style="color: #5c5c5c;">&amp;&amp;</span>
+<span style="color: black;">hid</span>
+<span style="color: #5c5c5c;">!=</span>
+<span style="color: black;">undefined</span>
+<span style="color: #5c5c5c;">&amp;</span>
+<span style="color: black;">hid</span>
+<span style="color: #5c5c5c;">!=</span>
+<span style="color: #005c00;">""</span><span style="color: #5c5c5c;">){</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>return</strong></span>
+<span style="color: #800040;">true</span><span style="color: #5c5c5c;">;</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span><span style="color: #0000c0;"><strong>else</strong></span><span style="color: #5c5c5c;">{</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>return</strong></span>
+<span style="color: #800040;">false</span><span style="color: #5c5c5c;">;</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>this</strong></span><span style="color: #5c5c5c;">.</span><span style="color: black;">getHid</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: #0000c0;"><strong>function</strong></span><span style="color: #5c5c5c;">(){</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>return</strong></span>
+<span style="color: black;">_hid</span><span style="color: #5c5c5c;">;</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>this</strong></span><span style="color: #5c5c5c;">.</span><span style="color: black;">setHid</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: #0000c0;"><strong>function</strong></span><span style="color: #5c5c5c;">(</span><span style="color: black;">hid</span><span style="color: #5c5c5c;">){</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>if</strong></span><span style="color: #5c5c5c;">(!</span><span style="color: black;">isValid</span><span style="color: #5c5c5c;">(</span><span style="color: black;">hid</span><span style="color: #5c5c5c;">)){</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: black;">_hid</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: black;">hid</span><span style="color: #5c5c5c;">;</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>this</strong></span><span style="color: #5c5c5c;">.</span><span style="color: black;">getHname</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: #0000c0;"><strong>function</strong></span><span style="color: #5c5c5c;">(){</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>return</strong></span>
+<span style="color: black;">_hname</span><span style="color: #5c5c5c;">;</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>this</strong></span><span style="color: #5c5c5c;">.</span><span style="color: black;">setHname</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: #0000c0;"><strong>function</strong></span><span style="color: #5c5c5c;">(</span><span style="color: black;">hname</span><span style="color: #5c5c5c;">){</span></span>
+</span></p>
+<p><span style="font-size: 10pt;"><span style="font-family: Courier New; background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: black;">_hname</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: black;">hname</span>
+<span style="color: #5c5c5c;">||</span>
+<span style="color: #005c00;">"</span></span><span style="font-family: 宋体; background-color: white;">暂无</span><span style="font-family: Courier New;"><span style="color: #005c00; background-color: white;">"</span><span style="color: #5c5c5c; background-color: white;">;</span>
+</span></span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>this</strong></span><span style="color: #5c5c5c;">.</span><span style="color: black;">getAddress</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: #0000c0;"><strong>function</strong></span><span style="color: #5c5c5c;">(){</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>return</strong></span>
+<span style="color: black;">_address</span><span style="color: #5c5c5c;">;</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>this</strong></span><span style="color: #5c5c5c;">.</span><span style="color: black;">setAddress</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: #0000c0;"><strong>function</strong></span><span style="color: #5c5c5c;">(</span><span style="color: black;">address</span><span style="color: #5c5c5c;">){</span></span>
+</span></p>
+<p><span style="font-size: 10pt;"><span style="font-family: Courier New; background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: black;">_address</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: black;">address</span>
+<span style="color: #5c5c5c;">||</span>
+<span style="color: #005c00;">"</span></span><span style="font-family: 宋体; background-color: white;">暂无</span><span style="font-family: Courier New;"><span style="color: #005c00; background-color: white;">"</span><span style="color: #5c5c5c; background-color: white;">;</span>
+</span></span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>this</strong></span><span style="color: #5c5c5c;">.</span><span style="color: black;">setHid</span><span style="color: #5c5c5c;">(</span><span style="color: black;">hid</span><span style="color: #5c5c5c;">);</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>this</strong></span><span style="color: #5c5c5c;">.</span><span style="color: black;">setHname</span><span style="color: #5c5c5c;">(</span><span style="color: black;">hname</span><span style="color: #5c5c5c;">);</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000c0;"><strong>this</strong></span><span style="color: #5c5c5c;">.</span><span style="color: black;">setAddress</span><span style="color: #5c5c5c;">(</span><span style="color: black;">address</span><span style="color: #5c5c5c;">);</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: black;">NewHouse</span><span style="color: #5c5c5c;">.</span><span style="color: black;">prototype</span><span style="color: #5c5c5c;">.</span><span style="color: black;">ShowHouse</span>
+<span style="color: #5c5c5c;">=</span>
+<span style="color: #0000c0;"><strong>function</strong></span><span style="color: #5c5c5c;">(){</span></span>
+</span></p>
+<p><span style="font-size: 10pt;"><span style="font-family: Courier New; background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: black;">document</span><span style="color: #5c5c5c;">.</span><span style="color: black;">getElementById</span><span style="color: #5c5c5c;">(</span><span style="color: #005c00;">"container"</span><span style="color: #5c5c5c;">).</span><span style="color: black;">innerHTML</span>
+<span style="color: #5c5c5c;">+=</span>
+<span style="color: #005c00;">"</span></span><span style="font-family: 宋体; background-color: white;">楼盘名称：</span><span style="font-family: Courier New;"><span style="color: #005c00; background-color: white;">"</span><span style="background-color: white;">
+<span style="color: #5c5c5c;">+</span>
+<span style="color: #0000c0;"><strong>this</strong></span><span style="color: #5c5c5c;">.</span><span style="color: black;">hname</span>
+<span style="color: #5c5c5c;">+</span>
+<span style="color: #005c00;">"&lt;br /&gt;"</span><span style="color: #5c5c5c;">;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</span></span></p>
+<p><span style="font-family: Courier New; font-size: 10pt;"><span style="background-color: white;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #5c5c5c;">}</span></span>
+</span></p>
+<p>
+&nbsp;</p>
+<p><span style="color: #5c5c5c; font-size: 10pt;"><span style="font-family: 宋体;">可以看到，之前的例子中一直用</span><span style="font-family: Courier New;">this</span><span style="font-family: 宋体;">关键字来引用属性，而我们这里用了</span><span style="font-family: Courier New;">var</span><span style="font-family: 宋体;">来定义属性，所以属性在对象外是不能够被访问的。对于一些公共的方法，我们仍然可以利用</span><span style="font-family: Courier New;">prototype</span><span style="font-family: 宋体;">来定义他们。</span><span style="font-family: Courier New;">
+</span></span></p>
+<p><span style="color: #5c5c5c; font-size: 10pt;"><span style="font-family: Courier New;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: 宋体;">这个方法的缺陷是我们每建一个对象，对于内部的方法对要被初始化一下，而这是要消耗内存的，我们实例的对象越多，消耗的内存也就越多。所以这个方法只试用在真正需要私有化属性和方法的地方，其他的地方我们仍然可以用完全暴露的方法来做。</span></span></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2008-09-10 10:32</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1288157" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1288157);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1288157,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2008/9/10 10:32:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

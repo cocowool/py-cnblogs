@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>SMTP的相关命令 - Cocowool - 博客园</title>
+<meta property="og:description" content="SMTP是Simple Mail Transfer Protocol的简写。 邮件是日常工作、生活中不能缺少的一个工具，下面是邮件收发的流程。 邮件的发送，主要是通过SMTP协议来实现的。SMTP协议" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2012/03/14/2395390.html">SMTP的相关命令</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>SMTP是Simple Mail Transfer Protocol的简写。</p>  <p>邮件是日常工作、生活中不能缺少的一个工具，下面是邮件收发的流程。</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201203/201203140938066513.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; border-top: 0px; border-right: 0px" title="Image" border="0" alt="Image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201203/201203140938068432.png" width="244" height="157" /></a></p>  <p>邮件的发送，主要是通过SMTP协议来实现的。SMTP协议最早在RFC 821（1982年）中定义，最后更新是在RFC 5321（2008年）中，更新中包含了扩展SMTP（ESMTP）。</p>  <p>在平时的程序开发中经常会有发送邮件的这种需求，所以免不了要对邮件发送服务器的可用性进行测试。下面是整理的命令，用来在命令行下测试SMTP服务器，进行邮件发送等操作，相信对于加深SMTP的理解可以起到促进作用。</p>  <p>SMTP默认使用25端口，我们可以使用telnet工具进行测试。</p>  <p>1、连接SMTP服务器，查看是否存活。</p>  <p>&#160;&#160;&#160;&#160; &gt;telnet smtp.sina.com 25</p>  <p>&#160;&#160;&#160;&#160; &gt;Connected to mail.sina.com.</p>  <p>&#160;&#160;&#160;&#160; &gt;Escape character is '^]'.</p>  <p>&#160;&#160;&#160;&#160; &gt;220 smtp ready</p>  <p>&#160;&#160;&#160;&#160; 在telnet下转义符是Ctrol+]，如果想退出，按转义符后输入quit，就可以退回到命令行了。</p>  <p>2、用户登陆</p>  <p>&#160;&#160;&#160;&#160; 连接到服务器后，使用AUTH LOGIN命令进行用户登陆（SMTP命令不区分大小写）</p>  <p>&#160;&#160;&#160;&#160; &gt;auth login</p>  <p>&#160;&#160;&#160;&#160; &gt;334 VXNlcm5hbWU6</p>  <p>&#160;&#160;&#160;&#160; &gt;c2VydmljZUBoZWVwLmNx</p>  <p>&#160;&#160;&#160;&#160; &gt;334 UGFzc3dvcmQ6</p>  <p>&#160;&#160;&#160;&#160; &gt;xxxxxxxx</p>  <p>&#160;&#160;&#160;&#160; &gt;235 go ahead</p>  <p>&#160;&#160;&#160;&#160; 235返回码表明登陆验证成功，用户可以进行后续的操作了。用户邮箱和密码是经过Base64编码的，这个与服务器的安全特性相关，属于可配置项。</p>  <p>3、发送邮件。</p>  <p>&#160;&#160;&#160;&#160; 用户身份验证通过后，执行下面的命令进行邮件的发送。</p>  <p>&#160;&#160;&#160;&#160; &gt;235 #2.0.0 OK Authenticated</p>  <p>&#160;&#160;&#160;&#160; &gt;MAIL FROM: <a href="mailto:yunpan001@sina.com">yunpan001@sina.com</a></p>  <p>&#160;&#160;&#160;&#160; &gt;250 sender &lt;yunpan001@sina.com&gt; ok</p>  <p>&#160;&#160;&#160;&#160; &gt;RCPT to: <a href="mailto:cocowool@gmail.com">cocowool@gmail.com</a></p>  <p>&#160;&#160;&#160;&#160; &gt;250 recipient &lt;cocowool@gmail.com&gt; ok</p>  <p>&#160;&#160;&#160;&#160; &gt;DATA</p>  <p>&#160;&#160;&#160;&#160; &gt;354 go ahead</p>  <p>&#160;&#160;&#160;&#160; &gt;Subject: Hi smtp mail</p>  <p>&#160;&#160;&#160;&#160; &gt;hello mail</p>  <p>&#160;&#160;&#160;&#160; &gt;.</p>  <p>&#160;&#160;&#160;&#160; &gt;250 ok:&#160; Message 1763097690 accepted</p>  <p><b>SMTP命令列表</b></p>  <p><b>HELO</b></p>  <p>客户端为标识自己的身份而发送的命令（通常带域名）</p>  <p><b>EHLO</b></p>  <p><b>     <br /></b></p>  <p>使服务器可以表明自己支持扩展简单邮件传输协议 (ESMTP) 命令。</p>  <p><b>MAIL FROM</b></p>  <p>标识邮件的发件人；以 MAIL FROM: 的形式使用。</p>  <p><b>RCPT TO</b></p>  <p>标识邮件的收件人；以 RCPT TO: 的形式使用。</p>  <p><b>TURN</b></p>  <p>允许客户端和服务器交换角色，并在相反的方向发送邮件，而不必建立新的连接。</p>  <p><b>ATRN</b></p>  <p>ATRN (Authenticated TURN) 命令可以选择将一个或多个域作为参数。如果该会话已通过身份验证，则ATRN 命令一定会被拒绝。</p>  <p><b>SIZE</b></p>  <p>提供一种使 SMTP 服务器可以指出所支持的最大邮件大小的机制。兼容的服务器必须提供大小范围，以指出可以接受的最大邮件大小。客户端发送的邮件不应大于服务器所指出的这一大小。</p>  <p><b>ETRN</b></p>  <p>SMTP 的扩展。SMTP 服务器可以发送 ETRN 以请求另一台服务器发送它所拥有的任何电子邮件。</p>  <p><b>PIPELINING</b></p>  <p>提供发送命令流（而无需在每个命令之后都等待响应）的能力。</p>  <p><b>CHUNKING</b></p>  <p>替换 DATA 命令的 ESMTP 命令。该命令使 SMTP 主机不必持续地扫描数据的末尾，它发送带参数的 BDAT 命令，该参数包含邮件的总字节数。接收方服务器计算邮件的字节数，如果邮件大小等于 BDAT 命令发送的值时，则该服务器假定它收到了全部的邮件数据。</p>  <p><b>DATA</b></p>  <p>客户端发送的、用于启动邮件内容传输的命令。</p>  <p><b>DSN</b></p>  <p>启用传递状态通知的 ESMTP 命令。</p>  <p><b>RSET</b></p>  <p>使整个邮件的处理无效，并重置缓冲区。</p>  <p><b>VRFY</b></p>  <p>确认在邮件传递过程中可以使用邮箱；例如，vrfy ted 确认在本地服务器上驻留 Ted 的邮箱。该命令在 Exchange 实现中默认关闭。</p>  <p><b>HELP</b></p>  <p>返回 SMTP 服务所支持的命令列表。</p>  <p><b>QUIT</b></p>  <p>终止会话。</p>  <p><b>SMTP命令响应码</b></p>  <p>211&#160; System status, or system help reply   <br />214&#160; Help message (Information on how to use the receiver or the meaning of a particular non-standard command; this reply is useful only to the human user)    <br />220&#160; &lt;domain&gt; Service ready    <br />221&#160; &lt;domain&gt; Service closing transmission channel    <br />250&#160; Requested mail action okay, completed    <br />251&#160; User not local; will forward to &lt;forward-path&gt; (See Section 3.4)    <br />252&#160; Cannot VRFY user, but will accept message and attempt delivery (See Section 3.5.3)    <br />354&#160; Start mail input; end with &lt;CRLF&gt;.&lt;CRLF&gt;    <br />421&#160; &lt;domain&gt; Service not available, closing transmission channel (This may be a reply to any command if the service knows it must shut down)    <br />450&#160; Requested mail action not taken: mailbox unavailable (e.g., mailbox busy or temporarily blocked for policy reasons)    <br />451&#160; Requested action aborted: local error in processing    <br />452&#160; Requested action not taken: insufficient system storage    <br />455&#160; Server unable to accommodate parameters    <br />500&#160; Syntax error, command unrecognized (This may include errors such as command line too long)    <br />501&#160; Syntax error in parameters or arguments502&#160; Command not implemented (see Section 4.2.4)</p>  <p>503&#160; Bad sequence of commands   <br />504&#160; Command parameter not implemented    <br />550&#160; Requested action not taken: mailbox unavailable (e.g., mailbox not found, no access, or command rejected for policy reasons) </p>  <p>551&#160; User not local; please try &lt;forward-path&gt; (See Section 3.4)   <br />552&#160; Requested mail action aborted: exceeded storage allocation    <br />553&#160; Requested action not taken: mailbox name not allowed (e.g.,mailbox syntax incorrect)    <br />554&#160; Transaction failed (Or, in the case of a connection-opening response, &quot;No SMTP service here&quot;)    <br />555&#160; MAIL FROM/RCPT TO parameters not recognized or not implemente</p>  <p>参考资料：</p>  <p>1、<a href="http://blog.donews.com/Shan/page/17">SMTP指令说明</a></p>  <p>2、<a href="http://baike.baidu.com/view/5450.htm">SMTP百度百科</a></p>  <p>3、<a href="http://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol">Wiki Smtp</a></p>  <p>4、<a href="http://tools.ietf.org/html/rfc5321">RFC 5321</a></p>  <p>5、<a href="http://univasity.iteye.com/blog/1173296">电子邮件收发原理和实现</a></p>  <p>6、<a href="http://compig.net/blog/?p=5">Telnet下Smtp命令发送邮件</a></p>  <p>7、<a href="http://www.yuki-onna.co.uk/email/smtp.html">Send Mail Using Telnet</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2012-03-14 09:38</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2395390" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2395390);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2395390,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2012/3/14 9:38:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

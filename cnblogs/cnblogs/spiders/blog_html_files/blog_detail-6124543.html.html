@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Sublime Text 3 提高工作效率的使用技巧 - Cocowool - 博客园</title>
+<meta property="og:description" content="Sublime Text 3对于Sublime Text 2压倒性的优势就是秒启动，启动非常非常快，所以从2012年到2016年我一直用Sublime Text 2，但是安装了3并且启动试用后，我再也" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/6124543.html">Sublime Text 3 提高工作效率的使用技巧</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><div>
+<div>Sublime Text 3对于Sublime Text 2压倒性的优势就是秒启动，启动非常非常快，所以从2012年到2016年我一直用<a href="http://www.cnblogs.com/cocowool/archive/2012/07/01/2572011.html">Sublime Text 2</a>，但是安装了3并且启动试用后，我再也不愿意打开Sublime Text 2了。</div>
+<div>&nbsp;</div>
+<div>工欲善其事，必先利其器。经过多年使用，总结了一些Sublime Text的使用技巧。</div>
+<div>&nbsp;</div>
+<div>一、常用的使用技巧。</div>
+<div>&nbsp;</div>
+<div>0、Ctrl + P 匹配项目中的文件，然后快速跳转到文件中。找到对应文件后，还可以在完整的文件名后通过输入跳转到更精确的位置：</div>
+<div>&nbsp; &nbsp; &nbsp;@符号跳转：输入@symbol，可以跳转到symbol符号所在位置。支持实时预览。在PHP文件中，@将显示所有的函数列表。</div>
+<div>&nbsp; &nbsp; &nbsp;#关键字跳转：输入#keyword跳转到keyword所在的位置。</div>
+<div>&nbsp; &nbsp; &nbsp;：行号跳转，输入：12跳转到文件的第12行。</div>
+<div>1、快速打开、关闭左侧的文件列表。默认快捷键 Ctrl+k+b （Windows）Command + k + b （Mac）。也可以使用 View-&gt;Side Bar切换。</div>
+<div>2、通过 Control + R 查看当前文件中的函数列表，Ctrl + G 定位到文件的指定行。</div>
+<div>3、双击选中光标所在的单词，三击选中光标所在行，快捷键 Ctrl + L （Windows）Command + L （Mac）。</div>
+<div>4、Ctrl + Shift + T 打开之前关闭的 tab 页，这对于大项目中不小心关闭了文件时非常有用，当然也可以通过 File -&gt; Open Recent 找回。</div>
+<div>5、批量行的编辑。如果需要对多个行同时进行修改，可以选中多行之后通过 Ctrl + Shift + L 将选中区域打散，然后再进行同时编辑。</div>
+<div>6、分屏。如果需要分割窗口对比两个文件，可以使用分屏功能。</div>
+<div>
+<table style="width: 100%;" border="1" cellspacing="0" cellpadding="2">
+<tbody>
+<tr>
+<td valign="top">Alt + Shift + 1</td>
+<td valign="top">1个窗口</td>
+</tr>
+<tr>
+<td valign="top">Alt&nbsp;+ Shift + 2</td>
+<td valign="top">左右分屏</td>
+</tr>
+<tr>
+<td valign="top">Alt&nbsp;+ Shift + 3</td>
+<td valign="top">竖向分三个屏</td>
+</tr>
+<tr>
+<td valign="top">Alt&nbsp;+ Shift + 4</td>
+<td valign="top">竖向分四个屏</td>
+</tr>
+<tr>
+<td valign="top">Alt&nbsp;+ Shift + 5</td>
+<td valign="top">四屏，水平两屏垂直两屏</td>
+</tr>
+<tr>
+<td valign="top">Alt&nbsp;+ Shift + 8</td>
+<td valign="top">上下两屏</td>
+</tr>
+</tbody>
+</table>
+<div>7、快速调整字体大小。开发的时候字体大小非常重要，如果觉得不舒服，可以使用 Ctrl + = 号来快速调大，或 Ctrl + Shift + = 调小，非常方便。</div>
+</div>
+<div>8、括弧跳转。对于一个大的函数，如果需要从开头跳到结尾，可以使用 Ctrl + M。</div>
+<div>9、Ctrl + P，这个不需要多说了，菜单上就叫做 Goto Anywhere，可以很方便的实现日常工作中文件的查找跳转，当前前提是你要把整个工程文件夹打开。</div>
+<div>&nbsp;</div>
+<div>二、挑选顺手的插件</div>
+<div>&nbsp;</div>
+<div>Sublime Text 有强大的可扩展性，可以根据自己的需要安装不同的插件，这样她就会变得更加强大了。Sublime Text 3具有两种插件安装方式。</div>
+<div>&nbsp;</div>
+<div>1、直接安装</div>
+<div>&nbsp;</div>
+<div>可以直接搜索到自己需要的插件，然后下载安装包解压缩到 Packages 目录。</div>
+<div>&nbsp;</div>
+<div>2、使用Package Control组件安装。</div>
+<div>&nbsp;</div>
+<div>通过 Ctrl + &middot; 调出命令行，输入：</div>
+<div>&nbsp;</div>
+<div>
+<div>import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())</div>
+<div>&nbsp;</div>
+</div>
+<div>重启Sublime Text 3。如果在Perferences-&gt;package settings中看到package control这一项，则安装成功。</div>
+<div>&nbsp;</div>
+<div>完成之后我安装了自己最常用的一个插件：</div>
+<div>&nbsp;</div>
+<div>Emmet（Zend Coding）它的使用方式可以参考我之前的一篇博客&nbsp;<a href="http://www.cnblogs.com/cocowool/archive/2012/07/01/2572011.html">Sublime Text 2 以及 Zen Coding</a>。</div>
+<div>&nbsp;</div>
+参考资料：
+<div>1、<a href="http://www.jeffjade.com/2015/12/15/2015-04-17-toss-sublime-text/#">如何优雅的使用SublimeText</a></div>
+<div>2、<a href="https://packagecontrol.io/installation">Sublime Text Package Control</a></div>
+<div>3、<a href="http://www.jianshu.com/p/5905f927d01b">Sublime Text 3 插件：增强篇</a></div>
+<div>3、<a href="http://www.open-open.com/news/view/26d731">20个强大的Sublime Text 插件</a></div>
+<div>4、<a href="http://www.cnblogs.com/jadeboy/p/4165449.html">Sublime Text 下的Markdown写作</a></div>
+<div>5、<a href="http://www.jeffjade.com/2015/08/28/2015-08-28-Write-Morkdown/">追求高效工作的一路折腾</a></div>
+</div></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2016-12-02 09:43</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=6124543" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(6124543);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=6124543,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2016/12/2 9:43:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

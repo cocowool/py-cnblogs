@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Mysql 编译安装并使用自定义用户启动 - Cocowool - 博客园</title>
+<meta property="og:description" content="本文基于 Redhat Linux 6.7 的环境，Mysql 版本为 5.5.37 安装前的检查 必备的组件，如果没有使用 yum 进行安装，可以使用网上的源，也可以使用本地光盘作为 Yum 源。 " />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/8334249.html">Mysql 编译安装并使用自定义用户启动</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>本文基于 Redhat Linux 6.7 的环境，Mysql 版本为 5.5.37</p>
+</blockquote>
+<h3 id="安装前的检查">安装前的检查</h3>
+<p>必备的组件，如果没有使用 yum 进行安装，可以使用网上的源，也可以使用本地光盘作为 Yum 源。<br />
+1、CMake<br />
+2、make<br />
+3、gcc<br />
+4、ncurses<br />
+5、Perl</p>
+<h3 id="默认-layout-与相关的配置参数">默认 Layout 与相关的配置参数。</h3>
+<p>Mysql默认安装在 /usr/local/mysql 下，可以根据下面几个参数对安装目录做自定义。</p>
+<table>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>-DCMAKE_INSTALL_PREFIX=dir_name</strong></td>
+<td>基础的文件夹，对应mysqld的--basedir参数</td>
+</tr>
+<tr class="even">
+<td>-DINSTALL_BINDIR=dir_name</td>
+<td>bin目录位置</td>
+</tr>
+<tr class="odd">
+<td>-DINSTALL_DOCDIR=dir_name</td>
+<td>文档目录位置</td>
+</tr>
+<tr class="even">
+<td>-DINSTALL_DOCREADMEDIR=dir_name</td>
+<td>Readme文件位置</td>
+</tr>
+<tr class="odd">
+<td>-DINSTALL_INCLUDEDIR=dir_name</td>
+<td>Include目录位置</td>
+</tr>
+<tr class="even">
+<td>-DINSTALL_LAYOUT=name</td>
+<td>布局选项，包括Standalone、RPM、SRV4、DEB</td>
+</tr>
+<tr class="odd">
+<td><strong>-DMYSQL_DATADIR=dir_name</strong></td>
+<td>数据存放目录</td>
+</tr>
+<tr class="even">
+<td><strong>-DSYSCONFDIR=dir_name</strong></td>
+<td>默认配置my.cnf目录</td>
+</tr>
+</tbody>
+</table>
+<p>标粗的三个是最重要和常用的目录。</p>
+<h3 id="下载编译和安装">下载、编译和安装</h3>
+<p>从 <a href="https://downloads.mysql.com/archives/community/">这里</a> 下载源代码，版本选择 5.5.37、Operating System 选择 Source Code，找到 (mysql-5.5.37.tar.gz) 然后下载。下载后解压缩到用户目录下，我的用户为eccs，用户目录为 **/home/ap/eccs。</p>
+<pre class="sh"><code>tar zxvf mysql-5.5.37.tar.gz .
+cd mysql-5.5.37
+mkdir bld
+cd bld</code></pre>
+<p>我们所有的编译操作都在<strong>bld</strong>文件夹内进行，编译和安装的步骤是很简单的，使用camke编译，然后生成 make，最后 make install。重要的是在编译这一步指定相关的参数。</p>
+<pre class="sh"><code>cmake .. -DCMAKE_INSTALL_PREFIX=/home/ap/eccs/mysql -DMYSQL_DATADIR=/home/ap/eccs/mysql_data -DSYSCONFDIR=/home/ap/eccs/mysql_conf -DMYSQL_UNIX_ADDR=/home/ap/eccs/mysql_conf/mysql.sock
+make
+make install</code></pre>
+<h3 id="安装数据库启动数据库">安装数据库、启动数据库</h3>
+<p>编译安装完成后，需要首先安装数据库，执行以下命令。</p>
+<pre class="sh"><code>chmod +x scripts/mysql_install_db
+./scripts/mysql_install_db --basedir=/home/ap/eccs/mysql --datadir=/home/ap/eccs/mysql_data --user=eccs</code></pre>
+<p>到这一步就可以启动Mysql了，但是还没有指定配置文件的位置，如果没有指定配置文件，mysql按照以下数据自动从路径中查找配置文件，分别是：</p>
+<ul>
+<li>/etc/my.cnf</li>
+<li>/etc/mysql/my.cnf</li>
+<li>/usr/local/mysql/etc/my.cnf</li>
+<li>~/.my.cnf</li>
+</ul>
+<p>如果不知道默认的位置，可以使用下面的命来查找(<a href="https://www.cnblogs.com/cyun/p/5553667.html">青云</a>)</p>
+<pre class="sh"><code>[eccs@bj1eccap02 ~]$ /home/ap/eccs/mysql/bin/mysqld --verbose --help | grep -A 1 &#39;Default options&#39;
+Default options are read from the following files in the given order:
+/etc/my.cnf /etc/mysql/my.cnf /home/ap/eccs/mysql_conf/my.cnf ~/.my.cnf </code></pre>
+<p>明确了配置文件的位置，将配置文件按我们的要求修改，然后就可以启动数据库了。</p>
+<pre class="sh"><code>/home/ap/eccs/mysql/support-files/mysql.server start
+Starting MySQL                                             [  OK  ]
+[eccs@bj1eccap02 ~]$ ps -ef | grep mysql
+eccs       717     1  0 19:23 pts/0    00:00:00 /bin/sh /home/ap/eccs/mysql/bin/mysqld_safe --datadir=/home/ap/eccs/mysql_data --pid-file=/home/ap/eccs/mysql_conf/mysqld.pid
+eccs      1081   717  0 19:23 pts/0    00:00:00 /home/ap/eccs/mysql/bin/mysqld --basedir=/home/ap/eccs/mysql --datadir=/home/ap/eccs/mysql_data --plugin-dir=/home/ap/eccs/mysql/lib/plugin --log-error=/home/ap/eccs/mysql_data/mysql_error.log --pid-file=/home/ap/eccs/mysql_conf/mysqld.pid --socket=/home/ap/eccs/mysql_conf/mysql.sock --port=33065
+eccs      1498  1801  0 19:26 pts/0    00:00:00 grep mysql</code></pre>
+<h3 id="设置口令">设置口令</h3>
+<p>默认安装的mysql口令为空，需要手工设置。</p>
+<pre class="sh"><code>/home/ap/eccs/mysql/bin/mysqladmin -u root password &#39;123456&#39;</code></pre>
+<h3 id="遇到的问题">遇到的问题</h3>
+<p>前面几次安装的时候，到启动服务器的环节，都会报错，提示找不到pid之类的问题，总结下来发现就是因为默认 my.cnf 的问题。</p>
+<blockquote>
+<p>To avoid a possible security hole where a user adds a --user=root option to a my.cnf file (thus causing the server to run as root), mysqld uses only the first --user option specified and produces a warning if there are multiple --useroptions. Options in /etc/my.cnf and $MYSQL_HOME/my.cnf are processed before command-line options, so it is recommended that you put a --user option in /etc/my.cnf and specify a value other than root. The option in/etc/my.cnf is found before any other --user options, which ensures that the server runs as a user other than root, and that a warning results if any other --user option is found.</p>
+</blockquote>
+<p>如上所述，默认Mysql启动的时候，会从 /etc/my.cnf 或者安装目录的根目录下寻找my.cnf配置文件，如果发现就会使用配置文件中的参数而忽略命令行中的参数，这个特性是困扰很多人或造成问题的根源。我发现在 Redhat 6.7 中，即使我仅仅安装 Basic Server 选项，在没有安装 Mysql 的情况下，系统中也存在 /etc/my.cnf 文件，此时查询了系统的RPM包，发现存在这样一个包。</p>
+<pre class="sh"><code>[root@bj1eccap01 ~]# rpm -qa | grep -i mysql
+mysql-libs-5.1.73-5.el6_6.x86_64</code></pre>
+<p>删掉 /etc/my.cnf 之后，就一切正常了。</p>
+<h3 id="设置随系统自启动">设置随系统自启动</h3>
+<p>让应用随系统自启动一般有两种方法，一种是放到rc.local下面，一种是放在/etc/init.d下面作为系统服务，两种方法都是 root 用户执行的，这里列出第二种方法。</p>
+<pre class="sh"><code>[root@bj1eccap02 ~]# cp /home/ap/eccs/mysql/support-files/mysql.server /etc/init.d/mysqld
+[root@bj1eccap02 ~]# chkconfig --add mysqld
+[root@bj1eccap02 ~]# chkconfig --list mysqld
+mysqld             0:off    1:off    2:on    3:on    4:on    5:on    6:off
+[eccs@bj1eccap02 ~]$ service mysqld start
+Starting MySQL..                                           [  OK  ]</code></pre>
+<p>以后就可以使用 service 命令起停了。</p>
+<p><em>本文为作者原创，如果您觉得本文对您有帮助，请随意打赏，您的支持将鼓励我继续创作。</em></p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170825142904777-1467390737.png" /></p>
+<p>参考资料：<br />
+1、<a href="https://dev.mysql.com/doc/refman/5.5/en/installing-source-distribution.html">installing standar source</a><br />
+2、<a href="https://dev.mysql.com/doc/refman/5.5/en/source-configuration-options.html">source configuration options</a><br />
+3、<a href="https://forums.mysql.com/read.php?10,579558,579595#msg-579595"></a><br />
+4、<a href="https://dev.mysql.com/doc/refman/5.5/en/server-options.html#option_mysqld_basedir">Ignoring user change</a><br />
+5、<a href="http://www.jb51.net/article/59255.htm">脚本中实现切换用户并</a><br />
+6、<a href="http://blog.csdn.net/sinboy/article/details/2466225">在Linux中，开机自动运行普通用户的脚本程序</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-01-23 10:17</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=8334249" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(8334249);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=8334249,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/1/23 10:17:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

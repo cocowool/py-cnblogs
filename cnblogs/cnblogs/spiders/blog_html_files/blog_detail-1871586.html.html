@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>使用Apache的Proxy模块实现对被代理网站的访问 - Cocowool - 博客园</title>
+<meta property="og:description" content="最近有个需求，原本一个动态的站点，有些页面要静态化。但是静态化的文件又不希望和动态程序放在一起。并且URL也不希望发生变化，于是考虑使用Rewrite来实现。下面是一些使用的心得。1、使用Rewrit" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2010/11/08/1871586.html">使用Apache的Proxy模块实现对被代理网站的访问</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><div>最近有个需求，原本一个动态的站点，有些页面要静态化。但是静态化的文件又不希望和动态程序放在一起。并且URL也不希望发生变化，于是考虑使用Rewrite来实现。下面是一些使用的心得。</div><div>1、使用Rewrite规则来实现</div><div>Apache 的 Rewrite 是一个非常强大的工具，他的手册提供了丰富的实例可供我们学习，利用下面这个规则，可以将对www.a.com 这个网站的特定请求都定向到 www.b.com 服务器上。</div><div style="padding-left: 30px;">ServerName www.a.com</div><div style="padding-left: 30px;">RewriteEngine On</div><div style="padding-left: 30px;">RewriteRule ^/a/(.*) http://www.b.com [P]</div><div>2、使用反向代理</div><div style="padding-left: 30px;">ProxyRequests Off</div><div style="padding-left: 30px;">ProxyPass &nbsp; &nbsp; &nbsp; /a &nbsp; &nbsp; &nbsp;http://house.baidu.com/bj</div><div style="padding-left: 30px;"><div>ProxyPassReverse /a &nbsp; &nbsp; http://house.baidu.com/bj</div><div><div>ProxyPassReverseCookieDomain data.house.sina.com.cn l.house.sina.com.cn</div><div>ProxyPassReverseCookiePath / /a/</div><div>ProxyErrorOverride On</div></div></div><div style="padding-left: 30px;">这两种方法都可以实现用 http://www.a.com/a/abc 的形式来访问实际上是 http://www.b.com/abc 的内容</div><div style="padding-left: 30px;">但是，如果用户输入的URL在 www.b.com 中并不存在，www.b.com 发生转向时，会显示 www.b.com 的url</div><div style="padding-left: 30px;">如果 www.b.com 上全是静态文件，文件无法访问到的时候，会导向404页面，默认导向被代理服务器的404。</div><div style="padding-left: 30px;">但是使用&nbsp;<span style="font-family: 'Courier New', Courier, monospace; border-collapse: collapse; color: #003366; line-height: 18px;">ProxyErrorOverride On 命令后，可以使用代理服务器的404页面。</span></div><div style="padding-left: 30px;"><span style="font-family: 'Courier New', Courier, monospace; border-collapse: collapse; color: #003366; line-height: 18px;"><br /></span></div><div style="padding-left: 30px;">访问的目标文件中，对于JS和CSS的链接。如果采用了相对链接，则会默认去 www.a.com 上请求相应的文件。</div><div style="padding-left: 30px;">使用代理模式时，页面中对于Cookie的操作可能会有问题。以l.house.x.com.cn代理到data.house.x.com.cn做了实验，</div><div style="padding-left: 30px;">bj/search/0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-1.html 页面中的浏览历史出现了问题。</div><div style="padding-left: 30px;"><span style="font-family: Arial, Helvetica, sans-serif; color: #003366; line-height: 18px;">该指令允许你将一个远端服务器映射到本地服务器的URL空间中，此时本地服务器并不充当代理角色，而是充当远程服务器的一个镜像。</span></div><div style="padding-left: 30px;">ProxyPass 支持构建一个连接池来提高服务器的服务性能。配置形式为在 URL 后面追加参数，如下：</div><div style="padding-left: 30px;"><span style="font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 14px;">ProxyPass /example http://backend.example.com smax=5 max=20 ttl=120 retry=300</span></div><div style="padding-left: 30px;"><span style="font-family: 'Courier New', Courier, monospace; font-size: small;"><span style="font-size: 13px; line-height: 14px;">其中</span></span></div><div style="padding-left: 30px;">smax 表示Apache根据需要创建的连接数量。这些数量会在 ttl 设置到期前被 Apache 关闭。</div><div style="padding-left: 30px;"><span style="font-family: 'Courier New', Courier, monospace; font-size: small;"><span style="font-size: 13px; line-height: 14px;">max 表示 允许与被代理服务器链接的最大数量。默认的链接数量，是当前MPM中配置的最大链接数。在Prefork 模式中，这个数值永远是1.</span></span></div><div style="padding-left: 30px;"><span style="font-family: 'Courier New', Courier, monospace; font-size: small;"><span style="font-size: 13px; line-height: 14px;">在 Woker 模式中，连接数量由子线程来控制（ThreadsPerChild）。Apache创建的连接数量不会超过配置的数目。</span></span></div><div style="padding-left: 30px;"><span style="font-family: 'Courier New', Courier, monospace; font-size: small;"><span style="font-size: 13px; line-height: 14px;">ttl 表示以秒为单位，超过 smax 允许的非活动链接的存活时间。Apache会关闭超过 ttl 设置的非活动链接。</span></span></div><div style="padding-left: 30px;"><span style="font-family: 'Courier New', Courier, monospace; font-size: small;"><span style="font-size: 13px; line-height: 14px;">retry 表示连接池中为每次请求进行重试的最大时间限制，单位为秒。如果与被代理服务器之间的连接出现了问题，Apache在这个时间到期前，不会向客户端返回错误。</span></span></div><div style="padding-left: 30px;"><span style="font-family: 'Courier New', Courier, monospace; font-size: small;"><span style="font-size: 13px; line-height: 14px;">可以利用这个时间，对被代理服务器进行维护或重启等操作。</span></span></div><div style="padding-left: 30px;"><span style="font-family: 'Courier New', Courier, monospace; font-size: small;"><span style="font-size: 13px; line-height: 14px;">对于被代理服务器返回的重定向信息，可以使用 ProxyPassReverse 对其中的URL进行修改。</span></span><span style="font-family: Arial, Helvetica, sans-serif; color: #003366; line-height: 18px;">只有明确指定的应答头会被重写，其它应答头保持不变，并且HTML页面中的URL也不会被修改。如果被代理的内容包含绝对URL引用，那么将会绕过代理。有一个第三方模块可以检查并改写HTML中的URL引用，该模块就是Nick Kew编写的<a style="color: #0073c7; background-color: inherit;" href="http://apache.webthing.com/mod_proxy_html/">mod_proxy_html</a>。</span></div><p>综合起来，要想实现这个目的，就必须使用 apache　的反向代理模块。</p><div style="padding-left: 30px;"><span style="font-family: Arial, Helvetica, sans-serif; color: #003366; line-height: 18px;"><br /></span></div><div>参考资料：</div><div>1、<a href="http://lamp.linux.gov.cn/Apache/ApacheMenu/rewrite/index.html">Apache URL重写</a></div><div>2、<a href="http://lamp.linux.gov.cn/Apache/ApacheMenu/mod/mod_proxy.html#access">Proxy Module</a>&nbsp;</div></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2010-11-08 11:09</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1871586" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1871586);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1871586,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2010/11/8 11:09:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

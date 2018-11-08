@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>PHP手册阅读笔记 - Cocowool - 博客园</title>
+<meta property="og:description" content="学习PHP以来一直希望有时间能够有时间通读PHP手册，最近终于强迫自己划出一些时间，完成了对PHP手册的通读。除了函数参考部分没有每个都看，其他的章节基本上都看过了。看过之后才发现手册解决了自己之前对" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2011/10/17/2215341.html">PHP手册阅读笔记</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+<span  style="font-family: Arial; line-height: normal; font-size: medium; ">学习PHP以来一直希望有时间能够有时间通读PHP手册，最近终于强迫自己划出一些时间，完成了对PHP手册的通读。除了函数参考部分没有每个都看，其他的章节基本上都看过了。看过之后才发现手册解决了自己之前对于PHP的一些模棱两可的认识，对PHP的掌握变的更加的全面和深入。</span>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">PHP手册分为几个大部分。包括：入门指引、安装与配置、语言参考、安全、特点。实际上为我们解决了什么是PHP？怎么准备PHP的环境？PHP应该怎样写？如何避免PHP代码的风险？PHP的一些特性这几个问题。后续还有函数参考、PHP的核心实现相关的一些话题、PHP的历史等一些内容。读完整个手册后，让我们能够了解到PHP这门语言的脉络 。<br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">下面是我在阅读过程中作出的一些笔记摘抄，看到这些内容，实际上解决了我平时对于PHP的一些疑问，在这里记录下来以备后用。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><span  style="font-size: 18px; "><strong>PHP数组提供了很多的功能，其背后是用什么样的数据结构来实现的？</strong></span></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">PHP 中的数组实际上是一个有序图。图是一种把 values 映射到 keys 的类型。此类型在很多方面做了优化，因此可以把它当成真正的数组来使用，或列表（矢量），散列表（是图的一种实现），字典，集合，栈，队列以及更多可能性。因为可以用另一个 PHP 数组作为值，也可以很容易地模拟树。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">手册中并没有详细的讲解具体的实现原理，有兴趣的可以看看这篇文章&nbsp;<a href="http://liuzhiqiangruc.iteye.com/blog/1122715">详解PHP中Array结构HashTable</a>。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><strong style="font-size: 18px; ">文件包含以及由此引起的问题</strong></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">话说 Require 和 Include 的区别大家都比较明白。require() 和 include() 除了怎样处理失败之外在各方面都完全一样。include() 产生一个警告而 require() 则导致一个致命错误。换句话说，如果想在丢失文件时停止处理页面，那就别犹豫了，用 require() 吧。include() 就不是这样，脚本会继续运行。同时也要确认设置了合适的include_path。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">之前遇到过一个问题，一个输出图片的php文件，突然有一天访问的时候输出空白，而且程序也没有报错。当时检查半天之后发现是引用的php文件在?&gt;结束符之后多了一个空行。看了下面的解释，就能够明白其中的道理了。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">当一个文件被包含时，语法解析器在目标文件的开头脱离 PHP 模式并进入 HTML 模式，到文件结尾处恢复。由于此原因，目标文件中应被当作 PHP 代码执行的任何代码都必须被包括在有效的 PHP 起始和结束标记之中。（这个也许是引起空格问题的元凶）<br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><strong style="font-size: 18px; ">PHP的几种工作方式有什么区别</strong></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">PHP有三种工作方式。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">第一种方法是将 PHP 用作一个&#8220;外壳&#8221;。以这种方法运行，PHP 会为向 web 服务器提出的每个 PHP 页面请求生成并结束一个 PHP 解释器线程。由于该线程会随每个请求的结束而结束，因此任何在这个线程中利用的任何资源（例如指向 SQL 数据库服务器的连接）都会随线程的结束而关闭。在这种情况下，使用永久连接不会获得任何地改变&#8213;&#8213;因为它们根本不是永久的。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">第二，也是最常用的方法，是把 PHP 用作多进程 web 服务器的一个模块，这种方法目前只适用于 Apache。对于一个多进程的服务器，其典型特征是有一个父进程和一组子进程协调运行，其中实际生成 web 页面的是子进程。每当客户端向父进程提出请求时，该请求会被传递给还没有被其它的客户端请求占用的子进程。这也就是说当相同的客户端第二次向服务端提出请求时，它将有可能被一个不同的子进程来处理。在开启了一个永久连接后，所有请求 SQL 服务的后继页面都能够重新使用这个已经建立的 SQL Server 连接。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">最后一种方法是将 PHP 用作多线程 web 服务器的一个插件。目前 PHP 4 已经支持 ISAPI、WSAPI 和 NSAPI（在 Windows 环境下），这些使得 PHP 可以被用作诸如 Netscape FastTrack (iPlanet)、Microsoft's Internet Information Server (IIS) 和 O'Reilly's WebSite Pro 等多线程 web 服务器的插件。永久连接的行为和前面所描述的多过程模型在本质上是相同的。注意 PHP 3 不支持 SAPI。<br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><strong style="font-size: 18px; ">PHP中是如何处理引用的</strong></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">在 Zend 引擎 1 代，它驱动了 PHP4，对于变量的 static 和 global 定义是以 references 的方式实现的。例如，在一个函数域内部用 global 语句导入的一个真正的全局变量实际上是建立了一个到全局变量的引用。这有可能导致预料之外的行为。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">在 PHP 中引用意味着用不同的名字访问同一个变量内容。这并不像 C 的指针，替代的是，引用是符号表别名。注意在 PHP 中，变量名和变量内容是不一样的，因此同样的内容可以有不同的名字。最接近的比喻是 Unix 的文件名和文件本身&#8213;&#8213;变量名是目录条目，而变量内容则是文件本身。引用可以被看作是 Unix 文件系统中的 hardlink。
+<div><br />
+</div>
+<div>如果具有引用的数组被拷贝，其值不会解除引用。对于数组传值给函数也是如此。自 PHP 5 起，new 自动返回引用，因此在此使用 =&amp; 已经过时了并且会产生 E_STRICT 级别的消息。</div>
+<div><br />
+</div>
+<div>引用做的第二件事是用引用传递变量。这是通过在函数内建立一个本地变量并且该变量在呼叫范围内引用了同一个内容来实现的。</div>
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><strong style="font-size: 18px; ">PHP中的类</strong></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">类是变量与作用于这些变量的函数的集合。PHP 5 引入了新的对象模型（Object Model）。完全重写了 PHP 处理对象的方式，允许更佳性能和更多特性。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">PHP 中没有析构函数。可以用 register_shutdown_function() 来替代模拟大多数析构函数的效果。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">如果在用会话并使用了 session_register() 来注册对象，这些对象会在每个 PHP 页面结束时被自动序列化，并在接下来的每个页面中自动解序列化。基本上是说这些对象一旦成为会话的一部分，就能在任何页面中出现。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">使用 __sleep 的目的是关闭对象可能具有的任何数据库连接，提交等待中的数据或进行类似的清除任务。此外，如果有非常大的对象而并不需要完全储存下来时此函数也很有用。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">在 __autoload 函数中抛出的异常不能被 catch 语句块捕获并导致致命错误。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">为了实现向后兼容性，如果 PHP 5 在类中找不到 __construct() 函数，它就会尝试寻找旧式的构造函数，也就是和类同名的函数。因此唯一会产生兼容性问题的情况是：类中已有一个名为 __construct() 的方法，但它却又不是构造函数。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">类中的方法都必须使用关键字public、protected 或 private 进行定义。如果没有设置这些关键字，则该方法会被设置成默认的 public。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">All methods declared in an interface must be public, this is the nature of an interface.</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">Both method calls and member accesses can be overloaded via the __call, __get and __set methods.&nbsp;All overloading methods must be defined as public.</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">Type Hints can only be of the object and array (since PHP 5.1) type. Traditional type hinting with int and string isn't supported.</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><strong style="font-size: 18px; ">还有这样的事情？</strong></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">在读手册的过程中，也发现了平时可能不会想到的一些问题，也许大家看到了也有这样的感受，居然有这样的事情！</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">赋值语句本身求值为被赋的值，即 5。实际上这意味着&#8220;$a = 5&#8221;，不必管它是做什么的，是一个值为 5 的表达式。因而，这样写&#8220;$b = ($a = 5)&#8221;和这样写&#8220;$a =5; $b=5&#8221;（分号标志着语句的结束）是一样的。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">如果比较一个整数和字符串，则字符串会被转换为整数。如果比较两个数字字符串，则作为整数比较。此规则也适用于 switch 语句。<br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">在处理字符变量的算数运算时，PHP 沿袭了 Perl 的习惯，而非 C 的。例如，在 Perl 中 'Z'+1 将得到 'AA'，而在 C 中，'Z'+1 将得到 '['（ord('Z') == 90，ord('[') == 91）。注意字符变量只能递增，不能递减，并且只支持纯字母（a-z 和 A-Z）。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">在 PHP 中可以调用递归函数。但是要避免递归函数／方法调用超过 100-200 层，因为可能会破坏堆栈从而使当前脚本终止。<br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">从函数返回一个引用，必须在函数声明和指派返回值给一个变量时都使用引用操作符 &amp; ：</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">PHP 支持变量函数的概念。这意味着如果一个变量名后有圆括号，PHP 将寻找与变量的值同名的函数，并且将尝试执行它。除了别的事情以外，这个可以被用于实现回调函数，函数表等等。<br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">由于 PHP 的文件系统操作是基于 C 语言的函数的，所以它可能会以您意想不到的方式处理 Null 字符。&nbsp;</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">应用程序永远不要使用数据库所有者或超级用户帐号来连接数据库，因为这些帐号可以执行任意的操作，比如说修改数据库结构（例如删除一个表）或者清空整个数据库的内容.</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">防止用户从URL中伪造程序变量。注意区分$_REQUEST和$_POST\$_GET。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">可以决定脚本是否需要在客户端中断连接时退出。有时候让脚本完整地运行会带来很多方便，即使没有远程浏览器接受脚本的输出。默认的情况是当远程客户端连接中断时脚本将会退出。该处理过程可由 php.ini 的 ignore_user_abort 或由 Apache .conf 设置中对应的&#8220;php_value ignore_user_abort&#8221;以及 ignore_user_abort() 函数来控制。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">永久的数据库连接是指在脚本结束运行时不关闭的连接。当收到一个永久连接的请求时。PHP 将检查是否已经存在一个（前面已经开启的）相同的永久连接。如果存在，将直接使用这个连接；如果不存在，则建立一个新的连接。所谓&#8220;相同&#8221;的连接是指用相同的用户名和密码到相同主机的连接。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">使用永久连接将（非常）有可能改变脚本的效率，但不改变其行为！</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><strong style="font-size: 18px; ">PHP的其他函数</strong></div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">PHP的函数参考中，包括189个项目分类。这个里面的函数众多，我觉得一一看完非常花时间，也未必看过之后马上能在实际中应用。还是了解一下分类，具体的使用在项目中进行查找比较合适。</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; "><br />
+</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">参考资料：</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">1、PHP手册中文版</div>
+<div style="font-family: Arial; line-height: normal; font-size: medium; ">2、详解PHP中Array结构HashTable</div>
+<style type="text/css" isprelink="true">@import url(http://www.cnblogs.com/Load.ashx?type=style&file=SyntaxHighlighter.css);</style><style type="text/css">@import url(/css/cuteeditor.css);</style></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2011-10-17 13:56</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2215341" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2215341);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2215341,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2011/10/17 13:56:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

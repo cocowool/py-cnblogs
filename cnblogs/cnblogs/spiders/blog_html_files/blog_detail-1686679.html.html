@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>彻底理解Doctype - Cocowool - 博客园</title>
+<meta property="og:description" content="写了很多年的CSS，但是对于页面中的第一段话从来都是模模糊糊的认识。仿佛是记得，不同doctype模式，就会触发不同的验证级别。实际的编码过程中，貌似遇到过一两次模式不同，代码解释不一样的情况，但是并" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2010/03/15/1686679.html">彻底理解Doctype</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>写了很多年的CSS，但是对于页面中的第一段话从来都是模模糊糊的认识。仿佛是记得，不同doctype模式，就会触发不同的验证级别。实际的编码过程中，貌似遇到过一两次模式不同，代码解释不一样的情况，但是并没有去细细的追究。今天想起来，这个问题乃是一个最基本的问题，所以花了点时间整理一些知识，消化一下，今后不能够在这个方面有半点的马虎。</p>  <p>首先，看一段典型的Doctype</p>  <blockquote>   <p>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;<a href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;">http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;</a>&gt;</p>    <p>&#160;</p> </blockquote>  <p>DOCTYPE是document type的简写，在网页制作中，用来说明你用的XHTML或者HTML是什么版本。其作用是指出阅读程序应该用什么规则集来解释文档中的标记。要建立符合标准的网页，DOCTYPE声明是必不可少的关键部分，如果没有正确的DOCTYPE，你的标识和CSS可能都不会正常工作。</p>  <p>其中的DTD，例如上例中的xhtml1-transitional.dtd，叫做文档类型定义，里面包含了文档的规则，浏览器就根据你定义的DTD来解释你页面的标识，并展现出来。</p>  <p>完整的DOCTYPE类型如下图所示：</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/WindowsLiveWriter/Doctype_11B33/0021_2.png"><img title="0021" style="border-top-width: 0px; display: inline; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px" height="218" alt="0021" src="https://images.cnblogs.com/cnblogs_com/cocowool/WindowsLiveWriter/Doctype_11B33/0021_thumb.png" width="306" border="0" /></a> </p>  <p>XHTML 1.0 提供了三种DTD声明可供选择：</p>  <p>1、过渡的（Transitional）：要求非常宽松的DTD，它允许你继续使用HTML4.01的标识（但是要符合xhtml的写法），完整代码如下：</p>  <blockquote>   <p><font style="background-color: #ffffff">&lt;!DOCTYPE html PUBLIC “-//W3C//DTD XHTML 1.0 Transitional//EN” &quot;</font></p>    <p>&quot;<font style="background-color: #ffffff">http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</font></p> </blockquote>  <p>2、严格的（Strict）：要求严格的DTD，不能使用任何表现层的标识和属性，完整的代码如下：</p>  <blockquote>   <p><font style="background-color: #ffffff">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;        <br />&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;</font></p> </blockquote>  <p><font style="background-color: #ffffff">那么表现层的标识和属性都有哪些呢，<a href="http://tech.163.com/06/1023/09/2U41FR4R000918BL.html">资料1</a>中说 &lt;br&gt;不能够正常识别，但是笔者实验过后，发现在IE6和Firefox3.5中，即使使用strict模式，&lt;br&gt;仍能够被正常解析为一个换行。而且，&lt;b&gt;、&lt;em&gt;这些标签都可以正常生效，所以这里就存疑了，什么属于表现层的标识和属性呢？</font></p>  <p><font style="background-color: #ffffff">“表现层的标识和属性”是指那些纯粹用来控制表现的tag。</font></p>  <p>经过Google，上面实验发现的问题是这个原因引起的：不同网页的不同呈现模式</p>  <p>现代浏览器包括不同的呈现模式，目的是既支持遵循标准的网页，也支持为老式浏览器而设计的网页。其中，Standard（标准）模式（也就是严格呈现模式）用于呈现遵循最新标准的网页，而Quirks（包容）模式（也就是松散呈现模式或者兼容模式）用于呈现为传统浏览器而设计的网页。另外，Mozilla新增了一种 Almost Standards（近似标准）模式，用于支持为标准的某个老版本而设计的网页。</p>  <blockquote>   <p>nternet Explorer 6+ 支持两种呈现模式，分别叫做 Quirks 模式和 Standards 模式。当 Internet Explorer 呈现包含有效 XHTML（或 HTML 4.0）DOCTYPE 的页时，它会以 Standards 模式呈现该页；否则，它会以 Quirks模式呈现该页（有关详细信息，请参阅 CSS Enhancements in Internet Explorer 6）。</p> </blockquote>  <blockquote>   <p>Opera 浏览器 (Opera 7+) 支持与 Internet Explorer 相同的两种呈现模式：Quirks 和 Standards（有关详细信息，请参阅 <a href="http://www.opera.com/docs/specs/doctype/"><u>http://www.opera.com/docs/specs/doctype/</u></a>）。</p> </blockquote>  <blockquote>   <p>Mozilla Firefox 1+ 支持三种呈现模式：Quirks 模式、Almost Standards 模式和 Standards 模式。Firefox 的 Almost Standards 模式对应于 Internet Explorer 和 Opera 的 Standards 模式。当页包含有效的 XHTML 1.0 Transitional DOCTYPE（并且该页被分配为 text/html MIME 类型）时，Firefox 会以 Almost Standards 模式呈现该页。当页包含 XHTML 1.0 Strict 或 XHTML 1.1 DOCTYPE（或者该页被分配为 XML MIME 类型）时，该页将以 Standards 模式呈现（有关详细信息，请参阅 <a href="http://www.mozilla.org/docs/web-developer/quirks/doctypes.html"><u>http://www.mozilla.org/docs/web-developer/quirks/doctypes.html</u></a>）。</p> </blockquote>  <p><font style="background-color: #f4f5f7">可以通过脚本来检测浏览器当前的呈现模式</font></p>  <blockquote>   <p>&lt;script type='text/javascript'&gt;alert(document.compatMode);&lt;/script&gt;</p> </blockquote>  <p>&#160;</p>  <p><font style="background-color: #ffffff">3、框架的（Frameset）：专门针对框架页面设计使用的DTD，如果页面中包含有框架，最好使用这种DTD，完整代码如下：</font></p>  <blockquote>   <p><font style="background-color: #ffffff">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Frameset//EN&quot;        <br />        <br />&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd&quot;&gt;</font></p> </blockquote>  <p><font style="background-color: #ffffff"></font></p>  <p><font style="background-color: #ffffff"><strong>关于DOCTYPE切换</strong></font> </p>  <p>顶部的doctype声明是让浏览器进入正确呈现模式的关键，理论上浏览器应该能够正确的识别出doctype并作出自然地切换。实际上，由于多方面的原因，有的时候浏览器并不能够正常的进行doctype的切换，原因如下</p>  <p>1、doctype声明不在第一行。</p>  <p>IE，Opera和旧版Safari都希望文档的第一行是doctype声明。所以，如果在它之前还有其他任何东西 （包括XML prolog），就无法识别doctype。因此，XML prolog的存在会使IE，Opera和Safari进入Quirks模式。XML prolog并非必需的，所以你可在XHTML网页中安全地省略它。注意：一定要在http-equiv meta标记中包括一个charset属性，以弥补XML prolog中缺失的encoding属性。</p>  <p>2、丢失或相对的URL。</p>  <p>在完整的doctype声明中，要包括相应的文档类型定义（DTD）文件的URL。如果URL丢失，或者指定的是一个相对路径（而不是完全限定的Internet地址），大多数浏览器都会进入Quirks模式，不管doctype声明规定的是什么模式。</p>  <p>3、形式错误的doctype。</p>  <p>浏览器对doctype声明的形式和格式非常敏感，如果不能识别一个形式错误的doctype，就会强制进入Quirks模式（正是因为这个原因，所以我们建议将一个已知正确的doctype拷贝和粘贴到文档中，而不是亲自输入它）。之所以出现形式错误的doctype，一个常见的原因是在 doctype 的第一部分与URL之间缺少一个空格。将一个分两行的doctype折叠成单独一行，常常会丢失那个空格。</p>  <p>4、过渡期的doctype。</p>  <p>浏览器处理过渡期的doctype时，最容易出现不一致的问题。IE和Opera使用Standards模式；Netscape 6和旧版本的Safari使用Quirks模式；Netscape 7、Mozilla 1和新版本的Safari使用Netscape的Almost Standards模式，它是Standards模式的一个具有更好容错性的版本。</p>  <p>5、未知的doctype。</p>  <p>浏览器在处理不能识别的doctype时，也存在不一致的现象。IE和Opera会进入Standards模式；换言之，它假定不能识别的 doctype 是尚未在浏览器中集成的一个新标准。Netscape 6则相反，会在遇到不能识别的doctype时切换到Quirks模式。</p>  <p>doctype切换也许是让浏览器进入正确呈现模式并正确显示网页的一种有效手段，前提是你注意到了各种浏览器的不一致，并能积极主动地避免各种问题。</p>  <p>   <br /></p>  <p></p>  <p>参考资料：    <br />1、<a href="http://tech.163.com/06/1023/09/2U41FR4R000918BL.html"><strike>什么是Doctype，他对网页起何作用</strike></a>     <br />2、<a href="http://www.souzz.net/html/svg/1/71024.html">DOCTYPE声明的作用及用法详解</a>     <br />3、<a href="http://www.dedecms.com/knowledge/web-based/html/2009/0929/861.html">XHTML的DOCTYPE切换</a>     <br />4、<a href="https://developer.mozilla.org/en/Mozilla%27s_DOCTYPE_sniffing">Mozilla's DOCTYPE sniffng</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2010-03-15 21:53</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1686679" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1686679);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1686679,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2010/3/15 21:53:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

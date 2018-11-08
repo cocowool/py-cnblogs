@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Memcache学习笔记一 - Cocowool - 博客园</title>
+<meta property="og:description" content="过年期间，看了一些Memcache的资料，整理了一个PPT。 Memcached分析 View more presentations from Wonwang. 收获最大的部分，我觉得是在应用上如何更" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2011/03/18/1988249.html">Memcache学习笔记一</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>过年期间，看了一些Memcache的资料，整理了一个PPT。</p>  <div style="width: 425px" id="__ss_6915055"><strong style="margin: 12px 0px 4px; display: block"><a title="Memcached分析" href="http://www.slideshare.net/Wonwang/memcached-6915055">Memcached分析</a></strong><object id="__sse6915055" width="425" height="355"><param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=memcached-110213204117-phpapp02&amp;stripped_title=memcached-6915055&amp;userName=Wonwang" /><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><embed name="__sse6915055" src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=memcached-110213204117-phpapp02&amp;stripped_title=memcached-6915055&amp;userName=Wonwang" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object>    <div style="padding-bottom: 12px; padding-left: 0px; padding-right: 0px; padding-top: 5px">View more <a href="http://www.slideshare.net/">presentations</a> from <a href="http://www.slideshare.net/Wonwang">Wonwang</a>.</div> </div>  <p>收获最大的部分，我觉得是在应用上如何更好的对缓存进行使用和处理，来解决 Cache Stamples 的问题。通常只进行一次缓存判断的逻辑，在应对高并发的访问时，经常会引起问题，因此增加锁机制和Mutex就非常必要。</p>  <p><strong>Memcache服务器的状态</strong></p>  <p>如果有人反映memcache链接比较慢的时候，可以按照下面的步骤来进行查看</p>  <p>首先检查Memcached服务器组的 listen_disabled_num 参数，这个参数表明了这台服务器曾经达到最大连接的次数，这个数字当然是越小越好，如果这个数字不断快速的增长，我们就该小心我们的服务了。</p>  <p>accepting_conns 这个参数与上一个有关，我们可以简单的查看这个值是 1 或者 0 来判断服务器是否达到过最大连接。</p>  <p>curr_connections 这个状态显示了当前连接到服务器上的数量，注意这个数字不要超过设置的最大值</p>  <p>limit_maxbytes 当前服务器可以使用的最大内存数量，实际上服务器中的 memcached 进程占用的内存会比这个数字大一些</p>  <p>cmd_flush 服务器上执行了 flush_all 的次数</p>  <p>evictions 这个数字表示一些项目还没有过期，但是因为 slab 中已经没有可用的空间，导致最后根据LRU算法被剔除的情况</p>  <p><strong>一些统计数值</strong></p>  <p>缓存命中率：计算公式 get_hits / ( get_hits + get_misses ) 服务器的缓存命中率，越高越好</p>  <p>&#160;</p>  <p>另外，可以使用下面这个脚本进行服务器的测试</p>  <p>测试脚本：<a title="http://consoleninja.net/code/memcached/mc_conn_tester.pl" href="http://consoleninja.net/code/memcached/mc_conn_tester.pl">http://consoleninja.net/code/memcached/mc_conn_tester.pl</a></p>  <p>&#160;</p>  <p><strong>利用Cacti监控Memcached</strong></p>  <p>Cacti作为一套成熟的系统，可以用来绘制与Memcached相关的各种统计图表。下面提供的插件可以结合Cacti进行绘图，但是需要下面几个要求：1、系统已经安装了Cacti；2、已经安装好了Memcached；3、Cacti的机器上同时安装了Python；4、安装了Python的Memcached客户端。</p>  <p>下面是一些截图</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201103/201103181638429632.png"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201103/201103181638445355.png" width="549" height="437" /></a> </p>  <p>下载Cacti取数据的脚本：<a href="http://s1.dlnws.com/dealnews/developers/cacti-memcached-1.0.tar.gz" target="_blank">Cacti-memcached-1.0.tar.gz</a></p>  <p>安装配置过程：    <br />1、下载Python的客户端API，<a href="ftp://ftp.tummy.com/pub/python-memcached/old-releases/python-memcached-1.47.tar.gz" target="_blank">python-memcached-1.47.tar.gz</a>     <br />2、解压后安装</p>  <blockquote>   <p>tar –xvzf python-memcached-1.47.tar.gz</p>    <p>python setup.py install</p> </blockquote>  <p>3、下载Cacti的模板，<a href="http://s1.dlnws.com/dealnews/developers/cacti-memcached-1.0.tar.gz" target="_blank">Cacti-memcached-1.0.tar.gz</a></p>  <p>4、解压缩，然后将 memcached.py 拷贝到 cacti 的 /scripts/ 目录中    <br />5、为了确认这个脚本是否能够正常运行，可以运行脚本进行测试</p>  <blockquote>   <p>python memcached.py hostname</p> </blockquote>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201103/201103181638458288.png"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201103/201103181638473040.png" width="366" height="209" /></a> </p>  <p>正常情况下，我们可以取得所连接服务器的一些数据。</p>  <p>6、登录进入Cacti系统，选择导入模板，选择我们下载的模板中的 cacti_memcached_host_template.xml 文件，其它选项保持默认，进行保存</p>  <p>此时，我们在Cacti系统中引入模板就已经完成了，你会看到成功的提示，并且有一些相关的信息显式或者一些报错的界面。如果没有成功，可以参考这里的<a href="http://dealnews.com/developers/cacti/memcached.html#help" target="_blank">帮助</a>。</p>  <p>7、系统的配置和使用</p>  <p>安装完成后，我们可以在新建Device时看到对应的模板，如下图</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201103/201103181638503266.png"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201103/201103181638524115.png" width="391" height="217" /></a> </p>  <p>对于已经存在的Device，也可以在Associated Graph Templates中选择对应的模板</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/201103/201103181638556849.png"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="image" border="0" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/201103/201103181638589932.png" width="534" height="296" /></a> </p>  <p>8、之后就可以在Graph中看到对应图表了。</p>  <p>&#160;</p>  <p>&#160;</p>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:0767317B-992E-4b12-91E0-4F059A8CECA8:c96de416-ae73-490d-b181-72566e28f2ab" class="wlWriterEditableSmartContent">Technorati 标签: <a href="http://technorati.com/tags/Memcache" rel="tag">Memcache</a>,<a href="http://technorati.com/tags/Linux" rel="tag">Linux</a>,<a href="http://technorati.com/tags/%e7%bc%93%e5%ad%98" rel="tag">缓存</a>,<a href="http://technorati.com/tags/Key-value" rel="tag">Key-value</a></div>  <p>参考资料    <br />1、<a href="http://code.google.com/p/memcached/wiki/Timeouts" target="_blank">Memcached Wiki Timeouts</a>     <br />2、<a href="http://dealnews.com/developers/cacti/memcached.html" target="_blank">利用Cacti监控Memcached</a>    <br />3、<a href="http://timyang.net/data/memcached-lru-evictions/" target="_blank">Memcached数据被踢现象分析(evicitions&gt;0)</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2011-03-18 16:39</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1988249" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1988249);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1988249,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2011/3/18 16:39:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

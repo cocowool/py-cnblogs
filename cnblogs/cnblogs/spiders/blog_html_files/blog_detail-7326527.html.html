@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Log stash学习笔记（一） - Cocowool - 博客园</title>
+<meta property="og:description" content="Logstash是一款开源的数据收集引擎，具备实时管道处理能力。简单来说，logstash作为数据源与数据存储分析工具之间的桥梁，结合 ElasticSearch以及Kibana，能够极大方便数据的处" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/7326527.html">Log stash学习笔记（一）</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><p>Logstash是一款开源的数据收集引擎，具备实时管道处理能力。简单来说，logstash作为数据源与数据存储分析工具之间的桥梁，结合 ElasticSearch以及Kibana，能够极大方便数据的处理与分析。通过200多个插件，logstash可以接受几乎各种各样的数据。包括日志、网络请求、关系型数据库、传感器或物联网等等。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170809172218402-966897321.png" /></p>
+<h3 id="安装">安装</h3>
+<p>之前我有一篇文章<a href="http://www.cnblogs.com/cocowool/p/7297749.html">ElasticSearch + Logstash + Kibana 搭建笔记</a>记录了ELK环境的搭建过程，只是简单介绍了一种安装方式，本文记录更多的细节。</p>
+<blockquote>
+<p>logstash 要求Java8的支持。Java9暂时不支持，本文使用的logstash版本为5.5.1。</p>
+</blockquote>
+<p>在Linux环境中，我们可以通过包管理进行安装，例如Unbuntu中的apt、以及CentOS中的yum。也可以从<a href="https://www.elastic.co/downloads/logstash">这里</a>下载对应环境的二进制版本。</p>
+<h3 id="体验pipeline">体验Pipeline</h3>
+<p>Logstatsh最基本的Pipeline模式如下图所示，其需要两个必需参数<em>input</em>、<em>output</em>，以及一个可选参数<em>filter</em>。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170809172237620-91246511.png" /></p>
+<pre class="sh"><code>cd logstash-5.5.1
+bin/logstash -e &#39;input { stdin { } } output { stdout {} }&#39;
+
+[2017-08-09T15:40:03,303][INFO ][logstash.pipeline        ] Pipeline main started
+
+hello world
+2017-08-09T07:40:46.397Z iZ627x15h6pZ hello world</code></pre>
+<p><code>-e</code>参数允许我们在命令行中直接输入配置，而不同通过<code>-f</code>参数指定配置文件。看到Pipeline main started表示logstash已经启动成功，在命令行输入一些文字后，logstash会加上日期和主机名（IP）输出到终端。这就是Logstash最基本的工作模式，接受输入，然后将信息加工后放入到输出。</p>
+<h3 id="处理日志">处理日志</h3>
+<p>Logstash收购了Filebeat加入到自己的生态系统中用来处理日志，Filebeat是一个轻量化的日志收集工具，还可以感知后台logstash的繁忙程度来决定日志发送的速度。</p>
+<p>首先下载 <a href="https://www.elastic.co/downloads/beats/filebeat">Filebeat</a>，解压后就可以使用。找到filebeat.yml修改如下：</p>
+<pre class="sh"><code>filebeat.prospectors:
+- input_type: log
+  paths:
+    - /path/to/file/logstash-tutorial.log 
+output.logstash:
+  hosts: [&quot;localhost:5043&quot;]</code></pre>
+<p>配置完成后等logstash启动后再启动Filebeat。</p>
+<pre class="sh"><code>sudo ./filebeat -e -c filebeat.yml -d &quot;publish&quot;</code></pre>
+<p>接下来配置logstash，按照如下配置编写一个 filebeat.conf 文件</p>
+<pre><code>input {
+  beats {
+    port =&gt; &quot;5043&quot;
+  }
+}
+output {
+  stdout { codec =&gt; rubydebug }
+}</code></pre>
+<p>配置文件可以用下面的命令验证是否有问题</p>
+<pre><code>bin/logstash -f filebeat.conf --config.test_and_exit</code></pre>
+<p>如果验证没有问题，就可以用这个配置文件启动 logstash 了。</p>
+<pre><code>bin/logstash -f filebeat.conf</code></pre>
+<p>之后再启动Filebeat，就可以在Filebeat终端窗口看到日志信息的输出，同时在logstash这边也能看到有日志输出。这就说明此时logstash已经能够正常接收beats送来的文件了。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170809172300167-238115856.png" /></p>
+<p>参考资料：<br />
+1、<a href="https://www.elastic.co/guide/en/logstash/current/index.html">Logstash Reference</a><br />
+2、<a href="https://github.com/elastic/beats/tree/master/filebeat">Filebeat</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2017-08-09 17:24</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=7326527" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(7326527);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=7326527,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2017/8/9 17:24:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>WAMP环境配置 - Cocowool - 博客园</title>
+<meta property="og:description" content="选择的版本分别为  apache 2.2.14 with ssl  php 5.2.11  mysql 5.1.41  系统环境为 Windows XP SP3  安装过程：  1、安装apache。" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2009/12/10/1620784.html">WAMP环境配置</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>选择的版本分别为</p>  <p>apache 2.2.14 with ssl</p>  <p>php 5.2.11</p>  <p>mysql 5.1.41</p>  <p>系统环境为 Windows XP SP3</p>  <p>安装过程：</p>  <p>1、安装apache。</p>  <blockquote>   <p>这个非常简单，双击后一路 next ，在填写域名和主机名的时候可以随便写，比如 test.com/www.test.com ，然后写下自己的邮箱，安装完成。      <br />完成后，通过 <a href="http://localhost">http://localhost</a> 能够访问，并且看到 It works! 表示已经安装成功。</p>    <p>根据PHP官方的提示：      <br />We do not recommend using a threaded MPM in production with Apache2.&#160; Use the prefork MPM instead, or use Apache1. For information on why,&#160;&#160; read the related FAQ entry on using Apache2 with a threaded MPM</p>    <p>对于默认的MPM模式官方并不支持，我们应当修改为 Prefork 模式，这个之后再讨论如何优化。</p> </blockquote>  <p>2、下面安装PHP。</p>  <blockquote>   <p>PHP在Windows下的安装有两种方式，一种是CGI、一种是apache的DLL模块。不管哪一种，我们都需要修改 apache 的配置文件去支持PHP。</p>    <p>我这里采用模块方式安装，在 httpd.conf 中添加：</p>    <p># For PHP 5 do something like this:      <br />LoadModule php5_module &quot;E:/php/php5apache2_2.dll&quot;       <br />AddType application/x-httpd-php .php </p>    <p># configure the path to php.ini      <br />PHPIniDir &quot;E:/php&quot;</p>    <p>重启apache，编写 phpinfo.php ，则通过 <a href="http://localhost/phpinfo.php">http://localhost/phpinfo.php</a> 可以查看到 php 已经安装完成。       <br /></p> </blockquote>  <p>3、安装 PHP 扩展。</p>  <blockquote>   <p>安装PHP的扩展只需要将 ;extension=*.dll 前的注释去掉，重启服务即可。我打开了 curl、gd2、mbstring、mcrypt、mysql、mysqli、pdo、pdo_mysql、pdo_oci、pdo_oci8、pdo_sqlite、soap、xmlrpc。需要注意的是，有些扩展需要将特定的 dll 拷贝到系统目录下才能正常使用。</p>    <p>php_curl.dll CURL, Client URL library functions Requires: ibeay32.dll,ssleay32.dll (bundled) </p>    <p>php_mcrypt.dll Mcrypt Encryption functions Requires: ibmcrypt.dll </p>    <p>php_mysql.dll MySQL functions PHP &gt;= 5.0.0, requires libmysql.dll&#160;&#160; (bundled)</p>    <p>php_mysqli.dll MySQLi functions PHP &gt;= 5.0.0, requires libmysql.dll&#160;&#160; (libmysqli.dll in PHP &lt;= 5.0.2) (bundled)</p>    <p>php_xmlrpc.dll XML-RPC functions PHP &gt;= 4.2.1 requires: iconv.dll(bundled) </p> </blockquote>  <blockquote>   <p>同时应该注意将 extension_dir 设置为系统对应的值，完成后重启 apache 即可。</p> </blockquote>  <p>4、安装 Mysql。</p>  <blockquote>   <p>Mysql 的安装也比较简单，从官方网站下载了安装文件后，双击一路运行到底。结束的时候可以选择是否到 Mysql 网站注册 和 马上进行服务器的配置。我们可以去掉服务器注册那一步，进而继续服务器的配置。</p>    <p>服务器的配置最主要就是选择 InnoDB 的存储位置和数据库的用户名密码，到最后，看全部执行完毕后安装就完成了。</p> </blockquote>  <blockquote>   <p></p> </blockquote>  <p>5、配置虚拟机</p>  <blockquote>   <p>项目比较多的时候，使用 apache 的虚拟机还是非常方便的。</p>    <p>首先打开 httpd.conf 中关于 vhost 配置文件的引用，这样我们所有的虚拟机配置文件都写在 extra/httpd-vhosts 中，方便管理。</p>    <p># Virtual hosts      <br />Include conf/extra/httpd-vhosts.conf</p>    <p>然后在 httpd-vhost 文件中加入</p>    <p>&lt;VirtualHost *:80&gt;      <br />&#160;&#160;&#160; ServerAdmin cocowool@gmail.com       <br />&#160;&#160;&#160; DocumentRoot &quot;D:/workspaces/DefaultWorkspace/heep/&quot;       <br />&#160;&#160;&#160; ServerName www.heep.com       <br />&#160;&#160;&#160; ErrorLog &quot;logs/heep.com-error.log&quot;       <br />&#160;&#160;&#160; CustomLog &quot;logs/heep.com-access.log&quot; common </p>    <p>&#160;&#160;&#160; &lt;Directory &quot;D:/workspaces/DefaultWorkspace/heep/&quot;&gt;      <br />&#160;&#160;&#160; AllowOverride Options       <br />&#160;&#160;&#160; Allow from All       <br />&#160;&#160;&#160; &lt;/Directory&gt;       <br />&lt;/VirtualHost&gt;</p> </blockquote>  <p>6、安装 Zend Optimizer</p>  <blockquote>   <p>Optimizer 可以到 <a href="http://www.zend.com" target="_blank">Zend 的官方网站</a> 下载。需要首先注册一个账号，这点没有 Mysql 好，不过人家毕竟没说这事开源的。虽然不开源 ZendOptimizer 确是免费的。下载完成后 一步一步安装就可以了，期间会提示选择正确的 PHP 和 Apache 的位置。</p> </blockquote>  <p>经过以上的步骤，一个 WAMP 的开发环境就配置好了，基本上能够满足开发一般应用的需要。</p>  <p>&#160;</p>  <p>参考资料：</p>  <p>1、<a href="http://jdlog.spaces.live.com/blog/cns!FBEA55C365DE0B74!249.entry" target="_blank">apache 2 MPM 的选择与配置</a></p>  <p>2、<a href="http://www.asgone.net/windows-apache2-cognos-cube-and-test/" target="_blank">windows中apache2配置性能优化以及测试小结</a></p>  <div class="wlWriterEditableSmartContent" id="scid:0767317B-992E-4b12-91E0-4F059A8CECA8:920ca736-90f8-4d8d-bf00-8e2acbbd0404" style="padding-right: 0px; display: inline; padding-left: 0px; float: none; padding-bottom: 0px; margin: 0px; padding-top: 0px">Technorati 标签: <a href="http://technorati.com/tags/WAMP" rel="tag">WAMP</a>,<a href="http://technorati.com/tags/PHP" rel="tag">PHP</a></div></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2009-12-10 08:30</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1620784" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1620784);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1620784,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2009/12/10 8:30:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

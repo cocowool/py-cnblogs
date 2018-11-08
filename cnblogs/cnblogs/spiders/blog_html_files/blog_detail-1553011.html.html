@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>PHP中正则的使用 - Cocowool - 博客园</title>
+<meta property="og:description" content="正则表达式，作为一种快速、便捷的处理字符串的工具，在各种编程语言中都有着广泛的用途，通过在PHP中的一些使用，下面记录一下关于PHP中正则使用的一些技巧。我的正则入门，是起源于网上的一篇文章[1]，这" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2009/08/24/1553011.html">PHP中正则的使用</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body">正则表达式，作为一种快速、便捷的处理字符串的工具，在各种编程语言中都有着广泛的用途，通过在PHP中的一些使用，下面记录一下关于PHP中正则使用的一些技巧。<br /><br />我的正则入门，是起源于网上的一篇文章[1]，这篇文章由浅入深的阐述了正则使用的方法，我觉得是一个很好的入门材料，不过学成还是要靠个人，在使用的过程中，还是会不断地忘记，因此反反复复的阅读了这篇文章有四五遍，对于其中一些比较困难的知识点，甚至要用很久才能消化，但是只要能见坚持着看完，你会发现自己对于正则的运用能力就会显著提高。<br /><br />正则表达式：<br /><br />用于描述字符排列和匹配模式的一种语法规则。它主要用于字符串的模式分割、匹配、查找及替换操作。<br /><br /><strong>PHP中的正则函数：</strong><br />php中有两套正则函数，两者功能差不多，分别为：<br />一套是由PCRE（Perl Compatible Regular Expression）库提供的。使用&#8220;preg_&#8221;为前缀命名的函数；<br />一套由POSIX（Portable Operating System Interface of Unix ）扩展提供的。使用以&#8220;ereg_&#8221;为前缀命名的函数；（POSIX的正则函数库，自PHP 5.3以后，就不在推荐使用，从PHP6以后，就将被移除）<br /><br />由于POSIX正则即将推出历史舞台，并且PCRE和perl的形式差不多，更利于我们在perl和php之间切换，所以这里重点介绍PCRE正则的使用。<br /><br /><strong>PCRE正则表达式</strong><br />PCRE全称为Perl Compatible Regular Expression，意思是Perl兼容正则表达式。<br />在PCRE中，通常将模式表达式（即正则表达式）包含在两个反斜线&#8220;/&#8221;之间，如&#8220;/apple/&#8221;。<br /><br />正则中重要的几个概念有：元字符、转义、模式单元（重复）、反义、引用和断言，这些概念都可以在文章[1]中轻松的理解和掌握。<br /><strong><br />常用的元字符(Meta-character)：</strong><br /><br />元字符&nbsp;&nbsp;&nbsp;&nbsp; 说明<br />\A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 匹配字符串串首的原子<br />\Z&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 匹配字符串串尾的原子<br />\b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 匹配单词的边界&nbsp;&nbsp;&nbsp;&nbsp; /\bis/&nbsp;&nbsp; 匹配头为is的字符串&nbsp;&nbsp; /is\b/&nbsp;&nbsp; 匹配尾为is的字符串&nbsp;&nbsp; /\bis\b/ 定界<br />\B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 匹配除单词边界之外的任意字符&nbsp;&nbsp; /\Bis/&nbsp;&nbsp; 匹配单词&#8220;This&#8221;中的&#8220;is&#8221;<br /><br />\d&nbsp;&nbsp;&nbsp;&nbsp; 匹配一个数字；等价于[0-9]<br />\D&nbsp;&nbsp;&nbsp;&nbsp; 匹配除数字以外任何一个字符；等价于[^0-9]<br />\w&nbsp;&nbsp;&nbsp;&nbsp; 匹配一个英文字母、数字或下划线；等价于[0-9a-zA-Z_]<br />\W&nbsp;&nbsp;&nbsp;&nbsp; 匹配除英文字母、数字和下划线以外任何一个字符；等价于[^0-9a-zA-Z_]<br />\s&nbsp;&nbsp;&nbsp;&nbsp; 匹配一个空白字符；等价于[\f\t\v]<br />\S&nbsp;&nbsp;&nbsp;&nbsp; 匹配除空白字符以外任何一个字符；等价于[^\f\t\v]<br />\f&nbsp;&nbsp;&nbsp;&nbsp; 匹配一个换页符等价于 \x0c 或 \cL<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 匹配一个换行符；等价于 \x0a 或 \cJ<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;匹配一个回车符等价于\x0d 或 \cM<br />\t&nbsp;&nbsp;&nbsp;&nbsp; 匹配一个制表符；等价于 \x09\或\cl<br />\v&nbsp;&nbsp;&nbsp;&nbsp; 匹配一个垂直制表符；等价于\x0b或\ck<br />\oNN&nbsp;&nbsp; 匹配一个八进制数字<br />\xNN&nbsp;&nbsp; 匹配一个十六进制数字<br />\cC&nbsp;&nbsp;&nbsp; 匹配一个控制字符<br /><br /><strong>模式修正符（Pattern Modifiers）：</strong><br />模式修正符在忽略大小写、匹配多行中使用特别多，掌握了这一个修正符，往往能解决我们遇到的很多问题。<br /><br />i&nbsp;&nbsp;&nbsp;&nbsp; －可同时匹配大小写字母<br />M&nbsp;&nbsp;&nbsp;&nbsp; －将字符串视为多行<br />S&nbsp;&nbsp;&nbsp;&nbsp; －将字符串视为单行，换行符做普通字符看待，使&#8220;.&#8221;匹配任何字符<br />X&nbsp;&nbsp;&nbsp;&nbsp; －模式中的空白忽略不计&nbsp;&nbsp; &nbsp;<br />U&nbsp;&nbsp;&nbsp;&nbsp; －匹配到最近的字符串<br />e&nbsp;&nbsp;&nbsp;&nbsp; －将替换的字符串作为表达使用<br />格式：/apple/i匹配&#8220;apple&#8221;或&#8220;Apple&#8221;等，忽略大小写。&nbsp;&nbsp;&nbsp;&nbsp; /i<br /><strong><br />PCRE的模式单元：</strong><br /><br />//1 提取第一位的属性<br />/^\d{2} ([\W])\d{2}\\1\d{4}$匹配&#8220;12-31-2006&#8221;、&#8220;09/27/1996&#8221;、&#8220;86 01 4321&#8221;等字符串。但上述正则表达式不匹配&#8220;12/34-5678&#8221;的格式。这是因为模式&#8220;[\W]&#8221;的结果&#8220;/&#8221;已经被存储。下个位置&#8220;\1&#8221;引用时，其匹配模式也是字符&#8220;/&#8221;。<br /><br />当不需要存储匹配结果时使用非存储模式单元&#8220;（？：）&#8221;<br />例如/(?:a|b|c)(D|E|F)\\1g/ 将匹配&#8220;aEEg&#8221;。在一些正则表达式中，使用非存储模式单元是必要的。否则，需要改变其后引用的顺序。上例还可以写成/（a|b|c）(C|E|F)\2g/。<br /><strong><br />PCRE正则表达式函数：</strong><br />preg_match()和preg_match_all()<br />preg_quote()<br />preg_split()<br />preg_grep()<br />preg_replace()<br /><br />函数的具体使用，我们可以通过PHP手册来找到，下面分享一些平时积累的正则表达式：<br /><br />&nbsp;&nbsp; &nbsp;匹配action属性<br />&nbsp;&nbsp; &nbsp;$str = '&lt;form name="adfa" action="asdf.bphp" target=""&gt;&lt;form name="bbbb" action="http://www.bac.com/test.php" target="qwerqwerq"&gt;&lt;form name="bbbb" action="http.php" target="qwerqwerq"&gt;';<br />&nbsp;&nbsp; &nbsp;$match = '';<br />&nbsp;&nbsp; &nbsp;preg_match_all('/\s+action=\"(?!http:)(.*?)\"\s/', $str, $match);<br />&nbsp;&nbsp; &nbsp;print_r($match);<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;在正则中使用回调函数<br />&nbsp;&nbsp; &nbsp;/**<br />&nbsp;&nbsp; &nbsp; * replace some string by callback function<br />&nbsp;&nbsp; &nbsp; *<br />&nbsp;&nbsp; &nbsp; */<br />&nbsp;&nbsp; &nbsp;function callback_replace() {<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$url = 'http://esfang.house.sina.com.cn';<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$str = '&lt;form name="adfa" action="asdf.bphp" target=""&gt;&lt;form name="bbbb" action="http://www.bac.com/test.php" target="qwerqwerq"&gt;&lt;form name="bbbb" action="http.php" target="qwerqwerq"&gt;';<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$str = preg_replace ( '/(?&lt;=\saction=\")(?!http:)(.*?)(?=\"\s)/e', 'search(\$url, \\1)', $str );<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;echo $str;<br />&nbsp;&nbsp; &nbsp;}<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;function search($url, $match){<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;return $url . '/' . $match;<br />&nbsp;&nbsp; &nbsp;}<br />&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;带断言的正则匹配<br />&nbsp;&nbsp; &nbsp;$match = '';<br />&nbsp;&nbsp; &nbsp;$str = '&lt;a href=""&gt;xxxxxx.com.cn&lt;/a&gt; &lt;b&gt;bold font&lt;/b&gt; &lt;p&gt;paragraph text&lt;/p&gt;';<br />&nbsp;&nbsp; &nbsp;preg_match_all ( '/(?&lt;=&lt;(\w{1})&gt;).*(?=&lt;\/\1&gt;)/', $str, $match );<br />&nbsp;&nbsp; &nbsp;echo "&lt;br /&gt;匹配没有属性的HTML标签中的内容：";<br />&nbsp;&nbsp; &nbsp;print_r ( $match );<br /><br />&nbsp;&nbsp; &nbsp;替换HTML源码中的地址&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;$form_html = preg_replace ( '/(?&lt;=\saction=\"|\ssrc=\"|\shref=\")(?!http:|javascript)(.*?)(?=\"\s)/e', 'add_url(\$url, \'\\1\')', $form_html );<br /><br /><br />最后，正则工具虽然强大，但是从效率和编写时间上来讲，有的时候可能没有explode来的更直接，对于一些紧急或者要求不高的任务，简单、粗暴的方法也许更好。<br />而对于preg和ereg两个系列之间的执行效率，曾看到文章说preg要更快一点，具体由于使用ereg的时候并不多，而且也要推出历史舞台了，再加个个人更偏好于PCRE的方式，所以笔者就不做比较了，熟悉的朋友可以发表下意见，谢谢。&nbsp;&nbsp; &nbsp;<br />&nbsp;&nbsp; &nbsp;<br />参考资料：<br />1、正则表达式三十分钟入门&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;http://unibetter.com/deerchao/zhengzhe-biaodashi-jiaocheng-se.htm<br />2、PHP ereg&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;http://cn.php.net/manual/en/function.ereg.php&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />3、PHP正则函数&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;http://www.5iphp.com/zh-hans/content/319.html</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2009-08-24 16:51</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1553011" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1553011);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1553011,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2009/8/24 16:51:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>如何开发YUI3的扩展 - Cocowool - 博客园</title>
+<meta property="og:description" content="YUI是Yahoo发布的一个JS框架，虽然不如jQuery简单，但是如果你是要做一些复杂的事情的时候，有一个合适量级的框架还是能有用不少。 YUI3中的一些定义。 Module。YUI3中的每块代码都" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2012/06/01/2530621.html">如何开发YUI3的扩展</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>YUI是Yahoo发布的一个JS框架，虽然不如jQuery简单，但是如果你是要做一些复杂的事情的时候，有一个合适量级的框架还是能有用不少。</p>  <p>YUI3中的一些定义。</p>  <p>Module。YUI3中的每块代码都可以看作是一个Module。</p>  <div class="csharpcode">   <pre class="alt"><span class="lnum">   1:  </span>YUI().use(<span class="str">'node'</span>, <span class="kwrd">function</span>(Y){</pre>
+
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   3:  </span>Y.one(<span class="str">'div.status'</span>).setContent(<span class="str">'Ready'</span>);</pre>
+
+  <pre><span class="lnum">   4:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   5:  </span>});</pre>
+</div>
+<style type="text/css">
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<p></p>
+
+<p>使用YUI，我们需要一个YUI实例，这个实例称之为Sandbox，之后我们所有的代码都在这个Sandbox中运行，不会与其他的代码冲突，这样也可以解决遗留代码（Legacy Code）的冲突问题。函数中的Y是对这个Sandbox实例的引用。</p>
+
+<p>还有其他的使用方式：</p>
+
+<div class="csharpcode">
+  <pre class="alt"><span class="lnum">   1:  </span><span class="kwrd">var</span> Y = <span class="kwrd">new</span> YUI();</pre>
+
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   3:  </span>Y.use(<span class="str">'node'</span>), <span class="kwrd">function</span>(Y){</pre>
+
+  <pre><span class="lnum">   4:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   5:  </span>Y.one(<span class="str">'div.status'</span>).setContent(<span class="str">'Ready'</span>);</pre>
+
+  <pre><span class="lnum">   6:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   7:  </span>});</pre>
+</div>
+<style type="text/css">
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<p></p>
+
+<p>或者</p>
+
+<div class="csharpcode">
+  <pre class="alt"><span class="lnum">   1:  </span>(<span class="kwrd">new</span> YUI).use(<span class="str">'node'</span>), <span class="kwrd">function</span>(Y){</pre>
+
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   3:  </span>Y.one(<span class="str">'div.status'</span>).setContent(<span class="str">'Ready'</span>);</pre>
+
+  <pre><span class="lnum">   4:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   5:  </span>});</pre>
+</div>
+<style type="text/css">
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<p></p>
+
+<p>在YUI中注册Module的三种方式。1、By Seed；2、By Includsion；3、By config。</p>
+
+<p>1、By Seed。通过引入Seed文件后，由YUI框架自动调入。</p>
+
+<div class="csharpcode">
+  <pre class="alt"><span class="lnum">   1:  </span>&lt;script src=”http:<span class="rem">//yui.yahooapis.../yui-min.js”&gt;&lt;/script&gt;</span></pre>
+
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   3:  </span>&lt;script&gt;</pre>
+
+  <pre><span class="lnum">   4:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   5:  </span>YUI().use (‘node’, ‘anim’, <span class="kwrd">function</span> (Y) {</pre>
+
+  <pre><span class="lnum">   6:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   7:  </span><span class="kwrd">new</span> Y.Anim({ node: <span class="str">'#demo'</span>, to: {opacity: 0} });</pre>
+
+  <pre><span class="lnum">   8:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   9:  </span>Y.one (‘div.status’).setContent (‘ready!’);</pre>
+
+  <pre><span class="lnum">  10:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  11:  </span>});</pre>
+
+  <pre><span class="lnum">  12:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  13:  </span>&lt;/script&gt;</pre>
+</div>
+<style type="text/css">
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<p></p>
+
+<p>2、By Inclusion。在页面文件中显式的引入。</p>
+
+<div class="csharpcode">
+  <pre class="alt"><span class="lnum">   1:  </span>&lt;script src=”http:<span class="rem">//yui.yahooapis.../yui-min.js”&gt;&lt;/script&gt;</span></pre>
+
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   3:  </span>&lt;script src=” http:<span class="rem">//yui.yahooapi.../build/gallery-yql/gallery-yql.js”&gt;&lt;/script&gt;</span></pre>
+
+  <pre><span class="lnum">   4:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   5:  </span>&lt;script&gt;</pre>
+
+  <pre><span class="lnum">   6:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   7:  </span>YUI().use (‘gallery-yql’, <span class="kwrd">function</span>(Y) {</pre>
+
+  <pre><span class="lnum">   8:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   9:  </span>    <span class="kwrd">new</span> Y.yql(<span class="str">'select * from github.user.info where (id=”caridy&quot;)'</span>, <span class="kwrd">function</span>(r) {</pre>
+
+  <pre><span class="lnum">  10:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  11:  </span>        r.query; <span class="rem">// The result</span></pre>
+
+  <pre><span class="lnum">  12:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  13:  </span>    });</pre>
+
+  <pre><span class="lnum">  14:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  15:  </span>});</pre>
+</div>
+<style type="text/css">
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<p></p>
+
+<p>&lt;/script&gt; </p>
+
+<p>3、By Configuration。在配置文件中指定引入Module所需要的信息，这是一种比较推荐的使用方式。在YUI实例化时，YUI()方法中可以接收多个配置项，例如YUI(c1,c2,,,)。</p>
+
+<div class="csharpcode">
+  <pre class="alt"><span class="lnum">   1:  </span>&lt;script src=”http:<span class="rem">//yui.yahooapis.../yui-min.js”&gt;&lt;/script&gt;&lt;script&gt;</span></pre>
+
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   3:  </span>YUI({</pre>
+
+  <pre><span class="lnum">   4:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   5:  </span>    modules: {</pre>
+
+  <pre><span class="lnum">   6:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   7:  </span>        <span class="str">'gallery-yql'</span>: {</pre>
+
+  <pre><span class="lnum">   8:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   9:  </span>            fullpath: <span class="str">'http://yui.yahooapi.../build/gallery-yql/gallery-yql.js'</span>,</pre>
+
+  <pre><span class="lnum">  10:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  11:  </span>            requires: [<span class="str">&quot;get&quot;</span>,<span class="str">&quot;event-custom&quot;</span>]</pre>
+
+  <pre><span class="lnum">  12:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  13:  </span>        }</pre>
+
+  <pre><span class="lnum">  14:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  15:  </span>    }</pre>
+
+  <pre><span class="lnum">  16:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  17:  </span>}).use (‘gallery-yql’, <span class="kwrd">function</span>(Y) {</pre>
+
+  <pre><span class="lnum">  18:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  19:  </span>    <span class="kwrd">new</span> Y.yql(<span class="str">'select * from github.user.info where (id=”caridy&quot;)'</span>, <span class="kwrd">function</span>(r) {</pre>
+
+  <pre><span class="lnum">  20:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  21:  </span>        r.query; <span class="rem">// The result</span></pre>
+
+  <pre><span class="lnum">  22:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  23:  </span>    });</pre>
+
+  <pre><span class="lnum">  24:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  25:  </span>});</pre>
+
+  <pre><span class="lnum">  26:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  27:  </span>&lt;/script&gt; </pre>
+</div>
+<style type="text/css">
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<p></p>
+
+<p>如何编写一个YUI的扩展</p>
+
+<p>1、实用工具，也是最简单的方式。</p>
+
+<div class="csharpcode">
+  <pre class="alt"><span class="lnum">   1:  </span>YUI.add(‘gallery-youtube’, <span class="kwrd">function</span> (Y) {</pre>
+
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   3:  </span>    Y.youtube = {</pre>
+
+  <pre><span class="lnum">   4:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   5:  </span>       play: <span class="kwrd">function</span> (node, vid) {</pre>
+
+  <pre><span class="lnum">   6:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   7:  </span>            <span class="rem">/* … */</span></pre>
+
+  <pre><span class="lnum">   8:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   9:  </span>}</pre>
+
+  <pre><span class="lnum">  10:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  11:  </span>    };</pre>
+
+  <pre><span class="lnum">  12:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  13:  </span>}, ‘0.0.1’, { requires: [‘node’] });</pre>
+</div>
+<style type="text/css">
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<p></p>
+
+<p>2、使用类的形式，这也是比较常用的形式。</p>
+
+<div class="csharpcode">
+  <pre class="alt"><span class="lnum">   1:  </span>YUI.add(<span class="str">'gallery-slideshow'</span>, <span class="kwrd">function</span>(Y){</pre>
+
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   3:  </span><span class="kwrd">var</span> Slideshow = <span class="kwrd">function</span>(config){</pre>
+
+  <pre><span class="lnum">   4:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   5:  </span>Slideshow.superclass.constructor.apply(<span class="kwrd">this</span>,arguments);</pre>
+
+  <pre><span class="lnum">   6:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   7:  </span>}</pre>
+
+  <pre><span class="lnum">   8:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">   9:  </span>Slideshow.hello = <span class="kwrd">function</span>(){</pre>
+
+  <pre><span class="lnum">  10:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  11:  </span>alert(<span class="str">&quot;Hello world!&quot;</span>);</pre>
+
+  <pre><span class="lnum">  12:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  13:  </span>}</pre>
+
+  <pre><span class="lnum">  14:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  15:  </span>Y.Slideshow = Slideshow;</pre>
+
+  <pre><span class="lnum">  16:  </span>&#160;</pre>
+
+  <pre class="alt"><span class="lnum">  17:  </span>},<span class="str">'0.0.1'</span>, {requires:[<span class="str">'node'</span>]});</pre>
+</div>
+<style type="text/css">
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<p></p>
+
+<p>有了这些知识，我们就可以创建一些自己的Module来减轻Copy &amp; Paste的工作量了，哈哈。</p>
+
+<p>参考资料：</p>
+
+<p>1、<a href="http://www.slideshare.net/caridy/building-yui-3-custom-modules">Building YUI3 Custom Modules</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2012-06-01 13:38</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2530621" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2530621);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2530621,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2012/6/1 13:38:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

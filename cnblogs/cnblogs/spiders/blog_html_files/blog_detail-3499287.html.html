@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="never" />
+<title>让PHP 5.3支持MSSQL连接 - Cocowool - 博客园</title>
+<meta property="og:description" content="最近在Windows Server 2008配置了PHP环境，想要连接SQL Server 2008，但是悲催的发现，从5.3开始，PHP自带的dll不再支持2000以后的MS SQL Server了" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/3499287.html">让PHP 5.3支持MSSQL连接</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p><!--?xml version="1.0" encoding="UTF-8" standalone="no"?--></p>
+<div>最近在Windows Server 2008配置了PHP环境，想要连接SQL Server 2008，但是悲催的发现，从5.3开始，PHP自带的dll不再支持2000以后的MS SQL Server了。</div>
+<div>&nbsp;</div>
+<div>没办法，只能求助于百度了。看到网上的攻略，按照以下的步骤配置，可以成功连接SQL Server。</div>
+<div>&nbsp;</div>
+<div>一、首先需要下载、安装最新版的PHP Driver。我下载的时候，有两个版本，分别是SQLSRV20、SQLSRV30对应PHP 5.2和PHP 5.3以上的版本。从微软官方下载的是两个exe文件，实际上是一个可以自解压的压缩包。</div>
+<div>&nbsp;</div>
+<div>双击运行后，会提示你将文件保存到什么位置。选择对应的位置后，就能够看到众多的dll文件了。</div>
+<div><img src="file:///Users/shiqiang/Library/Containers/com.evernote.Evernote/Data/Library/Application%20Support/Evernote/accounts/Evernote/cocowool/content/p3391/0975d390e9b2ae8c23dc9657b3df09d3.png" alt="" name="en-media:image/png:0975d390e9b2ae8c23dc9657b3df09d3:none:none" /></div>
+<div>&nbsp;</div>
+<div><img src="https://images0.cnblogs.com/blog/39469/201401/162323441890.png" alt="" /></div>
+<div>&nbsp;</div>
+<div>二、之后根据自己的需要，选择对应的dll，拷贝到php安装路径的ext目录下。完成后，记得修改php.ini中的配置，然后重启Web服务器使配置生效。</div>
+<div>&nbsp;</div>
+<div>[PHP_PDO_SQLSRV]</div>
+<div>extension=php_pdo_sqlsrv_53_ts.dll</div>
+<div>[PHP_SQLSRV]</div>
+<div>extension=php_sqlsrv_53_ts.dll</div>
+<div>&nbsp;</div>
+<div>其中，ts表示线程安全，nts表示非线程安全。根据你的需要选择就可以了。</div>
+<div>&nbsp;</div>
+<div>这个时候，如果遇到要求安装&ldquo;SQL Server Native Client&rdquo;的错误，这说明本地没有安装客户端。这种情况，可以通过在本地安装SQL Server的时候选择安装Client，或者单独下载安装Client解决。在参考资料2的<a href="http://msdn.microsoft.com/en-us/library/cc296170(SQL.90).aspx">链接</a>中，可以找到Client的下载地址。</div>
+<div>&nbsp;</div>
+<div>这些问题排除后，就可以使用PDO函数，链接SQL Server数据库了。</div>
+<div>&nbsp;</div>
+<div>参考资料：</div>
+<p><span>1、&nbsp;</span><a href="http://msdn.microsoft.com/en-us/sqlserver/ff657782.aspx">http://msdn.microsoft.com/en-us/sqlserver/ff657782.aspx</a></p>
+<div>2、<a href="http://msdn.microsoft.com/en-us/library/cc296170(SQL.90).aspx">System Requirements (Microsoft Drivers for PHP for SQL Server)</a></div>
+<div>3、<a href="http://msdn.microsoft.com/en-us/library/cc296170(SQL.90).aspx">Introducing the Microsoft Drivers for PHP for SQL Server</a></div>
+<div>4、<a href="http://blog.csdn.net/sptoor/article/details/7704991">PHP 5.3如何连接MSSql Server</a></div>
+<div>5、<a href="http://msdn.microsoft.com/zh-cn/library/ms131321.aspx">安装SQL Server native client</a></div>
+<div>6、<a href="http://social.msdn.microsoft.com/Forums/ie/zh-CN/2e950ea0-0f1d-411b-99f6-e48d26269214/sqlserver2012?forum=sqlserverzhchs">SQLServer 2012的问题</a></div></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2013-12-31 13:18</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=3499287" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(3499287);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=3499287,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2013/12/31 13:18:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

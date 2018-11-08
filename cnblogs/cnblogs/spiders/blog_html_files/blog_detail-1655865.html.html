@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>CSS3的过渡效果 - Cocowool - 博客园</title>
+<meta property="og:description" content="在CSS2的世界中，过渡常常是非常单薄的，要么是从一种颜色变成另一种颜色、要么是从不透明变到透明，总而言之就是由一种状态变到另外一种状态。这就导致了很多页面给人的感觉很突兀，没有一个平滑的过渡。  虽" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2010/01/25/1655865.html">CSS3的过渡效果</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>在CSS2的世界中，过渡常常是非常单薄的，要么是从一种颜色变成另一种颜色、要么是从不透明变到透明，总而言之就是由一种状态变到另外一种状态。这就导致了很多页面给人的感觉很突兀，没有一个平滑的过渡。</p>  <p>虽然我们可以使用DHTML或者诸如jQuery等其他第三方的库文件来完成过渡效果，但是为了完成一个简单的效果我们就需要大量的编码。</p>  <p>我们所需要的就是用一种简单的方法来实现这些过渡，因为我相信在今后的WEB应用中，平滑的过渡越来越成为一种标准的展现形式。</p>  <p>CSS3现在已经添加到了Webkit中，现在 Apple Safari 和 Google Chrome 都已经开始支持。再往前推几个月，那个时候人们还在争论是否将这些过渡写在CSS3中，一些人坚持认为过渡并不是一种样式属性，应当用脚本来进行处理。经过众多人的努力，样式不仅限于静态的样式，动态的样式也是非常需要的。于是过渡的样式终于开始写入CSS3的<a href="http://www.w3.org/TR/css3-transitions/" target="_blank">官方文档</a>中。</p>  <p>废话少说，进入正题。</p>  <p>本文的例子需要支持CSS3的浏览器，所以你最好使用 Safari 或者 Chrome 来测试。</p>  <p>&#160;</p>  <p><strong>过渡、状态和动作</strong></p>  <p>我们知道，CSS中都是通过伪类来实现页面中的一个元素与用户互动的。例如，用户鼠标的悬停和移动。下面列出了几个伪类：</p>  <table cellpadding="3" width="100%" border="0"><tbody>     <tr>       <td>         <p><strong>Dynamic Pseudo Class</strong></p>       </td>        <td>         <p><strong>Elements Affected</strong></p>       </td>        <td>         <p><strong>Description</strong></p>       </td>     </tr>      <tr>       <td>         <p>:link</p>       </td>        <td>         <p>Links only</p>       </td>        <td>         <p>Unvisited links</p>       </td>     </tr>      <tr>       <td>         <p>:visited</p>       </td>        <td>         <p>Links only</p>       </td>        <td>         <p>Visited links</p>       </td>     </tr>      <tr>       <td>         <p>:hover</p>       </td>        <td>         <p>All elements</p>       </td>        <td>         <p>Mouse cursor over element</p>       </td>     </tr>      <tr>       <td>         <p>:active</p>       </td>        <td>         <p>All elements</p>       </td>        <td>         <p>Mouse clicks element</p>       </td>     </tr>      <tr>       <td>         <p>:focus</p>       </td>        <td>         <p>All elements that can be selected</p>       </td>        <td>         <p>Element is selected</p>       </td>     </tr>      <tr>       <td>         <p>None</p>       </td>        <td>         <p>All elements</p>       </td>        <td>         <p>Default state of all elements</p>       </td>     </tr>   </tbody></table>  <p>&#160;</p>  <p><strong>过渡包含哪些元素</strong></p>  <p>一个从蓝色变成红色的动态过渡包含哪些元素呢，我们先看一个实例：</p>  <blockquote>   <p>#css3tr a:link {      <br />&#160;&#160;&#160; display:block;       <br />&#160;&#160;&#160; height:30px;       <br />&#160;&#160;&#160; line-height:30px;       <br />&#160;&#160;&#160; width:100px;       <br />&#160;&#160;&#160; border:5px solid #cccccc;       <br />&#160;&#160;&#160; text-align:center;       <br />&#160;&#160;&#160; -webkit-transition:width .25s ease-in-out, background-color .25s linear;       <br />&#160;&#160;&#160; transitiona:width .25s ease-in-out, background-color .25s linear;       <br />}       <br />#css3tr a:hover {       <br />&#160;&#160;&#160; color:red;       <br />&#160;&#160;&#160; background-color:#e9e9e9;       <br />&#160;&#160;&#160; width:200px;       <br />&#160;&#160;&#160; -webkit-transition: width .25s ease-in-out, background-color .25s linear;       <br />&#160;&#160;&#160; transition:width .25s ease-in-out, background-color .25s linear;       <br />}</p>    <p>&#160;</p> </blockquote>  <p>由此可见，transition 属性中包含了三个基本的属性：样式属性(CSS property)、持续时间(Duration)、计时函数(Timing Function)、延时(Delay)</p>  <p><a href="http://images.cnblogs.com/cnblogs_com/cocowool/WindowsLiveWriter/CSS_B6B9/image_2.png"><img title="image" style="border-top-width: 0px; display: block; border-left-width: 0px; float: none; border-bottom-width: 0px; margin-left: auto; margin-right: auto; border-right-width: 0px" height="296" alt="image" src="https://images.cnblogs.com/cnblogs_com/cocowool/WindowsLiveWriter/CSS_B6B9/image_thumb.png" width="475" border="0" /></a> </p>  <p>看到这个图，大家对于这几个参数的作用应该了解了吧。很简单的几个参数设置，实现了我们之前需要用大量js脚本实现的效果，那么有什么理由不期待CSS3的到来呢。</p>  <p>&#160;</p>  <p>可以应用过渡的元素：</p>  <table cellpadding="5" width="80%" border="0"><tbody>     <tr>       <td>         <p><strong>CSS Property</strong></p>       </td>        <td>         <p><strong>What Changes</strong></p>       </td>     </tr>      <tr>       <td>         <p><strong>background-color</strong></p>       </td>        <td>         <p><strong>Color</strong></p>       </td>     </tr>      <tr>       <td>         <p>background-image</p>       </td>        <td>         <p>Only gradients</p>       </td>     </tr>      <tr>       <td>         <p>background-position</p>       </td>        <td>         <p>Percentage, length</p>       </td>     </tr>      <tr>       <td>         <p>border-bottom-color</p>       </td>        <td>         <p>Color</p>       </td>     </tr>      <tr>       <td>         <p>border-bottom-width</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p><strong>border-color</strong></p>       </td>        <td>         <p><strong>Color</strong></p>       </td>     </tr>      <tr>       <td>         <p>border-left-color</p>       </td>        <td>         <p>Color</p>       </td>     </tr>      <tr>       <td>         <p>border-left-width</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>border-right-color</p>       </td>        <td>         <p>Color</p>       </td>     </tr>      <tr>       <td>         <p>border-right-width</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>border-spacing</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>border-top-color</p>       </td>        <td>         <p>Color</p>       </td>     </tr>      <tr>       <td>         <p>border-top-width</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>border-width</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p><strong>bottom</strong></p>       </td>        <td>         <p><strong>Length, percentage</strong></p>       </td>     </tr>      <tr>       <td>         <p><strong>color</strong></p>       </td>        <td>         <p><strong>Color</strong></p>       </td>     </tr>      <tr>       <td>         <p>crop</p>       </td>        <td>         <p>Rectangle</p>       </td>     </tr>      <tr>       <td>         <p><strong>font-size</strong></p>       </td>        <td>         <p><strong>Length, percentage</strong></p>       </td>     </tr>      <tr>       <td>         <p><strong>font-weight</strong></p>       </td>        <td>         <p><strong>Number</strong></p>       </td>     </tr>      <tr>       <td>         <p>grid-*</p>       </td>        <td>         <p>Various</p>       </td>     </tr>      <tr>       <td>         <p><strong>height</strong></p>       </td>        <td>         <p><strong>Length, percentage</strong></p>       </td>     </tr>      <tr>       <td>         <p><strong>left</strong></p>       </td>        <td>         <p><strong>Length, percentage</strong></p>       </td>     </tr>      <tr>       <td>         <p><strong>letter-spacing</strong></p>       </td>        <td>         <p><strong>Length</strong></p>       </td>     </tr>      <tr>       <td>         <p>line-height</p>       </td>        <td>         <p>Number, length, percentage</p>       </td>     </tr>      <tr>       <td>         <p>margin-bottom</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>margin-left</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>margin-right</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>margin-top</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>max-height</p>       </td>        <td>         <p>Length, percentage</p>       </td>     </tr>      <tr>       <td>         <p>max-width</p>       </td>        <td>         <p>Length, percentage</p>       </td>     </tr>      <tr>       <td>         <p>min-height</p>       </td>        <td>         <p>Length, percentage</p>       </td>     </tr>      <tr>       <td>         <p>min-width</p>       </td>        <td>         <p>Length, percentage</p>       </td>     </tr>      <tr>       <td>         <p><strong>opacity</strong></p>       </td>        <td>         <p><strong>Number</strong></p>       </td>     </tr>      <tr>       <td>         <p>outline-color</p>       </td>        <td>         <p>Color</p>       </td>     </tr>      <tr>       <td>         <p>outline-offset</p>       </td>        <td>         <p>Integer</p>       </td>     </tr>      <tr>       <td>         <p>outline-width</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>padding-bottom</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>padding-left</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>padding-right</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p>padding-top</p>       </td>        <td>         <p>Length</p>       </td>     </tr>      <tr>       <td>         <p><strong>right</strong></p>       </td>        <td>         <p><strong>Length, percentage</strong></p>       </td>     </tr>      <tr>       <td>         <p>text-indent</p>       </td>        <td>         <p>Length, percentage</p>       </td>     </tr>      <tr>       <td>         <p><strong>text-shadow</strong></p>       </td>        <td>         <p><strong>Shadow</strong></p>       </td>     </tr>      <tr>       <td>         <p><strong>top</strong></p>       </td>        <td>         <p><strong>Length, percentage</strong></p>       </td>     </tr>      <tr>       <td>         <p>vertical-align</p>       </td>        <td>         <p>Keywords, length, percentage</p>       </td>     </tr>      <tr>       <td>         <p>visibility</p>       </td>        <td>         <p>Visibility</p>       </td>     </tr>      <tr>       <td>         <p><strong>width</strong></p>       </td>        <td>         <p><strong>Length, percentage</strong></p>       </td>     </tr>      <tr>       <td>         <p>word-spacing</p>       </td>        <td>         <p>Length, percentage</p>       </td>     </tr>      <tr>       <td>         <p>z-index</p>       </td>        <td>         <p>Integer</p>       </td>     </tr>      <tr>       <td>         <p>zoom</p>       </td>        <td>         <p>Number</p>       </td>     </tr>   </tbody></table>  <p>过渡的时间和延时：</p>  <table border="0"><tbody>     <tr>       <td>         <p><strong>Name</strong></p>       </td>        <td>         <p><strong>How It Works</strong></p>       </td>     </tr>      <tr>       <td>         <p>cubic-bezier(x1, y1, x2, y2)</p>       </td>        <td>         <p>X and Y values are between 0 and 1 to define the shape of a bezier curve used for the timing function.</p>       </td>     </tr>      <tr>       <td>         <p>linear</p>       </td>        <td>         <p>Constant speed</p>       </td>     </tr>      <tr>       <td>         <p>ease</p>       </td>        <td>         <p>Gradual slowdown</p>       </td>     </tr>      <tr>       <td>         <p>ease-in</p>       </td>        <td>         <p>Speed up</p>       </td>     </tr>      <tr>       <td>         <p>ease-out</p>       </td>        <td>         <p>Slow down</p>       </td>     </tr>      <tr>       <td>         <p>ease-in-out</p>       </td>        <td>         <p>Speed up and then slow down</p>       </td>     </tr>   </tbody></table>  <p>&#160;</p>  <p>现在，就期待CSS3早日全面普及吧。</p>  <div class="wlWriterEditableSmartContent" id="scid:0767317B-992E-4b12-91E0-4F059A8CECA8:8a1205c1-b9cc-446c-b08c-1d1a503d0426" style="padding-right: 0px; display: inline; padding-left: 0px; float: none; padding-bottom: 0px; margin: 0px; padding-top: 0px">Technorati 标签: <a href="http://technorati.com/tags/css3" rel="tag">css3</a>,<a href="http://technorati.com/tags/ui" rel="tag">ui</a></div>  <p>参考资料</p>  <p>1、<a href="http://www.webdesignerdepot.com/2010/01/css-transitions-101/" target="_blank">CSS Transitions 101</a></p>  <p>2、<a href="http://www.w3.org/TR/css3-transitions/" target="_blank">CSS Transitions Module Level 3</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2010-01-25 14:16</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1655865" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1655865);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1655865,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2010/1/25 14:16:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

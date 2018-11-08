@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="never" />
+<title>在Codeigniter框架中使用NuSOAP - Cocowool - 博客园</title>
+<meta property="og:description" content="0、NuSOAP的简介 NuSOAP 是一组功能强大的PHP类，这个工具的发布让使用和创建SOAP消息变得相当简单。 NuSOAP有Dirtrich Ayala编写，可以无缝的与许多最流行的SOAP服" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2011/06/05/2073044.html">在Codeigniter框架中使用NuSOAP</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>0、NuSOAP的简介</p>  <p><a href="http://sourceforge.net/projects/nusoap/" target="_blank">NuSOAP</a> 是一组功能强大的PHP类，这个工具的发布让使用和创建SOAP消息变得相当简单。 NuSOAP有Dirtrich Ayala编写，可以无缝的与许多最流行的SOAP服务实现交互，它以LGPL协议进行发布。NuSOAP的主要特性包括：</p>  <blockquote>   <p>简单：NuSOAP的面向对象方法隐藏了SOAP消息的组装、解析、提交和接收的有关细节，是用户能够集中精力处理自己的业务。</p>    <p>WSDL的生成和导入：NoSOAP可以生成一个对应于所发布的Web服务的WSDL文档，并且能导入一个WSDL引用在NuSOAP客户端使用。</p>    <p>代理类：NuSOAP可以生成的一个代理类，允许调用远程方法，如同调用本地方法一样。</p>    <p>HTTP代理：出于多种原因（安全性和审计是其中两个原因），有些客户端被强制将请求委托给HTTP代理，由代理代表客户端执行请求。也就是说，需要所有SOAP请求都传递给此代理，而不是直接查询服务器。NuSOAP为指定代理服务器提供了基本支持。</p>    <p>SSL：如果可以通过PHP使用CURL扩展，NuSOAP还支持通过SSL的安全通信。</p> </blockquote>  <p>1、Nusoap的获取安装</p>  <p>NuSOAP是一组PHP类，只要从SourceForge下载源码后，放入自己的工程目录引用，就可以使用。当然，NuSOAP库的存放位置可以自由决定，include目录、工程目录或者任何能够访问到的位置。</p>  <p>2、NuSOAP的使用</p>  <p>要使用NuSOAP，我觉得需要要对于SOAP有些基础得了解，附录中的参考资料我们可以了解到一些知识，从下面的图片，也可以了解到SOAP在Web服务堆栈中的地位。</p>  <p><img src="http://www.ibm.com/developerworks/cn/webservices/ws-wsdl/ws-03.gif" /></p>  <p>使用SOAP时，有客户端和服务器两种情况。具体的使用比较简单，以至于NuSOAP官方都没有什么文档来说明，也许作者觉得不需要说明吧。下面就结合CodeIgniter框架，来说明NuSOAP的使用。</p>  <p>PS：需要说明的一点，NuSOAP不能和PHP的SOAP扩展同时使用，如果你的LAMP环境中安装了SOAP的扩展，那么NuSOAP直接是不能用的，因为类名重复的，如果花些力气把名字改下，也可以使用 :)</p>  <p>3、CI中使用Nusoap的方法</p>  <p>CI中调用第三方的类库，如果简单的调用，则非常的简单。一般的做法是将NuSOAP放在application/libraries 下面，然后编写一个引用这些文件的类，如 Nusoap_lib.php</p>  <blockquote>   <p>&lt;?php&#160; if ( ! defined('BASEPATH')) exit('No direct script access allowed'); </p>    <p>class Nusoap_lib {      <br />&#160;&#160;&#160; function __construct(){       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; $library_path = '/home/apache/htdocs/libraries/';       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; $nusoap = $library_path . 'nusoap0.9.5/nusoap.php'; </p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160; require_once $nusoap;      <br />&#160;&#160;&#160; }       <br />} </p>    <p>?&gt;</p>    <p>&#160;</p> </blockquote>  <p>这样，我们就可以在其他的文件中通过CI常规的加载的方式来调用 NuSOAP 进行使用，比如在一个 Client类中。</p>  <blockquote>   <p>$this-&gt;load-&gt;library('Nusoap_lib'); </p>    <p>&#160;</p>    <p>$api_url = &quot;<a href="http://app.x.com/webservicefordiscuz/Service.asmx&quot;;">http://app.x.com/webservicefordiscuz/Service.asmx&quot;;</a>       <br />$this-&gt;nusoap_client = new SoapClient( $api_url );       <br />$this-&gt;nusoap_client-&gt;soap_defencoding = 'utf-8';       <br />$this-&gt;nusoap_client-&gt;decode_utf8 = false;       <br />$this-&gt;nusoap_client-&gt;xml_encoding = 'utf-8'; </p>    <p>$err = $this-&gt;nusoap_client-&gt;getError(); </p>    <p>if( $err ){      <br />&#160;&#160;&#160; echo '&lt;h2&gt;Constructor error&lt;/h2&gt;&lt;pre&gt;' . $err . '&lt;/pre&gt;';       <br />&#160;&#160;&#160; echo '&lt;h2&gt;Debug&lt;/h2&gt;&lt;pre&gt;' . htmlspecialchars($client-&gt;getDebug(), ENT_QUOTES) . '&lt;/pre&gt;';       <br />&#160;&#160;&#160; exit();       <br />}else{ </p>    <p>} </p>    <p>try{      <br />&#160;&#160;&#160; $result = $this-&gt;nusoap_client-&gt;call(       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; 'CheckExistUser',       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; array('username' =&gt; &quot;$username&quot;),       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; '',       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; '<a href="http://app.x.com/webserviceForDiscuz/CheckExistUser'">http://app.x.com/webserviceForDiscuz/CheckExistUser'</a>       <br />&#160;&#160;&#160; ); </p>    <p>&#160;&#160;&#160; print_r( $result );      <br />&#160;&#160;&#160; echo &quot;&lt;br /&gt;&quot;;       <br />&#160;&#160;&#160; echo '&lt;p&gt;Request:&lt;br /&gt;';       <br />&#160;&#160;&#160; echo '&lt;pre&gt;',htmlspecialchars($this-&gt;nusoap_client-&gt;request,ENT_QUOTES),'&lt;/pre&gt;';       <br />&#160;&#160;&#160; echo '&lt;br /&gt;Response:&lt;br /&gt;';       <br />&#160;&#160;&#160; echo '&lt;pre&gt;',htmlspecialchars($this-&gt;nusoap_client-&gt;response,ENT_QUOTES ),'&lt;/pre&gt;&lt;/p&gt;';       <br />&#160;&#160;&#160; echo &quot;&lt;br /&gt;&quot;;       <br />&#160;&#160;&#160; print_r( $this-&gt;nusoap_client );       <br />}catch(Exception $e){       <br />&#160;&#160;&#160; echo $e-&gt;getMessage();       <br />} </p> </blockquote>  <p>事实上，在CI中使用NuSOAP，最大的挑战不在于如何引入。而在于理解并使用NuSOAP，我们照着参考资料1中的例子，一步步也能做出一个SOAP应用，但是却不是十分理解为什么要这样做，以及SOAP的具体通信和实现方式是怎么样的。建议感兴趣的同学可以看看IBM Developer Works中关于SOAP的介绍，相信对于SOAP的理解和今后的使用会有很大帮助。</p>  <p>下面，是我自己试验的过程中的两个例子，希望对大家有所帮助。</p>  <p>服务端</p>  <blockquote>   <p>&lt;?php&#160; if ( ! defined('BASEPATH')) exit('No direct script access allowed');      <br />class Server extends Controller{       <br />&#160;&#160;&#160; function __construct(){       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; parent::__construct();       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; $this-&gt;load-&gt;library('Nusoap_lib'); </p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160; $this-&gt;nusoap_server = new soap_server();      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; $this-&gt;nusoap_server-&gt;register(       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 'hello',       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; array(       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 'name' =&gt; 'xsd:string'       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; ),       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; array('return'=&gt;'xsd:string'),       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 'uri:soap/server',       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 'uri:soap/server/hello',       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 'rpc',       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 'encoded'       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; );       <br />&#160;&#160;&#160; } </p>    <p>&#160;&#160;&#160; function index(){      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; if($this-&gt;uri-&gt;segment(3) == &quot;wsdl&quot;){       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; $_SERVER['QUERY_STRING'] = &quot;wsdl&quot;;       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; }else{       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; $_SERVER['QUERY_STRING'] = &quot;&quot;;       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; }       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; function hello($name){       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; return &quot;Hello $name.&quot;;       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; }       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; $this-&gt;nusoap_server-&gt;service( file_get_contents('php://input') );       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; exit;       <br />&#160;&#160;&#160; }       <br />}       <br />?&gt;</p>    <p>&#160;</p> </blockquote>  <p>客户端</p>  <blockquote>   <p>&lt;?php&#160; if ( ! defined('BASEPATH')) exit('No direct script access allowed');      <br />class Client extends Controller{       <br />&#160;&#160;&#160; function __construct(){       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; parent::__construct();       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; $this-&gt;load-&gt;library('Nusoap_lib');       <br />&#160;&#160;&#160; } </p>    <p>&#160;&#160;&#160; function index(){      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; $this-&gt;nusoap_client = new SoapClient('<a href="http://mti.x.com/soap/server');">http://mti.x.com/soap/server');</a>       <br />//&#160;&#160;&#160;&#160;&#160;&#160;&#160; $this-&gt;nusoap_client-&gt;soap_defencoding = 'utf-8';       <br />//&#160;&#160;&#160;&#160;&#160;&#160;&#160; $this-&gt;nusoap_client-&gt;decode_utf8 = false;       <br />//&#160;&#160;&#160;&#160;&#160;&#160;&#160; $this-&gt;nusoap_client-&gt;xml_encoding = 'utf-8'; </p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160; $err = $this-&gt;nusoap_client-&gt;getError();      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; if( $err ){       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo '&lt;p&gt;&lt;b&gt;Constructor error:' . $err . '&lt;/b&gt;&lt;/p&gt;';       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; }       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; $result = $this-&gt;nusoap_client-&gt;call(       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 'hello',       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; array('name'=&gt;'World'),       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 'uri:soap/server',       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; 'uri:soap/server/helo' ); </p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160; if( $this-&gt;nusoap_client-&gt;fault ){      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo '&lt;p&gt;&lt;b&gt;Fault:';       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; print_r( $result );       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo '&lt;/b&gt;&lt;/p&gt;';       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; }else{       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; print_r( $result );       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; } </p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo &quot;&lt;br /&gt;&quot;;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo '&lt;p&gt;Request:&lt;br /&gt;';       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo '&lt;pre&gt;',htmlspecialchars($this-&gt;nusoap_client-&gt;request,ENT_QUOTES),'&lt;/pre&gt;';       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo '&lt;br /&gt;Response:&lt;br /&gt;';       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo '&lt;pre&gt;',htmlspecialchars($this-&gt;nusoap_client-&gt;response,ENT_QUOTES ),'&lt;/pre&gt;&lt;/p&gt;';       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo &quot;&lt;br /&gt;&quot;; </p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160; // Display the debug messages      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo '&lt;h2&gt;Debug&lt;/h2&gt;';       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; echo '&lt;pre&gt;' . htmlspecialchars($this-&gt;nusoap_client-&gt;debug_str, ENT_QUOTES) . '&lt;/pre&gt;';       <br />&#160;&#160;&#160; }</p>    <p>&#160;</p>    <p>}</p> </blockquote>  <p>4、常见问题</p>  <p>调试的三个方法：1、使用-&gt;request，-&gt;response查看消息头；2、使用日志查看调试信息；3、使用错误信息捕捉。</p>  <div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:0767317B-992E-4b12-91E0-4F059A8CECA8:73d702fc-e52b-4d39-9890-ca66b317781a" class="wlWriterEditableSmartContent">Technorati 标签: <a href="http://technorati.com/tags/SOAP" rel="tag">SOAP</a>,<a href="http://technorati.com/tags/NuSOAP" rel="tag">NuSOAP</a>,<a href="http://technorati.com/tags/PHP" rel="tag">PHP</a>,<a href="http://technorati.com/tags/WSDL" rel="tag">WSDL</a></div>  <p>参考资料：    <br />1、<a href="http://codeigniter.com/forums/viewthread/59710/" target="_blank">Nusoap in Code Igniter 1.5.4</a>     <br />2、<a href="http://codeigniter.com/wiki/CI_Nusoap_Library" target="_blank">CI Nusoap Library</a>     <br />3、<a href="http://www.ibm.com/developerworks/cn/xml/x-sisoap/index.html" target="_blank">浅谈SOAP</a>     <br />4、<a href="http://www.ibm.com/developerworks/cn/webservices/ws-wsdl/index.html" target="_blank">WSDL：描述你的Web服务</a>     <br />5、<a href="http://www.uh80.com/?p=50" target="_blank">NuSoap的使用</a>     <br />6、<a href="http://www.scottnichol.com/nusoapintro.htm" target="_blank">Introduction to NuSOAP</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2011-06-05 10:48</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=2073044" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2073044);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=2073044,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2011/6/5 10:48:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

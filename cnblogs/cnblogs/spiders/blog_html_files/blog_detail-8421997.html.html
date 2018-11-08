@@ -1,0 +1,285 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Pandas删除数据的几种情况 - Cocowool - 博客园</title>
+<meta property="og:description" content="开始之前，pandas中DataFrame删除对象可能存在几种情况 1、删除具体列 2、删除具体行 3、删除包含某些数值的行或者列 4、删除包含某些字符、文字的行或者列 本文就针对这四种情况探讨一下如" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/8421997.html">Pandas删除数据的几种情况</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>开始之前，pandas中DataFrame删除对象可能存在几种情况<br />
+1、删除具体列<br />
+2、删除具体行<br />
+3、删除包含某些数值的行或者列<br />
+4、删除包含某些字符、文字的行或者列<br />
+本文就针对这四种情况探讨一下如何操作。</p>
+</blockquote>
+<h3 id="数据准备">数据准备</h3>
+<p>模拟了一份股票交割的记录。</p>
+<pre class="sh"><code>In [1]: import pandas as pd
+
+In [2]: data = {
+   ...:     &#39;证券名称&#39; : [&#39;格力电器&#39;,&#39;视觉中国&#39;,&#39;成都银行&#39;,&#39;中国联通&#39;,&#39;格力电器&#39;,&#39;视觉中国&#39;,&#39;成都银行&#39;,&#39;中国联通&#39;],
+   ...:     &#39;摘要&#39;: [&#39;证券买入&#39;,&#39;证券买入&#39;,&#39;证券买入&#39;,&#39;证券买入&#39;,&#39;证券卖出&#39;,&#39;证券卖出&#39;,&#39;证券卖出&#39;,&#39;证券卖出&#39;],
+   ...:     &#39;成交数量&#39; : [500,1000,1500,2000,500,500,1000,1500],
+   ...:     &#39;成交金额&#39; : [-5000,-10000,-15000,-20000,5500,5500,11000,15000]
+   ...: }
+   ...: 
+
+In [3]: df = pd.DataFrame(data, index = [&#39;2018-2-1&#39;,&#39;2018-2-1&#39;,&#39;2018-2-1&#39;,&#39;2018-2-1&#39;,&#39;2018-2-2&#39;,&#39;2018-2-2&#39;,&#39;2018-2-2&#39;,&#39;2018-2-3&#39;])
+
+In [4]: df
+Out[4]: 
+          成交数量   成交金额    摘要  证券名称
+2018-2-1   500  -5000  证券买入  格力电器
+2018-2-1  1000 -10000  证券买入  视觉中国
+2018-2-1  1500 -15000  证券买入  成都银行
+2018-2-1  2000 -20000  证券买入  中国联通
+2018-2-2   500   5500  证券卖出  格力电器
+2018-2-2   500   5500  证券卖出  视觉中国
+2018-2-2  1000  11000  证券卖出  成都银行
+2018-2-3  1500  15000  证券卖出  中国联通</code></pre>
+<h3 id="删除具体列">删除具体列</h3>
+<pre class="sh"><code>In [5]: df.drop(&#39;成交数量&#39;,axis=1)
+Out[5]: 
+           成交金额    摘要  证券名称
+2018-2-1  -5000  证券买入  格力电器
+2018-2-1 -10000  证券买入  视觉中国
+2018-2-1 -15000  证券买入  成都银行
+2018-2-1 -20000  证券买入  中国联通
+2018-2-2   5500  证券卖出  格力电器
+2018-2-2   5500  证券卖出  视觉中国
+2018-2-2  11000  证券卖出  成都银行
+2018-2-3  15000  证券卖出  中国联通</code></pre>
+<h3 id="删除具体行">删除具体行</h3>
+<pre class="sh"><code>In [6]: df.drop(&#39;2018-2-3&#39;)
+Out[6]: 
+          成交数量   成交金额    摘要  证券名称
+2018-2-1   500  -5000  证券买入  格力电器
+2018-2-1  1000 -10000  证券买入  视觉中国
+2018-2-1  1500 -15000  证券买入  成都银行
+2018-2-1  2000 -20000  证券买入  中国联通
+2018-2-2   500   5500  证券卖出  格力电器
+2018-2-2   500   5500  证券卖出  视觉中国
+2018-2-2  1000  11000  证券卖出  成都银行</code></pre>
+<p>也可以根据行号删除记录，比如删除第三行</p>
+<pre class="sh"><code>In [22]: df.drop(df.index[7])
+Out[22]: 
+          成交数量   成交金额    摘要  证券名称
+2018-2-1   500  -5000  证券买入  格力电器
+2018-2-1  1000 -10000  证券买入  视觉中国
+2018-2-1  1500 -15000  证券买入  成都银行
+2018-2-1  2000 -20000  证券买入  中国联通
+2018-2-2   500   5500  证券卖出  格力电器
+2018-2-2   500   5500  证券卖出  视觉中国
+2018-2-2  1000  11000  证券卖出  成都银行</code></pre>
+<blockquote>
+<p>注意，这个办法其实不是按照行号删除，而是按照索引删除。如果index为3，则会将前4条记录都删除。这个方法支持一个范围，以及用负数表示从末尾删除。</p>
+</blockquote>
+<h3 id="删除特定数值的行删除成交金额小于10000">删除特定数值的行（删除成交金额小于10000)</h3>
+<pre class="sh"><code>In [7]: df[ df[&#39;成交金额&#39;] &gt; 10000]
+Out[7]: 
+          成交数量   成交金额    摘要  证券名称
+2018-2-2  1000  11000  证券卖出  成都银行
+2018-2-3  1500  15000  证券卖出  中国联通</code></pre>
+<p>本例其实是筛选，如果需要保留，可以将筛选后的对象赋值给自己即可。</p>
+<h3 id="删除某列包含特殊字符的行">删除某列包含特殊字符的行</h3>
+<pre class="sh"><code>In [11]: df[ ~ df[&#39;证券名称&#39;].str.contains(&#39;联通&#39;) ]
+Out[11]: 
+          成交数量   成交金额    摘要  证券名称
+2018-2-1   500  -5000  证券买入  格力电器
+2018-2-1  1000 -10000  证券买入  视觉中国
+2018-2-1  1500 -15000  证券买入  成都银行
+2018-2-2   500   5500  证券卖出  格力电器
+2018-2-2   500   5500  证券卖出  视觉中国
+2018-2-2  1000  11000  证券卖出  成都银行</code></pre>
+<p>如果想取包含某些字符的记录，可以去掉<code>~</code></p>
+<pre class="sh"><code>In [12]: df[ df[&#39;证券名称&#39;].str.contains(&#39;联通&#39;) ]
+Out[12]: 
+          成交数量   成交金额    摘要  证券名称
+2018-2-1  2000 -20000  证券买入  中国联通
+2018-2-3  1500  15000  证券卖出  中国联通</code></pre>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" alt="欢迎关注我的微信公众号" /></p>
+<p>参考资料：<br />
+1、<a href="https://chrisalbon.com/python/data_wrangling/pandas_dropping_column_and_rows/">Dropping Rows And Columns In pandas Dataframe</a><br />
+2、<a href="https://www.cnblogs.com/xqnq2007/p/7728720.html">pandas过滤包含特定字符串的行</a><br />
+3、<a href="https://cloud.tencent.com/developer/ask/28010">Pandas dataframe怎么删除名称包含特定字符串的列？</a><br />
+4、<a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.drop.html">Pandas Drop</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-02-06 13:47</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=8421997" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(8421997);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=8421997,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/2/6 13:47:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

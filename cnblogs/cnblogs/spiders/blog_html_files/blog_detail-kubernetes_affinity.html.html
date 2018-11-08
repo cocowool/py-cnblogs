@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>Kubernetes中的亲和性与反亲和性 - Cocowool - 博客园</title>
+<meta property="og:description" content="通常情况下，Pod分配到哪些Node是不需要管理员操心的，这个过程会由scheduler自动实现。但有时，我们需要指定一些调度的限制，例如某些应用应该跑在具有SSD存储的节点上，有些应用应该跑在同一个" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/kubernetes_affinity.html">Kubernetes中的亲和性与反亲和性</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><p>通常情况下，Pod分配到哪些Node是不需要管理员操心的，这个过程会由scheduler自动实现。但有时，我们需要指定一些调度的限制，例如某些应用应该跑在具有SSD存储的节点上，有些应用应该跑在同一个节点上等等。</p>
+<blockquote>
+<p>截止到Kubernetes 1.11版本，节点亲和性的特性还是Beta阶段。</p>
+</blockquote>
+<h2 id="nodeselector">nodeSelector</h2>
+<p>首先我们为Node规划标签，然后在创建部署的时候，通过使用<code>nodeSelector</code>标签来指定Pod运行在哪些节点上。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    env: test
+spec:
+  containers:
+  - name: nginx
+    image: docker.io/nginx
+    imagePullPolicy: IfNotPresent
+  nodeSelector:
+    disktype: ssd</code></pre>
+<blockquote>
+<p>nodeSelector 将会在后续的版本中废除，还是建议大家使用使用亲和性策略。</p>
+</blockquote>
+<h2 id="亲和与反亲和-affinity-and-anti-affinity">亲和与反亲和 Affinity and anti-affinity</h2>
+<p>nodeSelector的调度方式略显简单，通过亲和和反亲和配置，能够为调度提供更灵活的策略，主要有以下几点增强：</p>
+<ul>
+<li>更多的表达式支持，不仅仅是ADD和精确匹配了</li>
+<li>可以设置soft/preference的调度策略，而不是刚性的要求</li>
+<li>可以通过Pod的标签进行调度约束，不仅仅是Node的标签</li>
+</ul>
+<p>亲和性特性包含两种方式</p>
+<h3 id="节点亲和性-node-affinity">节点亲和性 Node affinity</h3>
+<p>Node affinity 是 Kubernetes 1.2版本后引入的新特性，类似于nodeSelector，允许我们指定一些Pod在Node间调度的约束。支持两种形式：<code>requiredDuringSchedulingIgnoredDuringExecution</code>和<code>preferredDuringSchedulingIgnoredDuringExecution</code>，可以认为前一种是必须满足，如果不满足则不进行调度，后一种是倾向满足，不满足的情况下会调度的不符合条件的Node上。<code>IgnoreDuringExecution</code>表示如果在Pod运行期间Node的标签发生变化，导致亲和性策略不能满足，则继续运行当前的Pod。</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/e2e-az-name
+            operator: In
+            values:
+            - e2e-az1
+            - e2e-az2
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1               //取值范围1-100
+        preference:
+          matchExpressions:
+          - key: another-node-label-key
+            operator: In
+            values:
+            - another-node-label-value
+  containers:
+  - name: nginx
+    image: docker.io/nginx</code></pre>
+<p>标签判断的操作符除了使用<code>In</code>之外，还可以使用<code>NotIn</code>、<code>Exists</code>、<code>DoesNotExist</code>、<code>Gt</code>、<code>Lt</code>。如果指定多个<code>nodeSelectorTerms</code>，则只要满足其中一个条件，就会被调度到相应的节点上。如果指定多个<code>matchExpressions</code>，则所有的条件都必须满足才会调度到对应的节点。</p>
+<h3 id="pod间的亲和性与反亲和性-inter-pod-affinityanti-affinity">Pod间的亲和性与反亲和性 inter-pod affinity/anti-affinity</h3>
+<p>这个特性是Kubernetes 1.4后增加的，允许用户通过已经运行的Pod上的标签来决定调度策略，用文字描述就是“如果Node X上运行了一个或多个满足Y条件的Pod，那么这个Pod在Node应该运行在Pod X”，因为Node没有命名空间，Pod有命名空间，这样就允许管理员在配置的时候指定这个亲和性策略适用于哪个命名空间，可以通过<code>topologyKey</code>来指定。topology是一个范围的概念，可以是一个Node、一个机柜、一个机房或者是一个区域（如北美、亚洲）等，实际上对应的还是Node上的标签。</p>
+<p>有两种类型</p>
+<ul>
+<li>requiredDuringSchedulingIgnoredDuringExecution，刚性要求，必须精确匹配</li>
+<li>preferredDuringSchedulingIgnoredDuringExecution，软性要求</li>
+</ul>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: with-pod-affinity
+spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: security
+            operator: In
+            values:
+            - S1
+        topologyKey: failure-domain.beta.kubernetes.io/zone
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: security
+              operator: In
+              values:
+              - S2
+          topologyKey: kubernetes.io/hostname
+  containers:
+  - name: with-pod-affinity
+    image: k8s.gcr.io/pause:2.0</code></pre>
+<p>标签的判断操作支持<code>In</code>、<code>NotIn</code>、<code>Exists</code>、<code>DoesNotExist</code>。<br />
+原则上<code>topologyKey</code>可以是节点的合法标签，但是有一些约束：</p>
+<ul>
+<li>对于亲和性以及RequiredDuringScheduling的反亲和性，topologyKey需要指定</li>
+<li>对于RequiredDuringScheduling的反亲和性，LimitPodHardAntiAffinityTopology的准入控制限制topologyKey为kubernetes.io/hostname,可以通过修改或者disable解除该约束</li>
+<li>对于PreferredDuringScheduling的反亲和性，空的topologyKey表示kubernetes.io/hostname, failure-domain.beta.kubernetes.io/zone and failure-domain.beta.kubernetes.io/region的组合．</li>
+<li>topologyKey在遵循其他约束的基础上可以设置成其他的key.</li>
+</ul>
+<hr />
+<p>本文来自 阿仆来耶 的CSDN 博客 ，全文地址请点击：<a href="https://blog.csdn.net/jettery/article/details/79003562?utm_source=copy" class="uri">https://blog.csdn.net/jettery/article/details/79003562?utm_source=copy</a></p>
+<blockquote>
+<p>Pod间的亲和性策略要求可观的计算量可能显著降低集群的性能，不建议在超过100台节点的范围内使用。<br />
+Pod间的反亲和策略要求所有的Node都有一致的标签，例如集群中所有节点都应有匹配topologyKey的标签，如果一些节点缺失这些标签可能导致异常行为。</p>
+</blockquote>
+<h2 id="常用场景">常用场景</h2>
+<pre class="yaml"><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache
+spec:
+  selector:
+    matchLabels:
+      app: store
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: store
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - store
+            topologyKey: &quot;kubernetes.io/hostname&quot;
+      containers:
+      - name: redis-server
+        image: redis:3.2-alpine</code></pre>
+<p>上面的例子中，创建了一个具有三个实例的部署，采用了Pod间的反亲和策略，限制创建的实例的时候，如果节点上已经存在具有相同标签的实例，则不进行部署，避免了一个节点上部署多个相同的实例。</p>
+<pre class="yaml"><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+spec:
+  selector:
+    matchLabels:
+      app: web-store
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: web-store
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - web-store
+            topologyKey: &quot;kubernetes.io/hostname&quot;
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - store
+            topologyKey: &quot;kubernetes.io/hostname&quot;
+      containers:
+      - name: web-app
+        image: nginx:1.12-alpine</code></pre>
+<p>再创建3个Web服务的实例，同上面Redis的配置，首先确保两个Web不会部署到相同的节点，然后在应用Pod间亲和策略，优先在有Redis服务的节点上部署Web。</p>
+<h2 id="参考资料">参考资料</h2>
+<ol>
+<li><a href="https://blog.csdn.net/jettery/article/details/79003562">Kubernetes中的亲和性</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/">Assigning Pods to Nodes</a></li>
+</ol>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-09-29 13:30</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9723258" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9723258);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9723258,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/9/29 13:30:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

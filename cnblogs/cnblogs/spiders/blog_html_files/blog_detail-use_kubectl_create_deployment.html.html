@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>使用kubectl创建部署 - Cocowool - 博客园</title>
+<meta property="og:description" content="本文使用自己利用VirtubalBox搭建的集群环境，暂时只有一个Master、一个Node。如果想了解集群的搭建，可以参考我的文章 "离线环境安装Kubernetes集群" 以及 "使用kubead" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/use_kubectl_create_deployment.html">使用kubectl创建部署</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>本文使用自己利用VirtubalBox搭建的集群环境，暂时只有一个Master、一个Node。如果想了解集群的搭建，可以参考我的文章<a href="https://www.cnblogs.com/cocowool/p/install_k8s_offline.html">离线环境安装Kubernetes集群</a>以及<a href="https://www.cnblogs.com/cocowool/p/kubeadm_install_kubernetes.html">使用kubeadm安装kubernetes V1.11.1 集群</a>。</p>
+</blockquote>
+<h2 id="目标">0. 目标</h2>
+<p>在命令行下使用 kubectl 命令创建并管理部署。</p>
+<h2 id="检查环境">1. 检查环境</h2>
+<p>检查本地的环境信息。</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl get nodes
+NAME         STATUS     ROLES     AGE       VERSION
+devops-101   Ready      master    7h        v1.11.1
+devops-102   Ready      &lt;none&gt;    6h        v1.11.1</code></pre>
+<h2 id="命令行方式创建部署">2. 命令行方式创建部署</h2>
+<p>创建Tomcat部署，设置两个副本。</p>
+<pre class="sh"><code>$ kubectl run docker.io/tomcat --replicas=2 --labels=&quot;app=tomcat&quot; --image=docker.io/tomcat --port=8080
+deployment.apps/tomcat created
+[root@devops-101 ~]# kubectl get deployment
+NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+tomcat    2         2         2            2           6m
+[root@devops-101 ~]# kubectl get pods
+NAME                      READY     STATUS    RESTARTS   AGE
+tomcat-858b8c476d-vnm98   1/1       Running   0          6m
+tomcat-858b8c476d-xl5xl   1/1       Running   0          6m</code></pre>
+<p>创建部署之后，可以看到容器已经运行了，但是默认情况下，容器只能内部互相访问，如果需要对外提供服务，有以下几种方式：</p>
+<ul>
+<li>ClusterIP，默认的方式，通过集群IP来对外提供服务，这种方式只能在集群内部访问。</li>
+<li>NodePort，利用NAT技术在Node的指定端口上提供对外服务。外部应用通过<em><NodeIp>:<NodePort></em>的方式访问。</li>
+<li>LoadBalancer，利用外部的负载均衡设施进行服务的访问。</li>
+<li>ExternalName，这是1.7版本之后 kube-dns 提供的功能。</li>
+</ul>
+<h3 id="端口映射向外部暴露服务">2.1 端口映射，向外部暴露服务</h3>
+<p>在Kubernetes中Pod有其自己的生命周期，Node发生故障时，ReplicationController或者ReplicationSet会将Pod迁移到其他节点中以保持用户希望的状态。</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl expose deployment/tomcat --type=&quot;NodePort&quot; --port 8080
+service/tomcat exposed</code></pre>
+<p>查看service被映射到哪个端口。</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl get service
+NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+kubernetes   ClusterIP   10.96.0.1      &lt;none&gt;        443/TCP          8h
+tomcat       NodePort    10.98.152.28   &lt;none&gt;        8080:32050/TCP   7s</code></pre>
+<p>因为知道被调度到了102节点，手工通过浏览器打开 <code>http://192.168.0.102:32050</code> 检查服务是否能够正常访问。</p>
+<h2 id="基于yaml文件创建部署">3. 基于YAML文件创建部署</h2>
+<p>首先编辑Yaml文件</p>
+<pre class="yaml"><code>apiVersion: v1
+kind: Pod
+metadata:                           #元数据信息
+  name: tomcat-c                    #kubectl get  pods 和 登陆容器显示的名字
+  labels:                           #标签，可以作为查询条件 kubectl get pods -l
+    app=tomcat
+    node=devops-103
+spec:　　　　　　　　　　　　　　　 #规格
+  containers:                       #容器
+  - name: tomcat                    #容器名称
+    image: docker.io/tomcat         #使用的镜像
+    ports:
+      - containerPort: 8080
+    env:　　　　　　　　　　　　　　#设置env，登陆到容器中查看环境变量， DEME_GREETING 的值是 &quot;hello from the enviroment&quot;
+    - name:GREETING
+      value: &quot;hello from the environment&quot;</code></pre>
+<p>然后创建Pod。</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl create -f tomcat.yaml 
+pod/tomcat-ccb created
+[root@devops-101 ~]# kubectl get pods
+NAME                      READY     STATUS    RESTARTS   AGE
+tomcat-858b8c476d-vnm98   1/1       Running   2          21h
+tomcat-858b8c476d-xl5xl   1/1       Running   3          21h
+tomcat-ccb                1/1       Running   0          34s</code></pre>
+<h2 id="扩容部署">4. 扩容部署</h2>
+<p>在扩容之前，我把devops-102节点也加入到集群中。</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl get nodes
+NAME         STATUS    ROLES     AGE       VERSION
+devops-101   Ready     master    9h        v1.11.1
+devops-102   Ready     &lt;none&gt;    8h        v1.11.1
+devops-103   Ready     &lt;none&gt;    7h        v1.11.1</code></pre>
+<p>然后再执行扩容动作。</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl scale deployments/tomcat --replicas=3
+deployment.extensions/tomcat scaled
+[root@devops-101 ~]# kubectl get deployments
+NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+tomcat    3         3         3            2           1h
+[root@devops-101 ~]# kubectl get pods
+NAME                      READY     STATUS              RESTARTS   AGE
+tomcat-858b8c476d-cfrtt   0/1       ContainerCreating   0          2m
+tomcat-858b8c476d-vnm98   1/1       Running             0          1h
+tomcat-858b8c476d-xl5xl   1/1       Running             0          1h
+[root@devops-101 ~]# kubectl describe pod tomcat-858b8c476d-cfrtt
+Name:           tomcat-858b8c476d-cfrtt
+Namespace:      default
+Node:           devops-103/192.168.0.103
+Start Time:     Tue, 24 Jul 2018 18:29:51 +0800
+Labels:         app=tomcat
+                pod-template-hash=4146470328
+Annotations:    &lt;none&gt;
+Status:         Pending
+IP:             
+Controlled By:  ReplicaSet/tomcat-858b8c476d
+Containers:
+  tomcat:
+    Container ID:   
+    Image:          docker.io/tomcat
+    Image ID:       
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:    &lt;none&gt;
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-trvqv (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             False 
+  ContainersReady   False 
+  PodScheduled      True 
+Volumes:
+  default-token-trvqv:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-trvqv
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  &lt;none&gt;
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age        From                 Message
+  ----    ------     ----       ----                 -------
+  Normal  Scheduled  2m         default-scheduler    Successfully assigned default/tomcat-858b8c476d-cfrtt to devops-103
+  Normal  Pulling    &lt;invalid&gt;  kubelet, devops-103  pulling image &quot;docker.io/tomcat&quot;</code></pre>
+<h2 id="缩容">5. 缩容</h2>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl scale deployments/tomcat --replicas=2
+deployment.extensions/tomcat scaled
+[root@devops-101 ~]# kubectl get pods
+NAME                      READY     STATUS    RESTARTS   AGE
+tomcat-858b8c476d-vnm98   1/1       Running   0          1h
+tomcat-858b8c476d-xl5xl   1/1       Running   0          1h</code></pre>
+<h2 id="标签功能">6. 标签功能</h2>
+<p>创建部署的时候，kubectl会自动帮我们打一个标签，这里是<code>app=tomcat</code>。</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl describe deployment
+Name:                   tomcat
+Namespace:              default
+CreationTimestamp:      Tue, 24 Jul 2018 16:35:08 +0800
+Labels:                 app=tomcat
+Annotations:            deployment.kubernetes.io/revision=1
+Selector:               app=tomcat
+Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=tomcat
+  Containers:
+   tomcat:
+    Image:        docker.io/tomcat
+    Port:         8080/TCP
+    Host Port:    0/TCP
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   tomcat-858b8c476d (2/2 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  18m   deployment-controller  Scaled up replica set tomcat-858b8c476d to 3
+  Normal  ScalingReplicaSet  4m    deployment-controller  Scaled down replica set tomcat-858b8c476d to 2</code></pre>
+<p>可以使用标签来查询资源，包括Pods和Services。</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl get pods -l app=tomcat
+NAME                      READY     STATUS    RESTARTS   AGE
+tomcat-858b8c476d-vnm98   1/1       Running   0          1h
+tomcat-858b8c476d-xl5xl   1/1       Running   0          1h
+[root@devops-101 ~]# kubectl get services -l app=tomcat
+NAME      TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+tomcat    NodePort   10.98.152.28   &lt;none&gt;        8080:32050/TCP   1h</code></pre>
+<p>可以给Pods打上自定义的标签。</p>
+<pre class="sh"><code>[root@devops-101 ~]# kubectl label --overwrite  pod tomcat-858b8c476d-vnm98 node=devops-102
+# 这里用了--overwrite属性是因为之前标错了
+[root@devops-101 ~]# kubectl describe pods tomcat-858b8c476d-vnm98
+Name:           tomcat-858b8c476d-vnm98
+Namespace:      default
+Node:           devops-102/192.168.0.102
+Start Time:     Tue, 24 Jul 2018 16:35:08 +0800
+Labels:         app=tomcat
+                node=devops-102
+                pod-template-hash=4146470328
+Annotations:    &lt;none&gt;
+Status:         Running
+IP:             10.244.2.6
+Controlled By:  ReplicaSet/tomcat-858b8c476d
+Containers:
+  tomcat:
+    Container ID:   docker://9f3aa2d3d6c1937d4209a44820c1cd06f7eaf8796848c759e19410358aea4866
+    Image:          docker.io/tomcat
+    Image ID:       docker-pullable://docker.io/tomcat@sha256:87ad70ceaafd5c71301b081b37ca2795bd6c7c1a5599a8c92c9447bbd225ae47
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Tue, 24 Jul 2018 16:35:37 +0800
+    Ready:          True
+    Restart Count:  0
+    Environment:    &lt;none&gt;
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-trvqv (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  default-token-trvqv:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-trvqv
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  &lt;none&gt;
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:          &lt;none&gt;</code></pre>
+<h2 id="删除部署">7. 删除部署</h2>
+<pre class="sh"><code>$ kubectl delete pod-name</code></pre>
+<p><img src="https://images2018.cnblogs.com/blog/39469/201807/39469-20180710163655709-89635310.png" /></p>
+<h2 id="参考资料">参考资料</h2>
+<ol>
+<li><a href="https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/">Using kubectl to Create a Deployment</a></li>
+<li><a href="https://www.cnblogs.com/fengjian2016/p/6392900.html">kubernetes 安装学习</a></li>
+<li><a href="https://www.jianshu.com/p/0e8064e16451">kubernetes step by step</a></li>
+</ol>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-07-25 14:38</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9365841" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9365841);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9365841,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/7/25 14:38:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="never" />
+<title>[每天五分钟，备战架构师-9]数据库系统 - Cocowool - 博客园</title>
+<meta property="og:description" content="数据操作和使用 日常数据库使用过程中，离不开SQL语言。Structured Query Language由Boyce和Chamberlin在1974年提出，1975 1979年BIM San Jos" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/sa_database_design.html">[每天五分钟，备战架构师-9]数据库系统</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><h2 id="数据操作和使用">数据操作和使用</h2>
+<p>日常数据库使用过程中，离不开SQL语言。Structured Query Language由Boyce和Chamberlin在1974年提出，1975-1979年BIM San Jose Research Lab的关系型数据库管理系统原型 System R实现了这种语言。SQL-86是第一个SQL标准，后续的有SQL-89、SQL-92、SQL-99。现在大部分DBMS都支持SQL，甚至一些Key-Value型的数据库都支持SQL方式进行查询。</p>
+<p>SQL一般包括DDL数据定义、DML数据操作、DCL数据控制（授权）几种主要的结构。</p>
+<h3 id="数据库设计">1. 数据库设计</h3>
+<p>本章的内容讲述设计数据库管理系统的一些思路和方法，这部分的知识有利于我们提高日常工作中数据库（表）结构设计的能力，教材中的内容对于很多细节并没有深入的介绍，如有需要可以再找相关方面的专业教材进行学习。</p>
+<blockquote>
+<p>也有可能是为某个应用程序设计专门的数据管理系统，例如定义数据库的存储格式（内模式）、概念模型、用户展现形式（外模式），这个系统仅仅适用于某个应用，但是具备了数据库系统的特点。</p>
+</blockquote>
+<h3 id="数据库设计方法">2. 数据库设计方法</h3>
+<p>目前的设计方法分为四类：直观设计法、规范设计法、计算机辅助设计法、自动化设计法。</p>
+<h4 id="基于3nf的数据库设计方法">2.1 基于3NF的数据库设计方法</h4>
+<p>S.Atre提出，基本思想是在需求分析的基础上，识别并确认数据库模式中全部属性和属性间的依赖，将它们组织成一个单一的关系模型，然后再分析模式中不符合3NF的约束条件，用投影和连接的办法将其分解，使其达到3NF条件。<br />
+<img src="https://images-na.ssl-images-amazon.com/images/I/61shTMrnTKL._SL500_SX352_BO1,204,203,200_.jpg" /></p>
+<h4 id="lra方法">2.2 LRA方法</h4>
+<p>LRA(Logical Record Access，逻辑记录存取)方法从用户的信息要求和处理要求出发，分为：需求分析、逻辑设计、物理设计三个阶段。</p>
+<h4 id="基于实体联系的数据库设计方法">2.3 基于实体联系的数据库设计方法</h4>
+<p>E-R方法主要用于逻辑设计，由P.P.S.Chen于1976年提出。</p>
+<h4 id="基于视图概念的数据库设计方法">2.4 基于视图概念的数据库设计方法</h4>
+<h4 id="面向对象的数据库设计方法">2.5 面向对象的数据库设计方法</h4>
+<p>面向对象的数据库设计（即数据库模式）思想是用户定义数据库模式的思路，面向对象数据库管理系统则是数据库管理程序的思路。应用系统对象模型向数据库模式的影射是面向对象数据库设计的核心和关键。</p>
+<h4 id="计算机辅助数据库设计方法">2.6 计算机辅助数据库设计方法</h4>
+<p>这是数据库设计趋向自动化的重要步骤，基本思想是提供一个人机结合的交互式过程，帮助设计者更快更好地进行设计工作。</p>
+<h4 id="敏捷数据库设计方法">2.7 敏捷数据库设计方法</h4>
+<p>软件开发方法学－敏捷方法学在数据库设计方面的应用，提出在可控制方式下的进化设计，一个重要特点就是迭代式开发。</p>
+<h3 id="数据库设计的基本步骤">3. 数据库设计的基本步骤</h3>
+<p>在分步设计方法中，通常将数据库的设计分为需求分析、概念结构设计、逻辑结构设计和数据库物理设计四个阶段。</p>
+<h3 id="需求分析">3.1 需求分析</h3>
+<ul>
+<li>确认需求、确定设计目标。</li>
+<li>分析和收集数据。包括收集用户的信息需求、处理需求、完整性、安全性需求，以及对数据库设计过程有用的其他信息。
+<ul>
+<li>弱方法学：BSP 企业系统规划法、OOAD 面向对象的分析法。</li>
+<li>强方法学：形式化方法，包括PSL/PAS、SREM 软件需求工程法、TAGS 自动生成系统技术法。</li>
+<li>格式化方法：BIAIT 业务信息分析于集成技术、SADT 结构化分析与设计技术。</li>
+</ul></li>
+<li>整理文档</li>
+</ul>
+<h3 id="概念结构设计">3.2 概念结构设计</h3>
+<p>概念结构设计的任务是在需求分析中产生的需求说明书的基础上按照一定的方法抽象成满足应用需求的用户的信息结构，即通常所称的概念模型。概念模型能够提供识别和理解系统要求的框架，为数据库提供一个说明性结构，作为设计数据库逻辑结构即逻辑模型的基础。</p>
+<p>概念结构的设计策略主要有自底向上、自顶向下、由里向外和混合策略。主要包括视图设计、视图集成两个阶段。</p>
+<h3 id="逻辑结构设计">3.3 逻辑结构设计</h3>
+<p>数据库逻辑结构设计的任务就是把概念结构设计阶段设计好的基本E-R图转换为具体机器上的DBMS产品所支持的数据模型相符合的逻辑结构。</p>
+<p>逻辑结构设计的步骤包括：将概念模型向一般关系模型转化、将上一步得到的结构向特定的DBMS支持下的数据模块转换、根据需求和特定DBMS特性进行调整和完善。</p>
+<h3 id="设计用户子模式">3.4 设计用户子模式</h3>
+<p>用户子模式（外模式）是用户所看到的数据库的数据逻辑结构。关系数据库的外模式由与用户有关的基表及按需要定义的视图构成。设计外模式可参照概念设计中的局部ER图。</p>
+<h3 id="数据模型的优化">3.5 数据模型的优化</h3>
+<p>优化主要从改善数据库的性能和优化存储空间着手。改善性能的方向有：减少连接运算、减小关系大小及数据量、尽量使用快照。节省空间主要的方向有：缩小每个属性占用的空间、采用假属性。</p>
+<h3 id="模式的评价与改进">3.6 模式的评价与改进</h3>
+<p>对模式的评价包括设计质量评价和性能评价两部分。设计质量标准包括：可理解性、完整性、可恢复性、安全性和扩充性。性能评价因为缺少具体物理设计的数量测量标准，因此也只能进行性能估计。主要从逻辑记录存取数、传送量、物理设计算法模型等方面进行评估。</p>
+<h3 id="物理结构设计">3.7 物理结构设计</h3>
+<p>物理结构是数据库在物理设备上的存储结构和存取方法，物理设计依赖于给定的硬件环境和数据库产品。物理设计的内容包括数据存储结构的设计、集簇的设计、存取路径的设计和确定系统配置几方面。</p>
+<p>评价物理结构设计所需要考虑的几个方面：</p>
+<ul>
+<li>查询和响应时间</li>
+<li>更新事务的开销</li>
+<li>生成报告的开销</li>
+<li>主存储空间的开销</li>
+<li>辅助存储空间的开销</li>
+</ul>
+<h3 id="数据库应用程序设计">3.8 数据库应用程序设计</h3>
+<p>数据库应用程序设计遵循软件工程的方法，通常包括选择设计方法、制定开发计划、选择系统架构、设计安全性策略等几个步骤。</p>
+<h2 id="参考资料">参考资料：</h2>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/SQL">Wiki SQL</a></li>
+<li><a href="https://www.cnblogs.com/hyd1213126/p/4914884.html">SQLServer 里面的 DDL,DML,DCL,TCL</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Peter_Chen">Peter Chen</a></li>
+</ol>
+<p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：<a href="https://cloud.tencent.com/developer/support-plan?invite_code=31i26m1ou1gko" class="uri">https://cloud.tencent.com/developer/support-plan?invite_code=31i26m1ou1gko</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-07-20 15:23</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=9341677" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(9341677);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=9341677,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/7/20 15:23:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

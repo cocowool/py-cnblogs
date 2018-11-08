@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>利用MapabcAPI实现基于浏览器的地理定位 - Cocowool - 博客园</title>
+<meta property="og:description" content="现在互联网中有了越来越多的地理位置服务，正在制定中的HTML5规范也试图在浏览器中内置嵌入地理位置共享服务，而且幸运的是，我们已经能够在Firefox 3.5+、Chrome 5.0+、Opera 1" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=oVrWjmbP-rXxVp7O71kev8vWEZCetdwYaIziKHJCYc41" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/archive/2010/08/31/1813191.html">利用MapabcAPI实现基于浏览器的地理定位</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>现在互联网中有了越来越多的地理位置服务，正在制定中的HTML5规范也试图在浏览器中内置嵌入地理位置共享服务，而且幸运的是，我们已经能够在Firefox 3.5+、Chrome 5.0+、Opera 10.60+、Safari 5.0+ 以及一些移动终端，注入IPhone、Android上使用这项服务，那么这个服务能否有Mapabc的API结合，来实现用户的地理定位呢？</p>  <p>传统上，地图应用上为用户定位的方式一般是：</p>  <blockquote>   <p>用户访问时获得用户的IP。     <br />用这个IP到IP库中匹配用户的城市信息。      <br />根据获取的城市信息去已有的城市中心点字典中进行匹配。      <br />匹配完成后将用户地图的中心点进行相应的切换。 </p> </blockquote>  <p>这个过程繁琐，而且准确性极大程度上依赖于我们IP库的准确程度。现在有了浏览器的位置共享服务，我们可以更容易的实现用户的地理定位。</p>  <p><strong>Geolocation对象介绍</strong></p>  <p>正如开头所讲的，到目前为止，W3C中deGeolocation API规范已经在非IE的浏览中得到了实现。规范中提到，浏览器提供位置信息的来源是不固定的，可能是GPS、也可能来自于IP地址、RFID、WiFi、蓝牙或者GSM\CDMA的定位信息，也不保证返回的结果一定准确。Geolocation的API同时对“只获得一次”定位和“持续监督”定位都做出了规定。</p>  <p><strong>Geolocation的一些方法</strong></p>  <p>Geolocation对象位于浏览器Navigator对象下，可以通过 navigator.geolcation 来访问，不支持 geolocation 的浏览器不会包含这一对象，不会造成错误，可以用来做浏览器的区分。</p>  <blockquote>   <p>if ( navigator.geolcation ){</p>    <p>&#160;&#160;&#160; alert(‘ Your Browser dosent support geolcocation ');</p>    <p>} else{</p>    <p>&#160;&#160;&#160; alert(‘ Your Browser support geolocation’);</p>    <p>}</p> </blockquote>  <p>在访问 geolocation 对象时，浏览器会进行提示，询问用户使用许可对网站提供位置服务，得到用户的许可后，访问才会继续，否则会被停止。而且，我们可以捕捉到用户同意或者拒绝的事件。</p>  <p>在获得用户的学科之后，就可以利用Geolocation获取当前位置，核心方法如下：</p>  <blockquote>   <p>navigator.geolocation.getCurrentPosition( getPositionSuccess , getPositionError );</p> </blockquote>  <p>上面的代码中，调用了 getCurrentPosition 方法，并且传递了两个回调函数的参数，分别用来处理位置获取成功和失败时的情况。实事上，这个函数还可以接受第三个参数，用来传入一些配置信息，包括对于超时的设置等。下面来看两个获取成功和获取失败时，回调函数的处理。</p>  <blockquote>   <p>获取地理信息成功的错误处理信息</p>    <p>function getPositionSuccess ( position ) {</p>    <p>&#160; var lat = position.coords.latitude;</p>    <p>&#160; var lng = position.coords.longitude;</p>    <p>&#160; alert( ‘Now you are lat – lng ‘);</p>    <p>}</p>    <p>&#160;</p>    <p>获取地理位置失败的回调函数</p>    <p>function getPositionError( error ){</p>    <p>&#160;&#160;&#160; switch(error.code)</p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; case error.TIMEOUT;</p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; //Do something</p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; break;</p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; case error.PERMISSION_DENIED;</p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; //Do something</p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; break;</p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; case error.POSITION_UNAVAILIABLE;</p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; //Do something</p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; break;</p>    <p>}</p> </blockquote>  <p>获取地理位置信息的配置变量。在填入获取地理位置信息变量时，能够对获取地理位置的一些细节进行影响。下面是目前包括的几个具体参数</p>  <blockquote>   <p>In ECMAScript, the <code><a href="http://dev.w3.org/#high-accuracy">enableHighAccuracy</a></code>, <code><a href="http://dev.w3.org/#timeout_error">timeout</a></code> and <code><a href="http://dev.w3.org/#max-age">maximumAge</a></code> properties are all optional: when creating a PositionOptions object, the developer may specify any of these properties.</p> </blockquote>  <p>刚才也提到，我们还可以对地理位置进行持续的追踪，这是需要用到 watchPosition 方法。</p>  <p>因为对于移动设备的用户来说，位置并不是固定的，我们需要来处理这种移动客户端的情况，而不是每次要提醒用户去刷新浏览器来更新位置。</p>  <blockquote>   <p>navigator.geolocation.watchPosition( refreshPosition );</p> </blockquote>  <p><strong>与Mapabc API的整合</strong></p>  <p>看完上面的关于 geolocation 的介绍之后，我们就可以将这个服务与Mapabc API一起，整合到我们的应用中了。下面是一个具体的实现样例，供参考：</p>  <blockquote>   <p>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;<a href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;">http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;</a>&gt;      <br />&lt;html&gt;      <br />&lt;head&gt;      <br />&#160;&#160;&#160; &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;      <br />&lt;/head&gt;      <br />&lt;body&gt;      <br />&lt;div&gt;      <br />&#160;&#160;&#160; &lt;div id=&quot;mapobj&quot; style=&quot;width:500px; height:500px; border:1px solid black;&quot;&gt;&lt;/div&gt;      <br />&#160;&#160;&#160; &lt;div id=&quot;info&quot;&gt;&lt;/div&gt;      <br />&#160;&#160;&#160; &lt;input type=&quot;button&quot; id=&quot;getPos&quot; value=&quot;Get My Position&quot; /&gt;      <br />&lt;/div&gt;      <br />&lt;script src=&quot;<a href="http://app.mapabc.com/apis?&amp;t=flashmap&amp;v=2.3.4&amp;key=0c3235346b1e00772eafe1c099f4b23fe5ec1202d393f952395e628567934baceedcaf1508ea044f&quot;">http://app.mapabc.com/apis?&amp;t=flashmap&amp;v=2.3.4&amp;key=0c3235346b1e00772eafe1c099f4b23fe5ec1202d393f952395e628567934baceedcaf1508ea044f&quot;</a> type=&quot;text/javascript&quot;&gt;&lt;/script&gt;      <br />&lt;script type=&quot;text/javascript&quot;&gt;      <br />&#160;&#160;&#160; function getPositionSuccess( position ){      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; var lat = position.coords.latitude;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; var lng = position.coords.longitude;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; //alert( &quot;您所在的位置： 经度&quot; + lat + &quot;，纬度&quot; + lng ); </p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160; var mapOptions = new MMapOptions();//构建地图辅助类     <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; mapOptions.zoom=13;//设置地图zoom级别       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; mapOptions.center=new MLngLat(lng,lat);&#160;&#160; //设置地图中心点      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; mapOptions.toolbar = MINI;//工具条      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; mapOptions.toolbarPos = new MPoint(15,15);&#160; //工具条偏移      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; mapOptions.overviewMap = SHOW;//是否显示鹰眼      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; mapOptions.scale = SHOW;//是否显示比例尺      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; mapOptions.returnCoordType = COORD_TYPE_OFFSET;//返回偏移明码坐标      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; mapOptions.zoomBox = true;//鼠标滚轮缩放和双击放大时是否有红框动画效果。      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; mapabc.map=new MMap(&quot;mapobj&quot;,mapOptions); //地图初始 </p>    <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160; if(typeof position.address !== &quot;undefined&quot;){     <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; var country = position.address.country;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; var province = position.address.region;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; var city = position.address.city;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; alert(' 您位于 ' + country + province + '省' + city +'市');      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; }      <br />&#160;&#160;&#160; } </p>    <p>&#160;&#160;&#160; function getPositionError( error ){     <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; switch(error.code){      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; case error.TIMEOUT :      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; alert( &quot; 连接超时，请重试 &quot; );      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; break;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; case error.PERMISSION_DENIED :      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; alert( &quot; 您拒绝了使用位置共享服务，查询已取消 &quot; );      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; break;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; case error.POSITION_UNAVAILABLE :       <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; alert( &quot; 亲爱的火星网友，非常抱歉，我们暂时无法为您所在的星球提供位置服务 &quot; );      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; break;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; }      <br />&#160;&#160;&#160; } </p>    <p>&#160;&#160;&#160; var dom = {     <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; btn&#160;&#160;&#160; : document.getElementById(&quot;getPos&quot;),      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; info: document.getElementById(&quot;info&quot;),      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; map&#160;&#160;&#160; : document.getElementById(&quot;mapObj&quot;)      <br />&#160;&#160;&#160; }; </p>    <p>&#160;&#160;&#160; var mapabc = {     <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; map&#160;&#160;&#160;&#160;&#160;&#160;&#160; : null,      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; marker&#160;&#160;&#160; : null      <br />&#160;&#160;&#160; }; </p>    <p>&#160;&#160;&#160; dom.btn.onclick = function(){     <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; if( navigator.geolocation ){      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; dom.info.innerHTML = &quot;Waiting for the geolocation result...&quot;;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; navigator.geolocation.getCurrentPosition( getPositionSuccess, getPositionError );&#160;&#160;&#160;&#160;&#160;&#160;&#160; <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; } else {      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; dom.info.innerHTML = &quot;Your browser doesn't support geolocation.&quot;;      <br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; }      <br />&#160;&#160;&#160; }      <br />&lt;/script&gt;      <br />&lt;/body&gt;      <br />&lt;/html&gt;</p> </blockquote>  <p>上面的代码，会在地图显示后询问用户是否共享位置信息，如果共享则会切换地图中心点到相应的位置。当然，我们可以在自己的应用中更加灵活的使用位置共享服务，既然有了这么 Cool 的服务支持，我们还等什么呢。</p>  <p>&#160;</p>  <p>&#160;</p>  <p>&#160;</p>  <p>参考资料：</p>  <p>1、<a href="http://bbs.blueidea.com/thread-2995481-1-1.html" target="_blank">Blueidea BBS</a>    <br />2、<a href="http://dev.w3.org/geo/api/spec-source.html" target="_blank">Geolocation API Specification</a>    <br />3、<a href="http://code.mapabc.com/" target="_blank">Mapabc API</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2010-08-31 00:35</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=1813191" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(1813191);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=1813191,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2010/8/31 0:35:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

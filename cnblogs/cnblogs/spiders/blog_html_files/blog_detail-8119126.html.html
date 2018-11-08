@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>IPython介绍 - Cocowool - 博客园</title>
+<meta property="og:description" content="本文编写时，IPython最新的版本为6.3和5.4。 介绍 IPython 是 Fernando 在 2001 开始开发的一个交互式的Python解释执行环境。众所周知，Python提供了一个交互执" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/8119126.html">IPython介绍</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><blockquote>
+<p>本文编写时，IPython最新的版本为6.3和5.4。</p>
+</blockquote>
+<h3 id="介绍">介绍</h3>
+<p>IPython 是 Fernando 在 2001 开始开发的一个交互式的Python解释执行环境。众所周知，Python提供了一个交互执行的环境，在命令行输入<code>python</code>或者<code>python3</code>就可以进入Python的命令行环境，但在实际工作中并不方便，IPython则提供了一个更为强大的环境，主要包括以下几方面内容：</p>
+<ul>
+<li>一个强大的交互式Shell环境</li>
+<li><a href="https://jupyter.org">Jupyter</a>内核</li>
+<li>支持交互式的数据可视化</li>
+<li>灵活，可被嵌入到单独的工程中</li>
+<li>使用简单，并行计算的高效工具</li>
+</ul>
+<p>本文依次介绍这几个方面，方便大家熟悉IPython环境。</p>
+<h3 id="mac-下的安装">Mac 下的安装</h3>
+<p>安装非常简单，我的Python版本时3.6，所以用了 pip3，如果需要jupyter notebook或者Qt支持，也需要同步安装jupyter。Python数据分析这本书中推荐使用<a href="https://www.enthought.com/product/enthought-python-distribution">EDM</a>这是一个集成环境，可能对软件依赖管理的比较好，其实自己安装也没什么问题。</p>
+<pre class="python"><code>pip3 install ipython
+pip3 install jupyter
+
+# 如果需要交互式的可视化终端，还需要安装pytq5
+pip3 install pyqt5
+</code></pre>
+<h3 id="交互式shell环境">交互式Shell环境</h3>
+<p>命令行输入IPython就可以进入ipython的环境，输入前面包含In和行号，输出包含Out和行号。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201712/39469-20171226172630698-924361539.png" /></p>
+<h4 id="与操作系统交互">与操作系统交互</h4>
+<p>IPython和操作系统结合的非常紧密，可以直接在命令行中执行操作系统的命令。</p>
+<h4 id="tab补齐与提示">Tab补齐与提示</h4>
+<p>在IPython的界面中，按Tab键可以做很多工作，如果执行Shell命令，tab可以补齐文件名，如果是Python代码，可以补齐变量名，用<code>.</code>之后，可以提示对象包含的属性和方法。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201712/39469-20171227105214354-667896144.png" /></p>
+<h4 id="记录命令历史">记录命令历史</h4>
+<p>IPython在本地磁盘维护了一个小型的数据库来记录用户输入的历史以及输出的日志，并且提供了几个快捷键，方便大家快速查找历史命令。还可以用<code>%hist</code>来查看输入的历史记录。</p>
+<table>
+<thead>
+<tr class="header">
+<th>快捷键</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ctrl + P</td>
+<td>向上搜索历史，等同于向上箭头</td>
+</tr>
+<tr class="even">
+<td>Ctrl + N</td>
+<td>向下搜索历史，等同于向下箭头</td>
+</tr>
+<tr class="odd">
+<td>Ctrl + R</td>
+<td>增量搜索历史记录，这个命令玩过Linux的同学应该比较熟悉</td>
+</tr>
+</tbody>
+</table>
+<h4 id="输入和输出变量">输入和输出变量</h4>
+<p>IPython环境对用户的输入和输出都会记录。输入变量保存在<code>_iX</code>格式的变量中，X表示行号。如果我们想查看第2行的输入内容，可以使用<code>_i2</code>。</p>
+<h4 id="目录书签系统">目录书签系统</h4>
+<p>IPython提供了一个简单的目录书签系统，可以方便我们快速切换目录。书签会被自动初始化，这样可以在不同会话间保留。</p>
+<pre class="python"><code>In [1]: %bookmark -l
+Current bookmarks:
+baby -&gt; /Users/rousseau/Projects/python.my/pydata-book/datasets/babynames
+
+In [2]: %bookmark moviedb /Users/rousseau/Projects/python.my/pydata-book/datasets/movielens
+
+In [3]: %bookmark -l
+Current bookmarks:
+baby    -&gt; /Users/rousseau/Projects/python.my/pydata-book/datasets/babynames
+moviedb -&gt; /Users/rousseau/Projects/python.my/pydata-book/datasets/movielens</code></pre>
+<h4 id="对象内省-comprehensive-object-introspection">对象内省 Comprehensive object introspection</h4>
+<p>使用 ? 可以查看对象的一些信息。</p>
+<p>使用 ?? 可以查看对象的源码（如果可能）</p>
+<h3 id="魔术命令">魔术命令</h3>
+<p>IPython中提供了一些以<code>%</code>开头的特殊命令，我们称这些命令为魔术命令 Magic Command。魔术命令可以认为是IPython系统中的命令行程序，使用<code>?</code>可以查看选项。魔术命令也可以不带百分号直接使用，只要没有定义与其同名的变量就可以，这个技术叫做 automagic ，可以通过 <code>%automagic</code> 打开或关闭。可以在IPython中查看相关文档，输入<code>%magic</code>即可。</p>
+<h4 id="常用的魔术命令">常用的魔术命令</h4>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>命令解释</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>%quickref</td>
+<td>现实IPython的快速参考</td>
+</tr>
+<tr class="even">
+<td>%magic</td>
+<td>显示所有magic命令的详细文档</td>
+</tr>
+<tr class="odd">
+<td>%debug</td>
+<td>从最新的异常跟踪的底部进入交互式调试器</td>
+</tr>
+<tr class="even">
+<td>%hist</td>
+<td>打印命令输入的历史</td>
+</tr>
+<tr class="odd">
+<td>%timeit</td>
+<td>测试脚本的运行时间，多次执行以获得代码的平均执行时间</td>
+</tr>
+<tr class="even">
+<td>%automagic</td>
+<td>控制automagic功能是否开启</td>
+</tr>
+<tr class="odd">
+<td>%paste</td>
+<td>执行剪贴板中的Python代码</td>
+</tr>
+<tr class="even">
+<td>%reset</td>
+<td>删除interactive命名空间中的全部变量／名称</td>
+</tr>
+<tr class="odd">
+<td>%run script.py</td>
+<td>在IPython中执行一个Python脚本</td>
+</tr>
+<tr class="even">
+<td>%logstart</td>
+<td>开始会话日志记录功能</td>
+</tr>
+</tbody>
+</table>
+<h4 id="run-命令">%run 命令</h4>
+<p>在IPython环境中，所有文件都可以通过%run命令当作Python程序来运行。我理解就是把Python脚本放到一个新的命名空间中进行后台运行，通过IPython交互环境，可以调用现实Python程序中的变量。</p>
+<h4 id="执行剪贴板中的代码">执行剪贴板中的代码</h4>
+<p>对于一线代码片段，可以拷贝到IPython的环境中执行查看结果，但是对于有空行的代码，直接使用操作系统的复制粘贴快捷键会报错，这个时候需要使用<code>%paste</code>和<code>%cpaste</code>这两个魔术函数。<code>%paste</code>函数会将粘贴板中的代码粘贴到交互式命令行中。<code>%cpaste</code>函数执行后，进入一个交互环境，只有输入<code>__</code>或者Ctrl+D才结束代码的复制。</p>
+<h3 id="交互式数据可视化">交互式数据可视化</h3>
+<p>IPython支持给予Qt框架的GUI控制台，如下图所示。如果需要交互环境，需要安装PyQt5。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201712/39469-20171226172644354-1818808889.png" /></p>
+<p>IPython可以与matplotlib密切结合。</p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201712/39469-20171227105155104-1875327084.png" /></p>
+<h3 id="开发调试利器">开发调试利器</h3>
+<p>%debug<br />
+%pdb</p>
+<p><em>本文为作者原创，如果您觉得本文对您有帮助，请随意打赏，您的支持将鼓励我继续创作。</em></p>
+<p><img src="https://images2017.cnblogs.com/blog/39469/201708/39469-20170825142904777-1467390737.png" /></p>
+<p>参考资料：<br />
+1、<a href="http://ipython.org">IPython</a><br />
+2、<a href="https://jupyter.org">Jupyter</a><br />
+3、<a href="http://matplotlib.org">matplotlib</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2017-12-26 17:27</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=8119126" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(8119126);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=8119126,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2017/12/26 17:27:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>

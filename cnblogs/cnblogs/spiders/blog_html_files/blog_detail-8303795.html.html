@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>IP地址和CIDR - Cocowool - 博客园</title>
+<meta property="og:description" content="IP地址(IPV4) IPV4的地址是一个32位的二进制数，由网络ID和主机ID两部分组成，用来在网络中唯一的标识一台计算机。IP地址通常用四组3位的十进制数表示，中间用 . 分割，例如: 192.1" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=-duj5vpGTntb85GJoM3iRI972XwWcI-j8zmqDzyfu2w1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/43046.css?v=jIe%2bqkoe6NGEDBHSKfZFtSP%2bk3Q%3d"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/Custom/bundle-Custom-mobile.css?v=D4ZG96to-4HBTPc_nukUGx4UJPJRCpcXUrj8NiiyXiU1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/cocowool/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/cocowool/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/cocowool/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'cocowool', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=0t5BJebAFvrpW2OAhYKrwtj8nG5UE2GXuvUfBo9JUgs1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<div id="bgoverlay"></div>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/cocowool/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/cocowool/">小狼的世界</a></h1>
+<h2>不积跬步，无以至千里、不积细流，无以成江海</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/cocowool/">首页</a></li>
+<li></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/Cocowool">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/cocowool/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/cocowool/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 363&nbsp; </span>
+<span id="stats_article_count">文章 - 4&nbsp; </span>
+<span id="stats-comment_count">评论 - 449</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/cocowool/p/8303795.html">IP地址和CIDR</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><h3 id="ip地址ipv4">IP地址(IPV4)</h3>
+<p>IPV4的地址是一个32位的二进制数，由网络ID和主机ID两部分组成，用来在网络中唯一的标识一台计算机。IP地址通常用四组3位的十进制数表示，中间用<strong>.</strong>分割，例如:<strong>192.168.0.1</strong>。</p>
+<p>IPV6用128位表示IP地址，表示位8组4位16进制数，中间用<strong>:</strong>分割，例如：。</p>
+<p>为了方便IP寻址，将IP地址分为A、B、C、D、E五类。每类IP地址对各个IP地址中用来表示网络ID和主机ID的位数作了明确的规定。当主机ID的位数确定之后，一个网络中是多能够包含的计算机数目也就确定，用户可根据企业需要灵活选择一类IP地址构建网络结构。</p>
+<table>
+<thead>
+<tr class="header">
+<th>分类</th>
+<th>定义</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A类</td>
+<td>A类地址用IP地址前8位表示网络ID，用IP地址后24位表示主机ID。</td>
+<td>A类地址用来表示网络ID的第一位必须以0开始，其他7位可以是任意值， 当其他7位全为0是网络ID最小，即为0；当其他7位全为1时网络ID最大，即为127。网络ID不能为0，它有特殊的用途，用来表示所有网段，所以网络 ID最小为1；网络ID也不能为127；127用来作为网络回路测试用。所以A类网络网络ID的有效范围是1-126共126个网络，每个网络可以有2^24-2个主机。</td>
+</tr>
+<tr class="even">
+<td>B类</td>
+<td>B类地址用IP地址前16位表示网络ID，用IP地址后16位表示主机ID。</td>
+<td>B类地址用来表示网络ID的前两位必须以10开始，其他14位可以是任 意值，当其他14位全为0是网络ID最小，即为128；当其他14位全为1时网络ID最大，第一个字节数最大，即为191。B类IP地址第一个字节的有效 范围为128－191，共16384个B类网络；每个B类网络可以包含2^16-2台主机（即65534台主机）。</td>
+</tr>
+<tr class="odd">
+<td>C类</td>
+<td>C类地址用IP地址前24位表示网络ID，用IP地址后8位表示主机ID。</td>
+<td>C类地址用来表示网络ID的前三位必须以110开始，其他22位可以是任 意值，当其他22位全为0是网络ID最小，IP地址的第一个字节为192；当其他22位全为1时网络ID最大，第一个字节数最大，即为223。C类IP地 址第一个字节的有效范围为192－223，共2097152个C类网络；每个C类网络可以包含2^8-2台主机（即254台主机）。</td>
+</tr>
+<tr class="even">
+<td>D类</td>
+<td></td>
+<td>D类地址用来多播使用，没有网络ID和主机ID之分，D类IP地址的第一个字节前四位必须以1110开始，其他28位可以是任何值，则D类IP地址的有效范围为224.0.0.0到239.255.255.255。</td>
+</tr>
+<tr class="odd">
+<td>E类</td>
+<td></td>
+<td>E类地址保留实验用，没有网络ID和主机ID之分，E类IP地址的第一字节前四位必须以1111开始，其它28位可以是任何值，则E类IP地址的有效范围为240.0.0.0至255.255.255.254。其中255.255.255.255表示广播地址。</td>
+</tr>
+</tbody>
+</table>
+<p>在实际应用中，只有A、B和C三类IP地址能够直接分配给主机，D类和E类不能直接分配给计算机。　</p>
+<h3 id="网络id主机id和子网掩码">网络ID、主机ID和子网掩码</h3>
+<p>当为一台计算机分配IP地址后，该计算机的IP地址哪部份表示网络ID，哪部份表示主机ID，并不由IP地址所属的类来确定，而是由子网掩码确定。子网确定一个IP地址属于哪一个子网。子网掩码的格式是以连续的255后面跟连续的0表示，其中连续的255这部份表示网络ID；连续0部份表示主机ID。比如，子网掩码255.255.0.0和255.255.255.0。</p>
+<p>根据子网掩码的格式可以发现，子网掩码有0.0.0.0、255.0.0.0、255.255.0.0、255.255.255.0和 255.255.255.255共五种。采用这种格式的子网掩码每个网络中主机的数目相差至少为256倍，不利于灵活根据企业需要分配IP地址。比如，一 个企业有2000台计算机，用户要么为其分配子网掩为255.255.0.0，那么该网络可包含65534台计算机，将造成63534个IP地址的浪费； 要么用户为其分配8个255.255.255.0网络，那么必须用路由器连接这个8个网络，造成网络管理和维护的负担。</p>
+<h3 id="cidr无类域间路由">CIDR(无类域间路由)</h3>
+<p>将子网掩码转换为二进制，就会发现网络ID部分全部是1、主机ID部分全部是0。</p>
+<p>CIDR（Classless Inter-Domain Routing，无类域间路由选择）它消除了传统的A类、B类和C类地址以及划分子网的概念，因而可以更加有效地分配IPv4的地址空间。它可以将好几个IP网络结合在一起，使用一种无类别的域际路由选择算法，使它们合并成一条路由从而较少路由表中的路由条目减轻Internet路由器的负担。</p>
+<p>CIDR技术用子网掩码中连续的1部份表示网络ID，连续的0部份表示主机ID。比如，网络中包含2000台计算机，只需要用11位表示 主机ID，用21位表网络ID，则子网掩码表示为11111111.11111111.11100000.00000000，转换为十进制则为 255.255.224.0。此时，该网络将包含2046台计算机，既不会造成IP地址的浪费，也不会利用路由器连接网络，增加额外的管理维护量。</p>
+<p>CIDR 还使用“斜线记法”，它又称为CIDR记法，即在IP地址后面加上一个斜线“/”，然后写上网络前缀所占的比特数（这个数值对应于三级编址中子网掩码中比特1的个数）。</p>
+<p><strong>CIDR表示方法：IP地址/网络ID的位数，比如192.168.23.35/21，其中用21位表示网络ID。</strong></p>
+<p>网络ID相同的计算机称之为本地网络，本地网络中的计算机相互通信不需要路由器连接；网络ID不相同的计算机称之为远程网络，远程网络中的计算机要相互通信必须通过路由器连接。</p>
+<blockquote>
+<p>注意：为什么计算IP地址时要减2，而计算子网数目时不减2呢？IP地址减2的原因是主机ID不能全为0也不能全为1；子网就不存在这个问题。</p>
+</blockquote>
+<h3 id="私有ip">私有IP</h3>
+<p>IP地址由IANA（Internet地址分配机构）管理和分配，任何一个IP地址要能够在Internet上使用就必须由IANA分配，IANA 分配的能够在Internet上正常使用的IP地址称之为公共IP地址；IANA保留了一部份IP地址没有分配给任何机构和个人，这部份IP地址不能在 Internet上使用，此类IP地址就称之为私有IP地址。为什么私有IP地址不能在Internet上使用呢？因为Internet上没有私有IP地 址的路由。私有IP地址范围包括：</p>
+<p>A类：10.0.0.0/8</p>
+<p>B类：172.16.0.0/12 即172.16.0.1-172.31.255.254共16个B类网络</p>
+<p>C类：192.168.0.0/16即192.168.0.1-192.168.255.254共256个C类网络</p>
+<p>参考资料：<br />
+1、<a href="http://blog.csdn.net/lwb102063/article/details/52954419">计算机IP地址以及CIDR</a><br />
+2、<a href="http://blog.sina.com.cn/s/blog_635e1a9e0100yk6h.html">CIDR的介绍</a><br />
+3、<a href="https://baike.baidu.com/item/无类域间路由/240168?fr=aladdin&amp;fromid=3695195&amp;fromtitle=CIDR">百度百科：CIDR</a></p>
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2018-01-17 16:51</span> <a href='https://www.cnblogs.com/cocowool/'>Cocowool</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=8303795" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(8303795);return false;">收藏</a></div>
+	</div>
+	<script src="//common.cnblogs.com/highlight/9.12.0/highlight.min.js"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=43046,cb_entryId=8303795,cb_blogApp=currentBlogApp,cb_blogUserGuid='6151420b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2018/1/17 16:51:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2018 Cocowool
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?433c388afd6e0af1d67cfe808874c659";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!--PageEndHtml Block End-->
+</body>
+</html>
