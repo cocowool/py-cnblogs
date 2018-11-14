@@ -1,7 +1,4 @@
-import os
-import sys
-import re
-import getopt
+import os, sys, re, glob, getopt
 import html2text
 from bs4 import BeautifulSoup
 # 将CNBLOGS上的HTML格式的博客文章转换为Markdown格式
@@ -20,7 +17,7 @@ def main(argv):
             html2md(arg)
             pass
         elif opt in ("-d", "--directory"):
-            print(arg)
+            html2md(arg, "", "d")
             pass
         else:
             print("Usage: python html2md_cnblog.py -file <filename> -folder <folder_path>")
@@ -28,17 +25,28 @@ def main(argv):
 
 
 # 将HTML文件转换为MD文件
-def html2md(income_file, outcome_file = ""):
+def html2md(income_file, outcome_file = "", income_type="f"):
+    if income_type == "f":
+        singleHtml2md(income_file)
+    elif income_type == "d":
+        for sourcefile in glob.glob(os.path.join(income_file,"*.html")):
+            # print(sourcefile)
+            singleHtml2md(sourcefile, "", "d")
+
+# 将单个文件转换为Markdown格式的文档
+def singleHtml2md(income_file, outcome_file = "", income_type="f"):
     # 打开文档
     file = open(income_file, 'r')
+    # print(file.name)
+    new_filename = file.name.split('/')[-1].split(".")[0]
+    print(new_filename)
     article = file.read()
-
 
     h2md = html2text.HTML2Text()
     h2md.ignore_links = False
     article = h2md.handle(article)
 
-    with open("./output.md", "w", encoding='utf8') as f:
+    with open("./output/" + new_filename + ".md", "w", encoding='utf8') as f:
         lines = article.splitlines()
         for line in lines:
             if line.endswith('-'):
