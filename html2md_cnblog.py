@@ -39,8 +39,8 @@ def singleHtml2md(income_file, outcome_file = "", income_type="f"):
     file = open(income_file, 'r')
     # print(file.name)
     new_filename = file.name.split('/')[-1].split(".")[0]
-    print(new_filename)
     article = file.read()
+    # 处理CNBLOGS的原始文件，将不必要的头部内容和侧边栏去掉
 
     h2md = html2text.HTML2Text()
     h2md.ignore_links = False
@@ -48,11 +48,22 @@ def singleHtml2md(income_file, outcome_file = "", income_type="f"):
 
     with open("./output/" + new_filename + ".md", "w", encoding='utf8') as f:
         lines = article.splitlines()
+        counter = 1
         for line in lines:
-            if line.endswith('-'):
-                f.write(line)
-            else:
-                f.write(line+"\n")
+            # if counter == 15:
+            #     # print(line[0])
+            #     if line[0] != "#":
+            #         # print(line)
+            #         # print(new_filename)
+            
+            # 前15行都是无用的信息
+            if counter >= 15:
+                if line.endswith('-'):
+                    f.write(line)
+                else:
+                    f.write(line+"\n")
+
+            counter += 1
 
 if __name__ == "__main__":
     # print(__name__)
