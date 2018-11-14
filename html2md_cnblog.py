@@ -22,8 +22,6 @@ def main(argv):
         else:
             print("Usage: python html2md_cnblog.py -file <filename> -folder <folder_path>")
 
-
-
 # 将HTML文件转换为MD文件
 def html2md(income_file, outcome_file = "", income_type="f"):
     if income_type == "f":
@@ -46,18 +44,22 @@ def singleHtml2md(income_file, outcome_file = "", income_type="f"):
     h2md.ignore_links = False
     article = h2md.handle(article)
 
+    # Hexo 需要的三个元素，title，date，tag
+    hexo_title = ""
+    hexo_date = ""
+    hexo_tag = ""
+
     with open("./output/" + new_filename + ".md", "w", encoding='utf8') as f:
         lines = article.splitlines()
         counter = 1
+        skip_line = False
         for line in lines:
-            # if counter == 15:
-            #     # print(line[0])
-            #     if line[0] != "#":
-            #         # print(line)
-            #         # print(new_filename)
-            
+            if line[0:6] == "posted":
+                hexo_date = line[9:25]
+                skip_line = True
+
             # 前15行都是无用的信息
-            if counter >= 15:
+            if counter >= 15 and skip_line == False:
                 if line.endswith('-'):
                     f.write(line)
                 else:
