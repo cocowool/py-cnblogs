@@ -58,12 +58,18 @@ def singleHtml2md(income_file, outcome_file = "", income_type="f"):
                 hexo_date = line[9:25]
                 skip_line = True
 
+            if counter >= 15 and line and skip_line == False and line[0] == "[":
+                hexo_title = re.search(r'\[\w*\]', line).group()
+                print(line)
+                print(hexo_title)
+                print(new_filename)
+
             # 前15行都是无用的信息
-            if counter >= 15 and skip_line == False:
-                if line.endswith('-'):
-                    f.write(line)
-                else:
-                    f.write(line+"\n")
+            # if counter >= 15 and skip_line == False:
+            if line.endswith('-'):
+                f.write(line)
+            else:
+                f.write(line+"\n")
 
             counter += 1
 
