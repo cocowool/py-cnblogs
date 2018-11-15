@@ -45,7 +45,7 @@ def singleHtml2md(income_file, outcome_file = "", income_type="f"):
     article = file.read()
     # print(article)
     # 处理CNBLOGS的原始文件，将不必要的头部内容和侧边栏去掉
-    hexo_title = re.search(r'<title>(.*)</title>', article).group(1).split("-")[0]
+    hexo_title = re.search(r'<title>(.*)</title>', article).group(1).split("- Cocowool")[0]
     hexo_date = re.search(r'<span id="post-date">(.*)</span>\s', article).group(1)
 
     hexo_top = '''---
