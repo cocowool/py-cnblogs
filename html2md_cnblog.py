@@ -54,7 +54,7 @@ date: {hexo_date}
 tag: 
 ---\n'''.format(hexo_title=hexo_title, hexo_date=hexo_date)
 
-    print(hexo_top)
+    # print(hexo_top)
 
     h2md = html2text.HTML2Text()
     h2md.ignore_links = False
@@ -75,7 +75,7 @@ tag:
                 f.write(hexo_top)
 
             # 前15行都是无用的信息
-            if counter >= 15 and skip_line == False:
+            if counter >= 17 and skip_line == False:
                 if line.endswith('-'):
                     f.write(line)
                 else:
