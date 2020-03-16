@@ -7,7 +7,6 @@ import requests
 # 入口函数，输入文章列表页地址后进行文件抓取
 def main(argv):
     try :
-        print("hello")
         opts,args = getopt.getopt(argv,"hl:",["link="])
     except getopt.GetoptError:
         print("Usage: python3 main.py -l <blog_post_list_link>")
