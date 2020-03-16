@@ -2,6 +2,7 @@
 #
 # Author: Wang Shiqiang
 import os, sys, getopt
+import re
 import requests
 
 # 入口函数，输入文章列表页地址后进行文件抓取
@@ -14,15 +15,20 @@ def main(argv):
     for opt, arg in opts:
         if opt in ("-l", "--link"):
             parse_list(arg)
-            pass
         else:
             print("Usage: python3 main.py -l <blog_post_list_link>")
 
 
 def parse_list(url):
-    response = requests.get("https://www.baidu.com")
-    print(response.text)
+    html = get_html(url)
 
+    print(html)
+
+
+def get_html(url, method = "requests"):
+    response = requests.get(url)
+
+    return response.text
 
 if __name__ == "__main__":
     # print(__name__)
