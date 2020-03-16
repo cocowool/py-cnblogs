@@ -23,7 +23,10 @@ def main(argv):
 def parse_list(url):
     html = get_html(url)
 
-    soup = bs4_parse(html)
+    # 解析单个列表页，获取所有文章链接信息
+    all_posts = bs4_parse(html)
+
+    print(all_posts)
 
 # 通过requests方式获取网页内容
 def get_html(url, method = "requests"):
@@ -33,10 +36,22 @@ def get_html(url, method = "requests"):
 
 # 使用BeautifulSoup解析HTML
 def bs4_parse(html):
+    # 用来存放所有博客标题、链接和创建日期
+    all_posts = []
+    single_post = {}
     soup = BeautifulSoup(html, 'html.parser')
 
     post_lists = soup.find_all('div', attrs={'class':'day'})
-    print(post_lists)
+    for p in post_lists:
+        post_link = p.find_all('a', attrs={'class':'postTitle2'}, limit=1)
+        if post_link is not None and len(post_link) > 0:
+            single_post['title'] = post_link[0].contents[0].strip()
+            single_post['link'] = post_link[0]['href']
+
+        all_posts.append(single_post)
+        single_post = {}
+
+    return all_posts
 
 if __name__ == "__main__":
     # print(__name__)
