@@ -1,6 +1,9 @@
 # 抓取博客园或其他博客的文章
 #
 # Author: Wang Shiqiang
+#
+# 思路一：从列表页面获取文章链接，然后依次抓取文章
+# 思路二：从第一篇文章开始，依次获取上一篇文章直到最后
 import os, sys, getopt
 import re
 import requests
@@ -15,11 +18,37 @@ def main(argv):
 
     for opt, arg in opts:
         if opt in ("-l", "--link"):
-            parse_list(arg)
+            get_cnblogs(arg)
         else:
             print("Usage: python3 main.py -l <blog_post_list_link>")
 
+# 抓取cnblogs
+def get_cnblogs(url):
+    # 判断是否是首页
+    html = get_html(url)
+    soup = BeautifulSoup(html, 'html.parser')
 
+    # 获取最新一篇文章链接
+    lastest_blog_link = get_latest_link(soup)
+
+    # 递归获取链接内容，获取图片
+    # 
+    # 保存到指定目录和文件名格式
+    # 目录格式： cnblogs/htmls
+    #                 /markdowns
+    # 文件名格式: yyyy-mm-dd-blog-name.html
+    
+    # 转换为Markdown 文档
+
+    pass
+
+# 从博客园首页获取第一篇文章内容
+def get_latest_link(bs4_soup):
+    posts = bs4_soup.findAll('div', attrs={'class':'day'})
+    return posts[0].find('a', attrs={'class':'postTitle2'})['href']
+
+
+# 解析列表
 def parse_list(url):
     all_posts = []
     html = get_html(url)
