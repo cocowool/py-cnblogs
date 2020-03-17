@@ -23,10 +23,17 @@ def main(argv):
 def parse_list(url):
     all_posts = []
     html = get_html(url)
+    next_page_link = ''
 
     # 解析单个列表页，获取所有文章链接信息
-    single_page_posts = bs4_parse_link_lists(html)
+    single_page_posts, next_page_link = bs4_parse_link_lists(html)
     all_posts.append(single_page_posts)
+
+    while next_page_link:
+        print(next_page_link)
+        html = get_html(next_page_link)
+        single_page_posts, next_page_link = bs4_parse_link_lists(html)
+        all_posts.append(single_page_posts)
 
     print(all_posts)
 
@@ -52,11 +59,27 @@ def bs4_parse_link_lists(html):
 
         post_date = p.find('div', attrs={'class':'postDesc'})
         single_post['date'] = re.search(r'\d{4}-\d{2}-\d{2}', post_date.contents[0]).group()
-
         all_posts.append(single_post)
         single_post = {}
 
-    return all_posts
+    next_page = parse_next_page_link(soup)
+
+    return all_posts, next_page
+
+# 判断传入的是首页还是列表页，获取下一页链接地址
+def parse_next_page_link(bs4_soup):
+    next_page = bs4_soup.find('div', attrs={'id':'nav_next_page'})
+    if next_page is not None and len(next_page) > 0:
+        next_page = next_page.a['href']
+    elif bs4_soup.find('div', attrs={'id':'homepage_top_pager'}):
+        print("XXXXX")
+        pager = bs4_soup.find('div', attrs={'id':'homepage_top_pager'})
+        link_lists = pager.find_all('a')
+        print(link_lists)
+        next_page = False
+    # print(next_page.a['href'])
+    
+    return next_page
 
 if __name__ == "__main__":
     # print(__name__)
