@@ -52,10 +52,18 @@ def get_all_posts(blog_link):
     post_date = soup.find('span', attrs={'id':'post-date'}).contents[0].split(" ")[0]
     blog_file_name = post_date + "-" + blog_link.split("/")[-1]
 
-    
-    print(blog_file_name)
+    save_file(blog_file_name, soup.prettify())
 
     pass
+
+# 保存文件
+def save_file(filename, file_content):
+    html_path = "./cnblogs/htmls/"
+    markdown_path  = "./cnblogs/markdowns/"
+
+    f = open(html_path + filename, 'wb')
+    f.write(str.encode(file_content))
+    f.close()
 
 # 创建预定的目录结构
 def mkdir_cnblogs():
