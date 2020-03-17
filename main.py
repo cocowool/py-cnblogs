@@ -7,7 +7,16 @@
 import os, sys, getopt
 import re
 import requests
+import json
 from bs4 import BeautifulSoup
+
+# 读取配置文件
+# TODO检查配置文件是否存在
+def read_config():
+    with open("config.json") as json_file:
+        config = json.load(json_file)
+
+    return config
 
 # 入口函数，输入文章列表页地址后进行文件抓取
 def main(argv):
@@ -19,10 +28,14 @@ def main(argv):
     for opt, arg in opts:
         if opt in ("-h", "--home"):
             get_cnblogs(arg)
+            return True
         elif opt in ("-l", "--link"):
             get_all_posts(arg)
+            return True
         # else:
+
     print("Usage: python3 main.py -h <blog_homepage_link> -l <blog_post_list_link>")
+    return True
 
 # 抓取cnblogs
 def get_cnblogs(url):
@@ -69,8 +82,13 @@ def get_all_posts(blog_link):
     page_html = get_html(ajax_link)
     page_soup = BeautifulSoup(page_html, 'html.parser')
 
-    if page_soup.a['href']:
+    if page_soup.a['href'] and len( page_soup.text.split("上一篇")) > 1:
+        # print(page_soup.text)
+        # print(len( page_soup.text.split("上一篇")) )
+        # return True
         get_all_posts(page_soup.a['href'])
+    else:
+        print("The last blog finished !")
 
 # 保存HTML文件
 def save_html_file(filename, file_content):
@@ -123,11 +141,15 @@ def parse_list(url):
 
 # 通过requests方式获取网页内容
 def get_html(url, method = "requests"):
+    config = read_config()
+
     my_headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15'
     }
-    my_cookie = {
-    }
+
+    if config['cookie']:
+        my_cookie = config['cookie']
+
     response = requests.get(url, headers = my_headers, cookies = my_cookie)
 
     return response.text
