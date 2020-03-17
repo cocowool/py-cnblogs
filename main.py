@@ -2,8 +2,8 @@
 #
 # Author: Wang Shiqiang
 #
-# 思路一：从列表页面获取文章链接，然后依次抓取文章
-# 思路二：从第一篇文章开始，依次获取上一篇文章直到最后
+# 思路一：从列表页面获取文章链接，然后依次抓取文章。
+# 思路二：从第一篇文章开始，依次获取上一篇文章直到最后。发现CNBLOGS的上一篇、下一篇是通过Ajax加载的，给抓取造成了一些困难。
 import os, sys, getopt
 import re
 import requests
@@ -24,6 +24,11 @@ def main(argv):
 
 # 抓取cnblogs
 def get_cnblogs(url):
+    # 测试Ajax地址获取
+    # html = get_html("https://www.cnblogs.com/cocowool/ajax/post/prevnext?postId=12507681")
+    # print(html)
+    # return True
+
     # 判断是否是首页
     html = get_html(url)
     soup = BeautifulSoup(html, 'html.parser')
@@ -53,9 +58,16 @@ def get_all_posts(blog_link):
     blog_file_name = post_date + "-" + blog_link.split("/")[-1]
 
     save_html_file(blog_file_name, soup.prettify())
+    print("GET " + blog_link)
 
-    # print(soup.get_text())
-    pass
+    # 通过Ajax获取上一篇链接
+    blog_entry_id = re.search(r'cb_entryId\s=\s(\d+)',html).group().split("=")[1].strip()
+    ajax_link = "https://www.cnblogs.com/cocowool/ajax/post/prevnext?postId=" + blog_entry_id
+    page_html = get_html(ajax_link)
+    page_soup = BeautifulSoup(page_html, 'html.parser')
+
+    if page_soup.a['href']:
+        get_all_posts(page_soup.a['href'])
 
 # 保存HTML文件
 def save_html_file(filename, file_content):
