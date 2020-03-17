@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 # 入口函数，输入文章列表页地址后进行文件抓取
 def main(argv):
     try :
-        opts,args = getopt.getopt(argv,"hl:h:",["link=","home="])
+        opts,args = getopt.getopt(argv,"h:l:",["home=", "link="])
     except getopt.GetoptError:
         print("Usage: python3 main.py -l <blog_post_list_link>")
 
@@ -21,8 +21,8 @@ def main(argv):
             get_cnblogs(arg)
         elif opt in ("-l", "--link"):
             get_all_posts(arg)
-        else:
-            print("Usage: python3 main.py -l <blog_post_list_link>")
+        # else:
+    print("Usage: python3 main.py -h <blog_homepage_link> -l <blog_post_list_link>")
 
 # 抓取cnblogs
 def get_cnblogs(url):
@@ -52,13 +52,11 @@ def get_cnblogs(url):
 
 # 遍历抓取cnblogs博客
 def get_all_posts(blog_link):
+    print("GET " + blog_link)
     html = get_html(blog_link)
     soup = BeautifulSoup(html, 'html.parser')
 
     # 规范文件名: yyyy-mm-dd-blog-name.html
-    print("GET " + blog_link)
-    print(soup)
-    print(soup.find('span', attrs={'id':'post-date'}))
     post_date = soup.find('span', attrs={'id':'post-date'}).contents[0].split(" ")[0]
     blog_file_name = post_date + "-" + blog_link.split("/")[-1]
 
@@ -125,7 +123,12 @@ def parse_list(url):
 
 # 通过requests方式获取网页内容
 def get_html(url, method = "requests"):
-    response = requests.get(url)
+    my_headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15'
+    }
+    my_cookie = {
+    }
+    response = requests.get(url, headers = my_headers, cookies = my_cookie)
 
     return response.text
 
