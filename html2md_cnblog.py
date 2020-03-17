@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 # 将CNBLOGS上的HTML格式的博客文章转换为Markdown格式
 # Author: Wang shiqiang
 # Email: cocowool@qq.com
+# 
+# 这个方案用了html2text，比较粗暴，应该能够做的更好的
 
 # 入口函数，支持输入文件名和输入目录两种方式进行文件转换
 def main(argv):

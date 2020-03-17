@@ -52,12 +52,13 @@ def get_all_posts(blog_link):
     post_date = soup.find('span', attrs={'id':'post-date'}).contents[0].split(" ")[0]
     blog_file_name = post_date + "-" + blog_link.split("/")[-1]
 
-    save_file(blog_file_name, soup.prettify())
+    save_html_file(blog_file_name, soup.prettify())
 
+    # print(soup.get_text())
     pass
 
-# 保存文件
-def save_file(filename, file_content):
+# 保存HTML文件
+def save_html_file(filename, file_content):
     html_path = "./cnblogs/htmls/"
     markdown_path  = "./cnblogs/markdowns/"
 
