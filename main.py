@@ -28,19 +28,50 @@ def get_cnblogs(url):
     html = get_html(url)
     soup = BeautifulSoup(html, 'html.parser')
 
+    # 创建指定的目录
+    # 目录格式： cnblogs/htmls
+    #                 /markdowns
+    mkdir_cnblogs()
+
     # 获取最新一篇文章链接
     lastest_blog_link = get_latest_link(soup)
 
     # 递归获取链接内容，获取图片
-    # 
     # 保存到指定目录和文件名格式
-    # 目录格式： cnblogs/htmls
-    #                 /markdowns
     # 文件名格式: yyyy-mm-dd-blog-name.html
-    
+    get_all_posts(lastest_blog_link)
+        
     # 转换为Markdown 文档
 
+# 遍历抓取cnblogs博客
+def get_all_posts(blog_link):
+    html = get_html(blog_link)
+    soup = BeautifulSoup(html, 'html.parser')
+
+    # 规范文件名: yyyy-mm-dd-blog-name.html
+    post_date = soup.find('span', attrs={'id':'post-date'}).contents[0].split(" ")[0]
+    blog_file_name = post_date + "-" + blog_link.split("/")[-1]
+
+    
+    print(blog_file_name)
+
     pass
+
+# 创建预定的目录结构
+def mkdir_cnblogs():
+    html_path = "./cnblogs/htmls"
+    markdown_path  = "./cnblogs/markdowns"
+
+    isExists_html = os.path.exists(html_path)
+    isExists_markdown = os.path.exists(markdown_path)
+    
+    if (not isExists_html) and (not isExists_markdown):
+        os.makedirs(html_path)
+        os.makedirs(markdown_path)
+
+        return True
+    else:
+        return False
 
 # 从博客园首页获取第一篇文章内容
 def get_latest_link(bs4_soup):
