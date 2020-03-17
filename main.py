@@ -21,10 +21,12 @@ def main(argv):
 
 
 def parse_list(url):
+    all_posts = []
     html = get_html(url)
 
     # 解析单个列表页，获取所有文章链接信息
-    all_posts = bs4_parse(html)
+    single_page_posts = bs4_parse_link_lists(html)
+    all_posts.append(single_page_posts)
 
     print(all_posts)
 
@@ -34,8 +36,8 @@ def get_html(url, method = "requests"):
 
     return response.text
 
-# 使用BeautifulSoup解析HTML
-def bs4_parse(html):
+# 使用BeautifulSoup解析HTML，获取当前页面的链接信息
+def bs4_parse_link_lists(html):
     # 用来存放所有博客标题、链接和创建日期
     all_posts = []
     single_post = {}
@@ -43,10 +45,13 @@ def bs4_parse(html):
 
     post_lists = soup.find_all('div', attrs={'class':'day'})
     for p in post_lists:
-        post_link = p.find_all('a', attrs={'class':'postTitle2'}, limit=1)
+        post_link = p.find('a', attrs={'class':'postTitle2'})
         if post_link is not None and len(post_link) > 0:
-            single_post['title'] = post_link[0].contents[0].strip()
-            single_post['link'] = post_link[0]['href']
+            single_post['title'] = post_link.contents[0].strip()
+            single_post['link'] = post_link['href']
+
+        post_date = p.find('div', attrs={'class':'postDesc'})
+        single_post['date'] = re.search(r'\d{4}-\d{2}-\d{2}', post_date.contents[0]).group()
 
         all_posts.append(single_post)
         single_post = {}
