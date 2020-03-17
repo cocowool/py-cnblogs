@@ -12,13 +12,15 @@ from bs4 import BeautifulSoup
 # 入口函数，输入文章列表页地址后进行文件抓取
 def main(argv):
     try :
-        opts,args = getopt.getopt(argv,"hl:",["link="])
+        opts,args = getopt.getopt(argv,"hl:h:",["link=","home="])
     except getopt.GetoptError:
         print("Usage: python3 main.py -l <blog_post_list_link>")
 
     for opt, arg in opts:
-        if opt in ("-l", "--link"):
+        if opt in ("-h", "--home"):
             get_cnblogs(arg)
+        elif opt in ("-l", "--link"):
+            get_all_posts(arg)
         else:
             print("Usage: python3 main.py -l <blog_post_list_link>")
 
@@ -54,11 +56,14 @@ def get_all_posts(blog_link):
     soup = BeautifulSoup(html, 'html.parser')
 
     # 规范文件名: yyyy-mm-dd-blog-name.html
+    print("GET " + blog_link)
+    print(soup)
+    print(soup.find('span', attrs={'id':'post-date'}))
     post_date = soup.find('span', attrs={'id':'post-date'}).contents[0].split(" ")[0]
     blog_file_name = post_date + "-" + blog_link.split("/")[-1]
 
     save_html_file(blog_file_name, soup.prettify())
-    print("GET " + blog_link)
+    print("DONE " + blog_link)
 
     # 通过Ajax获取上一篇链接
     blog_entry_id = re.search(r'cb_entryId\s=\s(\d+)',html).group().split("=")[1].strip()
