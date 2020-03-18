@@ -8,6 +8,7 @@ import os, sys, getopt
 import re
 import requests
 import json
+import html2markdown
 from bs4 import BeautifulSoup
 
 # 读取配置文件
@@ -75,6 +76,10 @@ def get_all_posts(blog_link):
 
     save_html_file(blog_file_name, soup.prettify())
     print("DONE " + blog_link)
+
+    # 进行Markdown格式转换
+    md = html2markdown(soup.prettify())
+    return
 
     # 通过Ajax获取上一篇链接
     blog_entry_id = re.search(r'cb_entryId\s=\s(\d+)',html).group().split("=")[1].strip()
