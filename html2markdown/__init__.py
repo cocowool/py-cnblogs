@@ -2,4 +2,16 @@
 # Author: Wang Shiqiang
 # Date: 2020/03/29
 
-print("Html to Markdown module")
+__author__ = "Wang Shiqiang"
+__version__ = "0.0.1"
+
+from bs4 import BeautifulSoup
+import re
+import sys
+
+class Html2markdown():
+    def __init__():    
+        print("Html to Markdown module")
+
+    def convert():
+        pass
