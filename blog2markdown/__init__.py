@@ -9,12 +9,5 @@ from bs4 import BeautifulSoup
 import re
 import sys
 
-class html2markdown():
-    def __init__():    
-        print("Html to Markdown module")
+from .html2markdown import html2markdown
 
-    def convert():
-        pass
-
-    def convertFile():
-        pass
