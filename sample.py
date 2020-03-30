@@ -1,4 +1,5 @@
 from blog2markdown import html2markdown
+import html5lib
 
 h2m = html2markdown()
 
