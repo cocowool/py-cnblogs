@@ -20,9 +20,8 @@ class html2markdown():
         if not soup.contents :
             return soup.get_text()
 
-        
-        print(soup.contents)
-        pass
+        for child in soup.descendants:
+            print(child)
 
     def convertFile():
         pass
