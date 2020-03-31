@@ -7,8 +7,14 @@
 # 思路：
 # (一)列出需要转换的元素，从HTML中搜索并替换相关元素
 # (二)遍历DOM树，依次将遇到的元素做替换
+# 
+# 特性：
+# * 支持博客园/CSDN等常见博客的模版
 
-from bs4 import BeautifulSoup
+try:
+    from bs4 import BeautifulSoup
+except:
+    print("BeautifulSoup doesn't exist! Please run pip3 install beautifulsoup")
 
 class html2markdown():
     # 定义DOM标签到Markdown标签的转换规则
@@ -22,6 +28,9 @@ class html2markdown():
         'h5'    : ('##### ', '\n'),
         'h6'    : ('###### ', '\n'),
         'code'  : ('```', '```'),
+        'em'  : ('**', '**'),
+        'strong'  : ('**', '**'),
+        'blockquote'  : ('> ', '\n'),
         # a
         # img
         # table
@@ -31,7 +40,7 @@ class html2markdown():
     def __init__(self):    
         print("Html to Markdown module")
 
-    def convert(self, html_string):
+    def convert(self, html_string, template = ''):
         soup = BeautifulSoup(html_string, 'html.parser')
 
         if not soup.contents :
@@ -40,5 +49,5 @@ class html2markdown():
         for child in soup.descendants:
             print(child)
 
-    def convertFile():
+    def convertFile(self, income_file_path, outcome_file_path):
         pass
