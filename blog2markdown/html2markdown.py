@@ -40,8 +40,16 @@ class html2markdown():
     def __init__(self):    
         print("Html to Markdown module")
 
+    # 分别处理每种支持的标签
+    def _traverseDom():
+        pass
+
     def convert(self, html_string, template = ''):
         soup = BeautifulSoup(html_string, 'html.parser')
+
+        print(soup.find_all(recursive=True))
+
+        print("XXXXXXX")
 
         if not soup.contents :
             return soup.get_text()
