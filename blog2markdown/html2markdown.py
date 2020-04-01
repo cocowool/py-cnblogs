@@ -41,11 +41,30 @@ class html2markdown():
         print("Html to Markdown module")
 
     # 分别处理每种支持的标签
-    def _traverseDom():
-        pass
+    def _traverseDom(self, tag):
+        print('----------')
+        print(tag.name)
+        print('----------')
+
+        if tag.name == 'document':
+            children = tag.find_all(recursive=False)
+            for child in children:
+                child = self._traverseDom(child)
+            return
+
+        if tag.name == "div":
+            tag.unwarp()
+
+        children = tag.find_all(recursive=False)
+        for child in children:
+            child = self._traverseDom(child)
+
+        return tag
 
     def convert(self, html_string, template = ''):
         soup = BeautifulSoup(html_string, 'html.parser')
+
+        soup = self._traverseDom(soup)
 
         print(soup.find_all(recursive=True))
 
