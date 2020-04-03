@@ -42,9 +42,6 @@ class html2markdown():
 
     # 分别处理每种支持的标签
     def _traverseDom(self, tag):
-        print('----------')
-        print(tag.name)
-        print('----------')
 
         if tag.name == 'document':
             children = tag.find_all(recursive=False)
@@ -53,7 +50,11 @@ class html2markdown():
             return
 
         if tag.name == "div":
-            tag.unwarp()
+            # print('----------')
+            # print(tag.name)
+            # print('----------')
+            # print(tag)
+            tag.unwrap()
 
         children = tag.find_all(recursive=False)
         for child in children:
@@ -66,15 +67,16 @@ class html2markdown():
 
         soup = self._traverseDom(soup)
 
-        print(soup.find_all(recursive=True))
+        print(soup)
 
-        print("XXXXXXX")
+        # print(soup.find_all(recursive=True))
+        # print("XXXXXXX")
 
         if not soup.contents :
             return soup.get_text()
 
-        for child in soup.descendants:
-            print(child)
+        # for child in soup.descendants:
+        #     print(child)
 
     def convertFile(self, income_file_path, outcome_file_path):
         pass
