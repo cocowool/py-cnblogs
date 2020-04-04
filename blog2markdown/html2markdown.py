@@ -11,12 +11,13 @@
 # 特性：
 # * 支持博客园/CSDN等常见博客的模版
 
+from html.parser import HTMLParser
 try:
     from bs4 import BeautifulSoup
 except:
     print("BeautifulSoup doesn't exist! Please run pip3 install beautifulsoup")
 
-class html2markdown():
+class html2markdown(HTMLParser):
     # 定义DOM标签到Markdown标签的转换规则
     __rule_replacement = {
         'div'   : ('', ''),
@@ -37,8 +38,8 @@ class html2markdown():
         
     }
 
-    def __init__(self):    
-        print("Html to Markdown module")
+    def handle_starttag(self, tag, attrs):
+        print(tag)
 
     # 分别处理每种支持的标签
     def _traverseDom(self, tag):
@@ -80,15 +81,15 @@ class html2markdown():
         soup = self._traverseDom(soup)
 
         print("========= Convert Result ==========")
-        print(soup)
+        # print(soup)
 
-        print('div' in self.__rule_replacement)
+        # print('div' in self.__rule_replacement)
 
-        # print(soup.find_all(recursive=True))
-        # print("XXXXXXX")
+        # # print(soup.find_all(recursive=True))
+        # # print("XXXXXXX")
 
-        # if not soup.contents :
-        #     return soup.get_text()
+        # # if not soup.contents :
+        # #     return soup.get_text()
 
         return True
         # for child in soup.descendants:
