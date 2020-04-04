@@ -19,7 +19,7 @@ except:
 class html2markdown():
     # 定义DOM标签到Markdown标签的转换规则
     __rule_replacement = {
-        'div'   : ('', '\n'),
+        'div'   : ('', ''),
         'p'     : ('','\n'),
         'h1'    : ('# ', '\n'),
         'h2'    : ('## ', '\n'),
@@ -49,13 +49,11 @@ class html2markdown():
                 child = self._traverseDom(child)
             return
 
-        if tag.name == "div":
-            # print('----------')
-            # print(tag.name)
-            # print('----------')
-            # print(tag)
+        if tag.name in self.__rule_replacement:
+            print(self.__rule_replacement[tag.name])
             tag.unwrap()
 
+        print(tag.name)
         children = tag.find_all(recursive=False)
         for child in children:
             child = self._traverseDom(child)
@@ -67,7 +65,10 @@ class html2markdown():
 
         soup = self._traverseDom(soup)
 
+        print("========= Convert Result ==========")
         print(soup)
+
+        print('div' in self.__rule_replacement)
 
         # print(soup.find_all(recursive=True))
         # print("XXXXXXX")
@@ -75,6 +76,7 @@ class html2markdown():
         if not soup.contents :
             return soup.get_text()
 
+        return True
         # for child in soup.descendants:
         #     print(child)
 
