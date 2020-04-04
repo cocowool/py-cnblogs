@@ -43,22 +43,36 @@ class html2markdown():
     # 分别处理每种支持的标签
     def _traverseDom(self, tag):
 
-        if tag.name == 'document':
-            children = tag.find_all(recursive=False)
-            for child in children:
-                child = self._traverseDom(child)
-            return
+        # if tag.name == '[document]':
+        if tag.children:
+            for child in tag.children:
+                print(child.name)
+                print(type(child))
+                if type(child) == "Tag":
+                    print(child.name)
+                    self._traverseDom(child)
+        else:
+            print(tag.name)
 
-        if tag.name in self.__rule_replacement:
-            print(self.__rule_replacement[tag.name])
-            tag.unwrap()
+        pass
+        #     children = tag.find_all(recursive=False)
+        #     for child in children:
+        #         child = self._traverseDom(child)
+        #     return
 
-        print(tag.name)
-        children = tag.find_all(recursive=False)
-        for child in children:
-            child = self._traverseDom(child)
+        # if tag.name in self.__rule_replacement:
+        #     print(tag.name)
+        #     print(self.__rule_replacement[tag.name])
+        #     print(tag)
+        #     tag.unwrap()
+        #     print("===== After unwrap ======")
+        #     print(tag)
 
-        return tag
+        # # children = tag.find_all(recursive=False)
+        # # for child in children:
+        # #     tag = self._traverseDom(child)
+
+        # return tag
 
     def convert(self, html_string, template = ''):
         soup = BeautifulSoup(html_string, 'html.parser')
@@ -73,8 +87,8 @@ class html2markdown():
         # print(soup.find_all(recursive=True))
         # print("XXXXXXX")
 
-        if not soup.contents :
-            return soup.get_text()
+        # if not soup.contents :
+        #     return soup.get_text()
 
         return True
         # for child in soup.descendants:
