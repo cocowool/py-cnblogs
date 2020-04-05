@@ -34,7 +34,8 @@ class html2markdown():
         'blockquote'  : ('> ', '\n'),
         'tr'    : ('',''),
         'td'    : ('', ' | '),
-        'br'    : ('', '\n')
+        'br'    : ('', '\n'),
+        'pre'   : ('', '')
         # a
         # img
         # table
@@ -68,39 +69,21 @@ class html2markdown():
                     else:
                         md_string += self._traverseDom(child)
                 else:
-                    print(tag.name)
+                    # print(tag.name)
                     # print(tag.string)
                     # print(self._convertToMardown(tag.name, tag.string))
                     md_string += self._convertToMardown(tag.name, tag.string)
         else:
-            print(tag.name)
+            # print(tag.name)
             return tag.name
 
         return md_string        
-        #     children = tag.find_all(recursive=False)
-        #     for child in children:
-        #         child = self._traverseDom(child)
-        #     return
-
-        # if tag.name in self.__rule_replacement:
-        #     print(tag.name)
-        #     print(self.__rule_replacement[tag.name])
-        #     print(tag)
-        #     tag.unwrap()
-        #     print("===== After unwrap ======")
-        #     print(tag)
-
-        # # children = tag.find_all(recursive=False)
-        # # for child in children:
-        # #     tag = self._traverseDom(child)
-
-        # return tag
 
     def _convertToMardown(self, tagName, string):
         if tagName in self.__rule_replacement:
             return self.__rule_replacement[tagName][0] + string + self.__rule_replacement[tagName][1]
         else:
-            return False
+            raise Exception("Unsupported Tag " + tagName + " !")
 
     def convert(self, html_string, template = ''):
         soup = BeautifulSoup(html_string, 'html.parser')
