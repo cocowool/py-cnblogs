@@ -33,7 +33,7 @@ class html2markdown():
         'strong'  : ('**', '**'),
         'blockquote'  : ('> ', '\n'),
         'tr'    : ('',''),
-        'td'    : ('', ' |'),
+        'td'    : ('', ' | '),
         'br'    : ('', '\n')
         # a
         # img
@@ -54,14 +54,17 @@ class html2markdown():
                     if child.name == "tr":
                         md_string += "| "
                         md_string += self._traverseDom(child)
+                        md_string += "\n"
                     elif child.name == "th":
                         md_string += "| "
                         md_string += self._traverseDom(child)
+                        md_string += "\n"
+                        # Add markdown thead row
                         n = len(child.contents)
                         while n > 0:
                             md_string += "| ------------- "
                             n = n - 1
-                        md_string += "|"
+                        md_string += "| \n"
                     else:
                         md_string += self._traverseDom(child)
                 else:
