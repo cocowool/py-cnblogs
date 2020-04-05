@@ -17,7 +17,7 @@ try:
 except:
     print("BeautifulSoup doesn't exist! Please run pip3 install beautifulsoup")
 
-class html2markdown(HTMLParser):
+class html2markdown():
     # 定义DOM标签到Markdown标签的转换规则
     __rule_replacement = {
         'div'   : ('', ''),
@@ -32,30 +32,33 @@ class html2markdown(HTMLParser):
         'em'  : ('**', '**'),
         'strong'  : ('**', '**'),
         'blockquote'  : ('> ', '\n'),
+        'td'    : ('', '')
         # a
         # img
         # table
         
     }
 
-    def handle_starttag(self, tag, attrs):
-        print(tag)
-
     # 分别处理每种支持的标签
     def _traverseDom(self, tag):
+        md_string = ''
 
-        # if tag.name == '[document]':
         if tag.children:
             for child in tag.children:
-                print(child.name)
-                print(type(child))
-                if type(child) == "Tag":
-                    print(child.name)
-                    self._traverseDom(child)
+                # print(child.name)
+                # print(type(child))
+                if child.name != None:
+                    md_string += self._traverseDom(child)
+                else:
+                    print(tag.name)
+                    # print(tag.string)
+                    # print(self._convertToMardown(tag.name, tag.string))
+                    md_string += self._convertToMardown(tag.name, tag.string)
         else:
             print(tag.name)
+            return tag.name
 
-        pass
+        return md_string        
         #     children = tag.find_all(recursive=False)
         #     for child in children:
         #         child = self._traverseDom(child)
@@ -75,14 +78,24 @@ class html2markdown(HTMLParser):
 
         # return tag
 
+    def _convertToMardown(self, tagName, string):
+        if tagName in self.__rule_replacement:
+            return self.__rule_replacement[tagName][0] + string + self.__rule_replacement[tagName][1]
+        else:
+            return False
+
     def convert(self, html_string, template = ''):
         soup = BeautifulSoup(html_string, 'html.parser')
 
+        print(html_string)
+        print('----- Begin Convert ----')
         soup = self._traverseDom(soup)
 
         print("========= Convert Result ==========")
-        # print(soup)
+        print(soup)
 
+        print("----- Test -----")
+        print(self.__rule_replacement['h1'][0])
         # print('div' in self.__rule_replacement)
 
         # # print(soup.find_all(recursive=True))
