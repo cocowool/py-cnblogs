@@ -20,7 +20,7 @@ except:
 class html2markdown():
     # 定义DOM标签到Markdown标签的转换规则
     __rule_replacement = {
-        'div'   : ('', ''),
+        'div'   : ('', '\n'),
         'p'     : ('','\n'),
         'h1'    : ('# ', '\n'),
         'h2'    : ('## ', '\n'),
@@ -32,6 +32,7 @@ class html2markdown():
         'em'  : ('**', '**'),
         'strong'  : ('**', '**'),
         'blockquote'  : ('> ', '\n'),
+        'table' : ('\n', ''),
         'tr'    : ('',''),
         'td'    : ('', ' | '),
         'br'    : ('', '\n'),
@@ -90,13 +91,13 @@ class html2markdown():
 
         print(html_string)
         print('----- Begin Convert ----')
-        soup = self._traverseDom(soup)
+        md_string = self._traverseDom(soup)
 
         print("========= Convert Result ==========")
-        print(soup)
+        # print(soup)
 
-        print("----- Test -----")
-        print(self.__rule_replacement['h1'][0])
+        # print("----- Test -----")
+        # print(self.__rule_replacement['h1'][0])
         # print('div' in self.__rule_replacement)
 
         # # print(soup.find_all(recursive=True))
@@ -105,7 +106,7 @@ class html2markdown():
         # # if not soup.contents :
         # #     return soup.get_text()
 
-        return True
+        return md_string
         # for child in soup.descendants:
         #     print(child)
 
