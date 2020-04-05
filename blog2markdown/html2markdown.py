@@ -36,7 +36,8 @@ class html2markdown():
         'tr'    : ('',''),
         'td'    : ('', ' | '),
         'br'    : ('', '\n'),
-        'pre'   : ('', '')
+        'pre'   : ('', ''),
+        'li'    : ('* ', '\n'),
         # a
         # img
         # table

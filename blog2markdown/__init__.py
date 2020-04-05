@@ -10,4 +10,5 @@ import re
 import sys
 
 from .html2markdown import html2markdown
+from .blog2html import blog2html
 
