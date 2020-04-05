@@ -8,8 +8,9 @@
 
 
 ## 几个现有框架的对比
-* [html2markdown](https://github.com/dlon/html2markdown)：不支持table的解析和转换
-* 
+* [html2markdown](https://github.com/dlon/html2markdown)：无法对整段的HTML进行解析，不支持table的解析和转换
+* [h2md](https://github.com/canovie/h2md)：能够解析整段的HTML，不支持table
+
 
 ## 修改记录
 * [2020-03-30] 创建 blog2markdown 的包，将相关操作都封装到包中

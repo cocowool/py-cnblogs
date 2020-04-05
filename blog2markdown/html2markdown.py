@@ -50,9 +50,23 @@ class html2markdown():
     def _traverseDom(self, tag):
         md_string = ''
         print(tag.name)
-        print(len(tag.contents))
-        for child in tag.children:
-            print(child)
+        try:
+            for child in tag.children:
+                print(type(child))
+                if isinstance(child, bs4.element.Doctype):
+                    return True
+                else:
+                    self._traverseDom(child)
+                # if( child.children):
+                # print(child.name)
+                # print(len(child.children))
+                # print(len(child.contents))
+        except:
+            print(child.contents)
+        # else:
+        #     print("No Children")
+
+        return True
 
         if tag.children:
             for child in tag.children:
@@ -89,13 +103,13 @@ class html2markdown():
 
     def _convertToMardown(self, tagName, string):
         if tagName in self.__rule_replacement:
-            print(tagName)
+            # print(tagName)
             return self.__rule_replacement[tagName][0] + string + self.__rule_replacement[tagName][1]
         else:
             raise Exception("Unsupported Tag " + tagName + " !")
 
     def convert(self, html_string, template = ''):
-        soup = BeautifulSoup(html_string, 'html.parser')
+        soup = BeautifulSoup(html_string, 'html5lib')
 
         print(html_string)
         print('----- Begin Convert ----')
