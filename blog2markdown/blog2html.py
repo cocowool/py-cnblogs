@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 class blog2html():
     # 读取配置文件
     # TODO检查配置文件是否存在
-    def read_config():
+    def read_config(self):
         with open("config.json") as json_file:
             config = json.load(json_file)
 
@@ -65,20 +65,20 @@ class blog2html():
         # 转换为Markdown 文档
 
     # 遍历抓取cnblogs博客
-    def get_all_posts(blog_link):
+    def get_all_posts(self, blog_link):
         print("GET " + blog_link)
-        html = get_html(blog_link)
+        html = self.get_html(blog_link)
         soup = BeautifulSoup(html, 'html.parser')
 
         # 规范文件名: yyyy-mm-dd-blog-name.html
         post_date = soup.find('span', attrs={'id':'post-date'}).contents[0].split(" ")[0]
         blog_file_name = post_date + "-" + blog_link.split("/")[-1]
 
-        save_html_file(blog_file_name, soup.prettify())
+        self.save_html_file(blog_file_name, soup.prettify())
         print("DONE " + blog_link)
 
         # 进行Markdown格式转换
-        md = html2markdown(soup.prettify())
+        # md = html2markdown(soup.prettify())
         return
 
         # 通过Ajax获取上一篇链接
@@ -96,7 +96,7 @@ class blog2html():
             print("The last blog finished !")
 
     # 保存HTML文件
-    def save_html_file(filename, file_content):
+    def save_html_file(self, filename, file_content):
         html_path = "./cnblogs/htmls/"
         markdown_path  = "./cnblogs/markdowns/"
 
@@ -145,8 +145,8 @@ class blog2html():
         print(all_posts)
 
     # 通过requests方式获取网页内容
-    def get_html(url, method = "requests"):
-        config = read_config()
+    def get_html(self, url, method = "requests"):
+        config = self.read_config()
 
         my_headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15'

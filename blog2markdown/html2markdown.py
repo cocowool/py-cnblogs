@@ -11,6 +11,7 @@
 # 特性：
 # * 支持博客园/CSDN等常见博客的模版
 
+import os, sys
 from html.parser import HTMLParser
 try:
     from bs4 import BeautifulSoup
@@ -20,6 +21,7 @@ except:
 class html2markdown():
     # 定义DOM标签到Markdown标签的转换规则
     __rule_replacement = {
+        '[document]'    : ('',''),
         'div'   : ('', '\n'),
         'p'     : ('','\n'),
         'h1'    : ('# ', '\n'),
@@ -47,10 +49,14 @@ class html2markdown():
     # 分别处理每种支持的标签
     def _traverseDom(self, tag):
         md_string = ''
+        print(tag.name)
+        print(len(tag.contents))
+        for child in tag.children:
+            print(child)
 
         if tag.children:
             for child in tag.children:
-                # print(child.name)
+                print(child.name)
                 # print(type(child))
                 if child.name != None:
                     # 处理TR
@@ -83,6 +89,7 @@ class html2markdown():
 
     def _convertToMardown(self, tagName, string):
         if tagName in self.__rule_replacement:
+            print(tagName)
             return self.__rule_replacement[tagName][0] + string + self.__rule_replacement[tagName][1]
         else:
             raise Exception("Unsupported Tag " + tagName + " !")
@@ -111,5 +118,9 @@ class html2markdown():
         # for child in soup.descendants:
         #     print(child)
 
-    def convertFile(self, income_file_path, outcome_file_path):
+    def convertFile(self, income_file_path, outcome_file_path = ''):
+        with open(income_file_path) as html_file:
+            html_string = html_file.read()
+            self.convert(html_string)
+
         pass
