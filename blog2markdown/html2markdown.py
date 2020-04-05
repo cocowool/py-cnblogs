@@ -32,7 +32,9 @@ class html2markdown():
         'em'  : ('**', '**'),
         'strong'  : ('**', '**'),
         'blockquote'  : ('> ', '\n'),
-        'td'    : ('', '')
+        'tr'    : ('',''),
+        'td'    : ('', ' |'),
+        'br'    : ('', '\n')
         # a
         # img
         # table
@@ -48,7 +50,20 @@ class html2markdown():
                 # print(child.name)
                 # print(type(child))
                 if child.name != None:
-                    md_string += self._traverseDom(child)
+                    # 处理TR
+                    if child.name == "tr":
+                        md_string += "| "
+                        md_string += self._traverseDom(child)
+                    elif child.name == "th":
+                        md_string += "| "
+                        md_string += self._traverseDom(child)
+                        n = len(child.contents)
+                        while n > 0:
+                            md_string += "| ------------- "
+                            n = n - 1
+                        md_string += "|"
+                    else:
+                        md_string += self._traverseDom(child)
                 else:
                     print(tag.name)
                     # print(tag.string)

@@ -7,4 +7,4 @@ from blog2markdown import html2markdown
 
 h2m = html2markdown()
 # print( h2m.feed('<div><h1>hello world</h1><table><tr><td>xxxxx</td></tr></table></div>') )
-print( h2m.convert('<div><h1>hello world</h1><br /><table><tr><td>xxxxx</td></tr></table></div>') )
+print( h2m.convert('<div><h1>hello world</h1><br /><table><th><td>aaa</td><td>bbb</td></th><tr><td>xxxxx</td><td>yyyyy</td></tr></table></div>') )
