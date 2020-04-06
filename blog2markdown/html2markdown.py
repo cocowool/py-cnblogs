@@ -15,6 +15,7 @@ import os, sys
 from html.parser import HTMLParser
 try:
     from bs4 import BeautifulSoup
+    from bs4 import NavigableString, Doctype
 except:
     print("BeautifulSoup doesn't exist! Please run pip3 install beautifulsoup")
 
@@ -48,12 +49,29 @@ class html2markdown():
 
     # 分别处理每种支持的标签
     def _traverseDom(self, tag):
+        try:
+            print(type(tag))
+            # print("Tag.name = " + tag.name)
+            if isinstance(tag, NavigableString):
+                print("Here navigableString")
+                print("NavigableString: " + tag.name)
+            elif isinstance(tag, Doctype):
+                print("Here doctype")
+                print("Doctype: " + tag.name)
+            else:
+                for child in tag.children:
+                    self._traverseDom(child)
+        except:
+            print("Error")
+
+        return True
+
         md_string = ''
         print(tag.name)
         try:
             for child in tag.children:
                 print(type(child))
-                if isinstance(child, bs4.element.Doctype):
+                if isinstance(child, NavigableString):
                     return True
                 else:
                     self._traverseDom(child)
@@ -111,7 +129,13 @@ class html2markdown():
     def convert(self, html_string, template = ''):
         soup = BeautifulSoup(html_string, 'html5lib')
 
-        print(html_string)
+        # id="post_detail" / cnblogs 模版
+        # 
+        container = soup.select_one('#post_detail') \
+            or soup.select_one('body') \
+            or soup
+
+        # print(html_string)
         print('----- Begin Convert ----')
         md_string = self._traverseDom(soup)
 
