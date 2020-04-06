@@ -53,14 +53,15 @@ class html2markdown():
     def _traverseDom(self, tag, md_string = ''):
         try:
             if isinstance(tag, NavigableString):
+                print(tag.string)
                 md_string = self._convertText(tag, md_string)
             elif tag.name == "tr":
                 md_string += "| "
-                md_string += self._traverseDom(tag)
+                md_string = self._traverseDom(tag, md_string)
                 md_string += "\n"
             elif tag.name == "th":
                 md_string += "| "
-                md_string += self._traverseDom(tag)
+                md_string = self._traverseDom(tag, md_string)
                 md_string += "\n"
                 # Add markdown thead row
                 n = len(tag.contents)
