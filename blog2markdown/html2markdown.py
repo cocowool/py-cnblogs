@@ -21,6 +21,8 @@ try:
 except:
     print("BeautifulSoup doesn't exist! Please run pip3 install beautifulsoup")
 
+# sys.setrecursionlimit(1000000)
+
 class html2markdown():
     # 定义DOM标签到Markdown标签的转换规则
     __rule_replacement = {
@@ -53,7 +55,6 @@ class html2markdown():
     def _traverseDom(self, tag, md_string = ''):
         try:
             if isinstance(tag, NavigableString):
-                print(tag.string)
                 md_string = self._convertText(tag, md_string)
             elif tag.name == "tr":
                 md_string += "| "
@@ -70,8 +71,11 @@ class html2markdown():
                     n = n - 1
                 md_string += "| \n"
             else:
-                for child in tag.children:
-                    self._traverseDom(child)
+                if(tag.children):
+                    for child in tag.children:
+                        self._traverseDom(child)
+                else:
+                    md_string = self._convertElement(tag, md_string)
         except:
             traceback.print_exc()
 
@@ -88,7 +92,8 @@ class html2markdown():
     def _convertElement(self, tag, md_string):
         if tagName in self.__rule_replacement:
             # print(tagName)
-            return self.__rule_replacement[tagName][0] + string + self.__rule_replacement[tagName][1]
+            md_string += self.__rule_replacement[tagName][0] + string + self.__rule_replacement[tagName][1]
+            return md_string
         else:
             raise Exception("Unsupported Tag " + tagName + " !")
 
@@ -103,24 +108,7 @@ class html2markdown():
 
         # print(html_string)
         print('----- Begin Convert ----')
-        md_string = self._traverseDom(soup)
-
-        print("========= Convert Result ==========")
-        # print(soup)
-
-        # print("----- Test -----")
-        # print(self.__rule_replacement['h1'][0])
-        # print('div' in self.__rule_replacement)
-
-        # # print(soup.find_all(recursive=True))
-        # # print("XXXXXXX")
-
-        # # if not soup.contents :
-        # #     return soup.get_text()
-
-        return md_string
-        # for child in soup.descendants:
-        #     print(child)
+        return self._traverseDom(container)
 
     def convertFile(self, income_file_path, outcome_file_path = ''):
         with open(income_file_path) as html_file:
