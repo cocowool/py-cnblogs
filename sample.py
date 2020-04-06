@@ -8,9 +8,10 @@ from blog2markdown import blog2html
 
 h2m = html2markdown()
 # print( h2m.feed('<div><h1>hello world</h1><table><tr><td>xxxxx</td></tr></table></div>') )
-# print( h2m.convert('<div><h1>hello world</h1><br /><em>xx</em><table><th><td>aaa</td><td>bbb</td></th><tr><td>xxxxx</td><td>yyyyy</td></tr></table></div>') )
+print( h2m.convert('<div><h1>hello world</h1><br /><em>xx</em><table><th><td>aaa</td><td>bbb</td></th><tr><td>xxxxx</td><td>yyyyy</td></tr></table></div>') )
 
-h2m.convertFile('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls/2020-03-29-google_adsense_no_slog_size_error.html')
+# md = h2m.convertFile('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls/2020-03-29-google_adsense_no_slog_size_error.html')
+# print(md)
 
 # 示例
 # 

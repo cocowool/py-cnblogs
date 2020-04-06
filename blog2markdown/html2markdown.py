@@ -11,7 +11,9 @@
 # 特性：
 # * 支持博客园/CSDN等常见博客的模版
 
+import traceback
 import os, sys
+import re
 from html.parser import HTMLParser
 try:
     from bs4 import BeautifulSoup
@@ -48,78 +50,41 @@ class html2markdown():
     }
 
     # 分别处理每种支持的标签
-    def _traverseDom(self, tag):
+    def _traverseDom(self, tag, md_string = ''):
         try:
-            print(type(tag))
-            # print("Tag.name = " + tag.name)
             if isinstance(tag, NavigableString):
-                print("Here navigableString")
-                print("NavigableString: " + tag.name)
-            elif isinstance(tag, Doctype):
-                print("Here doctype")
-                print("Doctype: " + tag.name)
+                md_string = self._convertText(tag, md_string)
+            elif tag.name == "tr":
+                md_string += "| "
+                md_string += self._traverseDom(tag)
+                md_string += "\n"
+            elif tag.name == "th":
+                md_string += "| "
+                md_string += self._traverseDom(tag)
+                md_string += "\n"
+                # Add markdown thead row
+                n = len(tag.contents)
+                while n > 0:
+                    md_string += "| ------------- "
+                    n = n - 1
+                md_string += "| \n"
             else:
                 for child in tag.children:
                     self._traverseDom(child)
         except:
-            print("Error")
+            traceback.print_exc()
 
-        return True
+        return md_string   
 
-        md_string = ''
-        print(tag.name)
-        try:
-            for child in tag.children:
-                print(type(child))
-                if isinstance(child, NavigableString):
-                    return True
-                else:
-                    self._traverseDom(child)
-                # if( child.children):
-                # print(child.name)
-                # print(len(child.children))
-                # print(len(child.contents))
-        except:
-            print(child.contents)
-        # else:
-        #     print("No Children")
+    def _convertText(self, tag, md_string):
+        text = re.compile(r'[\s]+').sub(' ', tag.string)
+        text = text.lstrip().rstrip()
+        md_string += text
 
-        return True
+        return md_string
 
-        if tag.children:
-            for child in tag.children:
-                print(child.name)
-                # print(type(child))
-                if child.name != None:
-                    # 处理TR
-                    if child.name == "tr":
-                        md_string += "| "
-                        md_string += self._traverseDom(child)
-                        md_string += "\n"
-                    elif child.name == "th":
-                        md_string += "| "
-                        md_string += self._traverseDom(child)
-                        md_string += "\n"
-                        # Add markdown thead row
-                        n = len(child.contents)
-                        while n > 0:
-                            md_string += "| ------------- "
-                            n = n - 1
-                        md_string += "| \n"
-                    else:
-                        md_string += self._traverseDom(child)
-                else:
-                    # print(tag.name)
-                    # print(tag.string)
-                    # print(self._convertToMardown(tag.name, tag.string))
-                    md_string += self._convertToMardown(tag.name, tag.string)
-        else:
-            # print(tag.name)
-            return tag.name
-
-        return md_string        
-
-    def _convertToMardown(self, tagName, string):
+    # 将HTML标签元素按照预定义规则进行转换
+    def _convertElement(self, tag, md_string):
         if tagName in self.__rule_replacement:
             # print(tagName)
             return self.__rule_replacement[tagName][0] + string + self.__rule_replacement[tagName][1]
@@ -159,6 +124,4 @@ class html2markdown():
     def convertFile(self, income_file_path, outcome_file_path = ''):
         with open(income_file_path) as html_file:
             html_string = html_file.read()
-            self.convert(html_string)
-
-        pass
+            return self.convert(html_string)
