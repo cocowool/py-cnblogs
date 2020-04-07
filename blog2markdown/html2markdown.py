@@ -61,7 +61,7 @@ class html2markdown():
                 for child in tag.children:
                     md_string = self._traverseDom(child, md_string)
             elif tag.name == "table":
-                md_string = self._convertTable(tag, md_string)
+                md_string += '\n' + self._convertTable(tag, '')
             elif len(tag.contents) == 1:
                 md_string = self._convertElement(tag, md_string)
             else:
@@ -85,11 +85,11 @@ class html2markdown():
         for child in tag.children:
             if child.name == 'tr':
                 md_string += "| "
-                md_string += self._convertTable(tag, md_string)
+                md_string += self._convertTable(child, md_string)
                 md_string += "\n"
             elif child.name == 'th':
                 md_string += "| "
-                md_string += self._convertTable(tag, md_string)
+                md_string += self._convertTable(child, md_string)
                 md_string += "\n"
                 # Add markdown thead row
                 n = len(tag.contents)
@@ -98,7 +98,7 @@ class html2markdown():
                     n = n - 1
                 md_string += "| \n"
             elif child.name == 'td':
-                md_string = self.__rule_replacement[tag.name][0] + tag.string + self.__rule_replacement[tag.name][1]
+                md_string = self.__rule_replacement[child.name][0] + child.string + self.__rule_replacement[child.name][1]
             
             return md_string
 
