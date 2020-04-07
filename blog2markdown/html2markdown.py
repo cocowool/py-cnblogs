@@ -54,6 +54,7 @@ class html2markdown():
     # 分别处理每种支持的标签
     def _traverseDom(self, tag, md_string = ''):
         try:
+            # print(tag.name)
             if isinstance(tag, NavigableString):
                 md_string = self._convertText(tag, md_string)
             elif tag.name == "tr":
@@ -71,11 +72,10 @@ class html2markdown():
                     n = n - 1
                 md_string += "| \n"
             else:
-                if(tag.children):
-                    for child in tag.children:
-                        self._traverseDom(child)
-                else:
-                    md_string = self._convertElement(tag, md_string)
+                for child in tag.children:
+                    inner_string = self._traverseDom(child)
+                    if inner_string != '':
+                        md_string += self._convertElement(child.parent, inner_string)
         except:
             traceback.print_exc()
 
@@ -90,15 +90,15 @@ class html2markdown():
 
     # 将HTML标签元素按照预定义规则进行转换
     def _convertElement(self, tag, md_string):
-        if tagName in self.__rule_replacement:
+        if tag.name in self.__rule_replacement:
             # print(tagName)
-            md_string += self.__rule_replacement[tagName][0] + string + self.__rule_replacement[tagName][1]
+            md_string += self.__rule_replacement[tag.name][0] + md_string + self.__rule_replacement[tag.name][1]
             return md_string
         else:
-            raise Exception("Unsupported Tag " + tagName + " !")
+            raise Exception("Unsupported Tag " + tag.name + " !")
 
     def convert(self, html_string, template = ''):
-        soup = BeautifulSoup(html_string, 'html5lib')
+        soup = BeautifulSoup(html_string, 'html.parser')
 
         # id="post_detail" / cnblogs 模版
         # 
