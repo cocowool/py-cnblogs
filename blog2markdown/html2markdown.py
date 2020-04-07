@@ -57,28 +57,16 @@ class html2markdown():
             # print(tag.name)
             if isinstance(tag, NavigableString):
                 md_string = self._convertText(tag, md_string)
-            elif tag.name == "tr":
-                md_string += "| "
-                md_string = self._traverseDom(tag, md_string)
-                md_string += "\n"
-            elif tag.name == "th":
-                md_string += "| "
-                md_string = self._traverseDom(tag, md_string)
-                md_string += "\n"
-                # Add markdown thead row
-                n = len(tag.contents)
-                while n > 0:
-                    md_string += "| ------------- "
-                    n = n - 1
-                md_string += "| \n"
+            elif tag.name == '[document]':
+                for child in tag.children:
+                    md_string = self._traverseDom(child, md_string)
+            elif tag.name == "table":
+                md_string = self._convertTable(tag, md_string)
+            elif len(tag.contents) == 1:
+                md_string = self._convertElement(tag, md_string)
             else:
                 for child in tag.children:
-                    inner_string = self._traverseDom(child)
-                    if inner_string != '':
-                        md_string += self._convertElement(child.parent, inner_string)
-
-                    # print(child.name)
-                    # print(md_string)
+                    md_string = self._traverseDom(child, md_string)
 
         except:
             traceback.print_exc()
@@ -92,11 +80,34 @@ class html2markdown():
 
         return md_string
 
+    # 转换table元素，是否要考虑table的td中有样式的情况？
+    def _convertTable(self, tag, md_string):
+        for child in tag.children:
+            if child.name == 'tr':
+                md_string += "| "
+                md_string += self._convertTable(tag, md_string)
+                md_string += "\n"
+            elif child.name == 'th':
+                md_string += "| "
+                md_string += self._convertTable(tag, md_string)
+                md_string += "\n"
+                # Add markdown thead row
+                n = len(tag.contents)
+                while n > 0:
+                    md_string += "| ------------- "
+                    n = n - 1
+                md_string += "| \n"
+            elif child.name == 'td':
+                md_string = self.__rule_replacement[tag.name][0] + tag.string + self.__rule_replacement[tag.name][1]
+            
+            return md_string
+
     # 将HTML标签元素按照预定义规则进行转换
     def _convertElement(self, tag, md_string):
         if tag.name in self.__rule_replacement:
-            # print(tagName)
-            md_string = self.__rule_replacement[tag.name][0] + md_string + self.__rule_replacement[tag.name][1]
+            md_string += self.__rule_replacement[tag.name][0] + tag.string + self.__rule_replacement[tag.name][1]
+            # print(tag.name)
+            # print(md_string)
             return md_string
         else:
             raise Exception("Unsupported Tag " + tag.name + " !")
