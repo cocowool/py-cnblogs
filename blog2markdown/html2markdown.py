@@ -76,6 +76,10 @@ class html2markdown():
                     inner_string = self._traverseDom(child)
                     if inner_string != '':
                         md_string += self._convertElement(child.parent, inner_string)
+
+                    # print(child.name)
+                    # print(md_string)
+
         except:
             traceback.print_exc()
 
@@ -92,7 +96,7 @@ class html2markdown():
     def _convertElement(self, tag, md_string):
         if tag.name in self.__rule_replacement:
             # print(tagName)
-            md_string += self.__rule_replacement[tag.name][0] + md_string + self.__rule_replacement[tag.name][1]
+            md_string = self.__rule_replacement[tag.name][0] + md_string + self.__rule_replacement[tag.name][1]
             return md_string
         else:
             raise Exception("Unsupported Tag " + tag.name + " !")

@@ -8,7 +8,7 @@ from blog2markdown import blog2html
 
 h2m = html2markdown()
 # print( h2m.feed('<div><h1>hello world</h1><table><tr><td>xxxxx</td></tr></table></div>') )
-md_result = h2m.convert('<div><h1>hello world</h1><br /><em>xx</em></div>')
+md_result = h2m.convert('<div><h1>hello world</h1><br /><em>xx</em><table><tr><td>xxxxx</td></tr></table></div>')
 print("========= Convert Result ==========")
 print(md_result)
 
