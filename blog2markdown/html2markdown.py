@@ -106,7 +106,7 @@ class html2markdown():
     # 将HTML标签元素按照预定义规则进行转换
     def _convertElement(self, tag, md_string):
         if tag.name in self.__rule_replacement:
-            md_string += self.__rule_replacement[tag.name][0] + tag.string + self.__rule_replacement[tag.name][1]
+            md_string += self.__rule_replacement[tag.name][0] + tag.string.lstrip().rstrip() + self.__rule_replacement[tag.name][1]
             # print(tag.name)
             # print(md_string)
             return md_string
