@@ -45,7 +45,8 @@ class html2markdown():
         'br'    : ('', '\n'),
         'pre'   : ('', ''),
         'li'    : ('* ', '\n'),
-        # a
+        'a'     : "[{}]({})",
+        'span'  : ('', '')
         # img
         # table
         
@@ -60,6 +61,8 @@ class html2markdown():
             elif tag.name == '[document]':
                 for child in tag.children:
                     md_string = self._traverseDom(child, md_string)
+            elif tag.name == 'a':
+                md_string = self._convertLink(tag, md_string)
             elif tag.name == "table":
                 md_string += '\n' + self._convertTable(tag, '')
             elif len(tag.contents) == 1:
@@ -77,6 +80,16 @@ class html2markdown():
         text = re.compile(r'[\s]+').sub(' ', tag.string)
         text = text.lstrip().rstrip()
         md_string += text
+
+        return md_string
+
+    def _convertLink(self, tag, md_string):
+        inner_string = ''
+        for child in tag.children:
+            inner_string = self._traverseDom(child, inner_string)
+        
+        if inner_string != '':
+            md_string += self.__rule_replacement['a'].format(inner_string, tag.get('href') or tag.get_text(strip=True))
 
         return md_string
 
