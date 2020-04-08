@@ -85,22 +85,23 @@ class html2markdown():
         for child in tag.children:
             if child.name == 'tr':
                 md_string += "| "
-                md_string += self._convertTable(child, md_string)
+                md_string += self._convertTable(child, '')
                 md_string += "\n"
             elif child.name == 'th':
                 md_string += "| "
-                md_string += self._convertTable(child, md_string)
+                md_string += self._convertTable(child, '')
                 md_string += "\n"
                 # Add markdown thead row
                 n = len(tag.contents)
+                print(tag.contents)
                 while n > 0:
                     md_string += "| ------------- "
                     n = n - 1
                 md_string += "| \n"
             elif child.name == 'td':
-                md_string = self.__rule_replacement[child.name][0] + child.string + self.__rule_replacement[child.name][1]
+                md_string += self.__rule_replacement[child.name][0] + child.string + self.__rule_replacement[child.name][1]
             
-            return md_string
+        return md_string
 
     # 将HTML标签元素按照预定义规则进行转换
     def _convertElement(self, tag, md_string):
