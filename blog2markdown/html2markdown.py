@@ -67,12 +67,15 @@ class html2markdown():
                 md_string = self._convertLink(tag, md_string)
             elif tag.name == "table":
                 md_string += '\n' + self._convertTable(tag, '')
-            elif len(tag.contents) == 1:
+            elif len(tag.contents) <= 1:
                 md_string = self._convertElement(tag, md_string)
             else:
                 for child in tag.children:
                     md_string = self._traverseDom(child, md_string)
 
+                tag.clear()
+                print(tag)
+                # md_string = self._traverseDom(tag, md_string)
         except:
             traceback.print_exc()
 
@@ -120,8 +123,12 @@ class html2markdown():
 
     # 将HTML标签元素按照预定义规则进行转换
     def _convertElement(self, tag, md_string):
+        inner_string = ''
+        if tag.string is not None:
+            inner_string = tag.string.lstrip().rstrip()
+
         if tag.name in self.__rule_replacement:
-            md_string += self.__rule_replacement[tag.name][0] + tag.string.lstrip().rstrip() + self.__rule_replacement[tag.name][1]
+            md_string += self.__rule_replacement[tag.name][0] + inner_string + self.__rule_replacement[tag.name][1]
             # print(tag.name)
             # print(md_string)
             return md_string
@@ -137,7 +144,7 @@ class html2markdown():
             or soup.select_one('body') \
             or soup
 
-        print(container.prettify())
+        # print(container.prettify())
         # print('----- Begin Convert ----')
         return self._traverseDom(container)
 
