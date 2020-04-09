@@ -70,12 +70,14 @@ class html2markdown():
             elif len(tag.contents) <= 1:
                 md_string = self._convertElement(tag, md_string)
             else:
+                print(tag.contents)
                 for child in tag.children:
                     md_string = self._traverseDom(child, md_string)
 
                 tag.clear()
-                # print(tag)
                 md_string = self._traverseDom(tag, md_string)
+                print(tag.name)
+                print(md_string)
         except:
             traceback.print_exc()
 
@@ -128,7 +130,7 @@ class html2markdown():
             inner_string = tag.string.lstrip().rstrip()
 
         if tag.name in self.__rule_replacement:
-            print(tag.name)
+            # print(tag.name)
             return self.__rule_replacement[tag.name][0] + inner_string + md_string + self.__rule_replacement[tag.name][1]
         else:
             raise Exception("Unsupported Tag " + tag.name + " !")
