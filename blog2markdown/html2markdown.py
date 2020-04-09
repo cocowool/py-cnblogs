@@ -74,8 +74,8 @@ class html2markdown():
                     md_string = self._traverseDom(child, md_string)
 
                 tag.clear()
-                print(tag)
-                # md_string = self._traverseDom(tag, md_string)
+                # print(tag)
+                md_string = self._traverseDom(tag, md_string)
         except:
             traceback.print_exc()
 
@@ -128,10 +128,8 @@ class html2markdown():
             inner_string = tag.string.lstrip().rstrip()
 
         if tag.name in self.__rule_replacement:
-            md_string += self.__rule_replacement[tag.name][0] + inner_string + self.__rule_replacement[tag.name][1]
-            # print(tag.name)
-            # print(md_string)
-            return md_string
+            print(tag.name)
+            return self.__rule_replacement[tag.name][0] + inner_string + md_string + self.__rule_replacement[tag.name][1]
         else:
             raise Exception("Unsupported Tag " + tag.name + " !")
 
