@@ -17,7 +17,7 @@ import re
 from html.parser import HTMLParser
 try:
     from bs4 import BeautifulSoup
-    from bs4 import NavigableString, Doctype
+    from bs4 import NavigableString, Comment
 except:
     print("BeautifulSoup doesn't exist! Please run pip3 install beautifulsoup")
 
@@ -56,7 +56,9 @@ class html2markdown():
     def _traverseDom(self, tag, md_string = ''):
         try:
             # print(tag.name)
-            if isinstance(tag, NavigableString):
+            if isinstance(tag, Comment):
+                pass
+            elif isinstance(tag, NavigableString):
                 md_string = self._convertText(tag, md_string)
             elif tag.name == '[document]':
                 for child in tag.children:
@@ -135,8 +137,8 @@ class html2markdown():
             or soup.select_one('body') \
             or soup
 
-        # print(html_string)
-        print('----- Begin Convert ----')
+        print(container.prettify())
+        # print('----- Begin Convert ----')
         return self._traverseDom(container)
 
     def convertFile(self, income_file_path, outcome_file_path = ''):
