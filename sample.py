@@ -8,13 +8,13 @@ from blog2markdown import blog2html
 
 h2m = html2markdown()
 # print( h2m.feed('<div><h1>hello world</h1><table><tr><td>xxxxx</td></tr></table></div>') )
-md_result = h2m.convert('<div><h1><a href="http://www.baidu.com">hello</a> world</h1><br /><em>xx</em><p>today is a very <strong>xxxx</strong> day</p><table><th><td>Header</td><td>yyyy</td></th><tr><td>xxxxx</td><td>ccccc</td></tr></table></div>')
-# md_result = h2m.convert('<div><h1>hello world</h1><br /><em>xx</em><p>today is a very <strong>xxxx</strong> day</p><table><th><td>Header</td><td>yyyy</td></th><tr><td>xxxxx</td><td>ccccc</td></tr></table></div>')
-print("========= Convert Result ==========")
-print(md_result)
+# md_result = h2m.convert('<div><h1><a href="http://www.baidu.com">hello</a> world</h1><br /><em>xx</em><p>today is a very <strong>xxxx</strong> day</p><table><th><td>Header</td><td>yyyy</td></th><tr><td>xxxxx</td><td>ccccc</td></tr></table></div>')
+# # md_result = h2m.convert('<div><h1>hello world</h1><br /><em>xx</em><p>today is a very <strong>xxxx</strong> day</p><table><th><td>Header</td><td>yyyy</td></th><tr><td>xxxxx</td><td>ccccc</td></tr></table></div>')
+# print("========= Convert Result ==========")
+# print(md_result)
 
-# md = h2m.convertFile('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls/2020-03-29-google_adsense_no_slog_size_error.html')
-# print(md)
+md = h2m.convertFile('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls/2020-03-29-google_adsense_no_slog_size_error.html')
+print(md)
 
 # 示例
 # 

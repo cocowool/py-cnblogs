@@ -70,14 +70,14 @@ class html2markdown():
             elif len(tag.contents) <= 1:
                 md_string = self._convertElement(tag, md_string)
             else:
-                print(tag.contents)
+                # print(tag.contents)
                 for child in tag.children:
                     md_string = self._traverseDom(child, md_string)
 
                 tag.clear()
                 md_string = self._traverseDom(tag, md_string)
-                print(tag.name)
-                print(md_string)
+                # print(tag.name)
+                # print(md_string)
         except:
             traceback.print_exc()
 
@@ -113,7 +113,7 @@ class html2markdown():
                 md_string += "\n"
                 # Add markdown thead row
                 n = len(tag.contents)
-                print(tag.contents)
+                # print(tag.contents)
                 while n > 0:
                     md_string += "| ------------- "
                     n = n - 1
@@ -131,7 +131,7 @@ class html2markdown():
 
         if tag.name in self.__rule_replacement:
             # print(tag.name)
-            return self.__rule_replacement[tag.name][0] + inner_string + md_string + self.__rule_replacement[tag.name][1]
+            return md_string + self.__rule_replacement[tag.name][0] + inner_string + self.__rule_replacement[tag.name][1]
         else:
             raise Exception("Unsupported Tag " + tag.name + " !")
 
