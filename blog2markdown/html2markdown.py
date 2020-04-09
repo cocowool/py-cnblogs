@@ -131,8 +131,8 @@ class html2markdown():
             inner_string = tag.string.lstrip().rstrip()
 
         if tag.name in self.__rule_replacement:
-            print(tag.name)
-            print(md_string)
+            # print(tag.name)
+            # print(md_string)
             return self.__rule_replacement[tag.name][0] + md_string + inner_string + self.__rule_replacement[tag.name][1]
         else:
             raise Exception("Unsupported Tag " + tag.name + " !")

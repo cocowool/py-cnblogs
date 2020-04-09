@@ -13,6 +13,7 @@
 
 
 ## 修改记录
+* [2020-04-09] 最近几天调整了下递归方法，支持了 table\a\ul\li 等元素
 * [2020-03-30] 创建 blog2markdown 的包，将相关操作都封装到包中
 * [2020-03-16] 将Scrapy方式改为requests方式
 
@@ -23,3 +24,4 @@
 4. [请问python怎么判断库是否已安装？](https://www.zhihu.com/question/329900077/answer/738996774)
 5. [Python3 html.parser](https://docs.python.org/3.7/library/html.parser.html?highlight=html.parser#module-html.parser)
 6. [Github html.parser.HTMLParser](https://github.com/python/cpython/blob/3.7/Lib/html/parser.py)
+7. [Python使用urllib库、requests库下载图片的方法比较](https://baijiahao.baidu.com/s?id=1630594345004620959&wfr=spider&for=pc)

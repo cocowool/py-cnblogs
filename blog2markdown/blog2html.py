@@ -74,6 +74,11 @@ class blog2html():
         post_date = soup.find('span', attrs={'id':'post-date'}).contents[0].split(" ")[0]
         blog_file_name = post_date + "-" + blog_link.split("/")[-1]
 
+        # 解析文件中的图像并保存
+        img_links = soup.find_all('img')
+        self.save_images(img_links, blog_file_name)
+        print(img_links)
+
         self.save_html_file(blog_file_name, soup.prettify())
         print("DONE " + blog_link)
 
@@ -94,6 +99,7 @@ class blog2html():
             get_all_posts(page_soup.a['href'])
         else:
             print("The last blog finished !")
+
 
     # 保存HTML文件
     def save_html_file(self, filename, file_content):
@@ -158,6 +164,29 @@ class blog2html():
         response = requests.get(url, headers = my_headers, cookies = my_cookie)
 
         return response.text
+
+    # 创建一个同名文件夹，用于存放图片
+    def save_images(self, img_list, blog_file_name):
+        html_path = "./cnblogs/htmls/" + blog_file_name.split('.')[0]
+        markdown_path  = "./cnblogs/markdowns/" + blog_file_name.split('.')[0]
+        print(html_path)
+
+        config = self.read_config()
+
+        my_cookie = ''
+        if config['cookie']:
+            my_cookie = config['cookie']
+
+        my_headers = ''
+        if config['ua']:
+            my_headers = config['ua']
+
+        for img in img_list:
+            # print(img.get('src').split('/')[-1])
+            if re.search(r'http', img.get('src')):
+                req = requests.get(img.get('src'), headers = my_headers, cookies = my_cookie)
+                with open(markdown_path + img.get('src').split('/')[-1], 'wb') as f:
+                    f.write(req.content)
 
     # 使用BeautifulSoup解析HTML，获取当前页面的链接信息
     def bs4_parse_link_lists(html):
