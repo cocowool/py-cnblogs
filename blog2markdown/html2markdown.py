@@ -68,15 +68,15 @@ class html2markdown():
                 md_string = self._convertLink(tag, md_string)
             elif tag.name == "table":
                 md_string += '\n' + self._convertTable(tag, '')
-            elif len(tag.contents) <= 1:
-                md_string = self._convertElement(tag, md_string)
+            # elif len(tag.contents) <= 1:
+            #     md_string = self._convertElement(tag, md_string)
             else:
                 # print(tag.contents)
                 for child in tag.children:
                     md_string += self._traverseDom(child, '')
 
                 tag.clear()
-                md_string = self._traverseDom(tag, md_string)
+                md_string = self._convertElement(tag, md_string)
                 # print(tag.name)
                 # print(md_string)
         except:
@@ -86,7 +86,7 @@ class html2markdown():
 
     def _convertText(self, tag, md_string):
         text = re.compile(r'[\s]+').sub(' ', tag.string)
-        text = text.lstrip().rstrip()
+        # text = text.lstrip().rstrip()
         md_string += text
 
         return md_string
