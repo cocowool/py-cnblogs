@@ -37,6 +37,7 @@ class html2markdown():
         'h6'    : ('\n###### ', '\n'),
         'code'  : ('```', '```\n'),
         'em'  : ('**', '**'),
+        'b'   : ('**', '**'),
         'strong'  : ('**', '**'),
         'blockquote'  : ('> ', '\n'),
         'table' : ('\n', ''),
@@ -49,6 +50,26 @@ class html2markdown():
         'a'     : "[{}]({})",
         'span'  : ('', ''),
         'img'   : "![{}]({})"
+        # style
+        # ol
+        # file
+        # strike
+        # var
+        # clk
+        # nobr
+        # nodeport
+        # title
+        # iframe
+        # sub
+        # tt
+        # param
+        # font
+        # kdb
+        # meta
+        # dd
+        # dt
+        # u
+        # abbr
     }
 
     # 分别处理每种支持的标签
