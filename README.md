@@ -25,3 +25,4 @@
 5. [Python3 html.parser](https://docs.python.org/3.7/library/html.parser.html?highlight=html.parser#module-html.parser)
 6. [Github html.parser.HTMLParser](https://github.com/python/cpython/blob/3.7/Lib/html/parser.py)
 7. [Python使用urllib库、requests库下载图片的方法比较](https://baijiahao.baidu.com/s?id=1630594345004620959&wfr=spider&for=pc)
+8. [python 遍历文件夹下的所有文件](https://www.cnblogs.com/wt7018/p/11610286.html)

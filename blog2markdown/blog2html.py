@@ -46,21 +46,21 @@ class blog2html():
         # return True
 
         # 判断是否是首页
-        html = get_html(url)
+        html = self.get_html(url)
         soup = BeautifulSoup(html, 'html.parser')
 
         # 创建指定的目录
         # 目录格式： cnblogs/htmls
         #                 /markdowns
-        mkdir_cnblogs()
+        self.mkdir_cnblogs()
 
         # 获取最新一篇文章链接
-        lastest_blog_link = get_latest_link(soup)
+        lastest_blog_link = self.get_latest_link(soup)
 
         # 递归获取链接内容，获取图片
         # 保存到指定目录和文件名格式
         # 文件名格式: yyyy-mm-dd-blog-name.html
-        get_all_posts(lastest_blog_link)
+        self.get_all_posts(lastest_blog_link)
             
         # 转换为Markdown 文档
 
@@ -82,19 +82,19 @@ class blog2html():
 
         # 进行Markdown格式转换
         # md = html2markdown(soup.prettify())
-        return
+        # return
 
         # 通过Ajax获取上一篇链接
         blog_entry_id = re.search(r'cb_entryId\s=\s(\d+)',html).group().split("=")[1].strip()
         ajax_link = "https://www.cnblogs.com/cocowool/ajax/post/prevnext?postId=" + blog_entry_id
-        page_html = get_html(ajax_link)
+        page_html = self.get_html(ajax_link)
         page_soup = BeautifulSoup(page_html, 'html.parser')
 
         if page_soup.a['href'] and len( page_soup.text.split("上一篇")) > 1:
             # print(page_soup.text)
             # print(len( page_soup.text.split("上一篇")) )
             # return True
-            get_all_posts(page_soup.a['href'])
+            self.get_all_posts(page_soup.a['href'])
         else:
             print("The last blog finished !")
 
@@ -187,13 +187,16 @@ class blog2html():
         for img in img_links:
             # print(img.get('src').split('/')[-1])
             if re.search(r'http', img.get('src')):
-                req = requests.get(img.get('src'), headers = my_headers, cookies = my_cookie)
-                with open(markdown_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
-                    f.write(req.content)
-                # 替换图片
-                new_img = bs4_html.new_tag("img")
-                new_img['src'] = "./" + blog_file_name.split('.')[0] + "/" + img.get('src').split('/')[-1]
-                img.replace_with(new_img)
+                try:
+                    req = requests.get(img.get('src'), headers = my_headers, cookies = my_cookie)
+                    with open(markdown_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
+                        f.write(req.content)
+                    # 替换图片
+                    new_img = bs4_html.new_tag("img")
+                    new_img['src'] = "./" + blog_file_name.split('.')[0] + "/" + img.get('src').split('/')[-1]
+                    img.replace_with(new_img)
+                except:
+                    print("Get Image Error: " + img.get('src'))
 
         return bs4_html
 

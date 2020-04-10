@@ -162,7 +162,27 @@ class html2markdown():
         return self._traverseDom(container)
 
     # Convert File entrance 
-    def convertFile(self, income_file_path, outcome_file_path = ''):
+    def convertFile(self, income_file_path, outcome_folder = ''):
         with open(income_file_path) as html_file:
             html_string = html_file.read()
-            return self.convert(html_string)
+
+        md_string = self.convert(html_string)
+
+        if outcome_folder != '':
+            with open(outcome_folder + "/" + income_file_path.split('/')[-1].split('.')[0] + ".md", 'w') as f:
+                # print(md_string)
+                f.write(md_string)
+                f.close()
+        else:
+            return md_string
+
+    # Conver htmls under a folder
+    def convertFolder(self, income_folder, outcome_folder = ''):
+        if not os.path.exists(income_folder):
+            print("Income folder : " + income_folder + " does not exists!")
+            return False
+
+        for root, dirs, files in os.walk(income_folder):
+            for f in files:
+                self.convertFile(os.path.join(root,f), outcome_folder)
+        pass

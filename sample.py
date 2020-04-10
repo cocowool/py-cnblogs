@@ -17,11 +17,14 @@ h2m = html2markdown()
 # md = h2m.convertFile('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls/2020-03-16-hexo-image-link.html')
 # print(md)
 
+# Conver Folder
+h2m.convertFolder('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls', '/Users/shiqiang/Projects/py-cnblogs/cnblogs/markdowns')
+
 # 示例
 # 
-b2h = blog2html()
+# b2h = blog2html()
 # b2h.get_cnblogs('https://www.cnblogs.com/cocowool/')
-b2h.get_all_posts('https://www.cnblogs.com/cocowool/archive/2012/01/17/macvpn.html')
+# b2h.get_all_posts('https://www.cnblogs.com/cocowool/archive/2012/01/17/macvpn.html')
 
 
 # 测试Tag替换
