@@ -21,3 +21,18 @@ h2m = html2markdown()
 # 
 b2h = blog2html()
 b2h.get_all_posts('https://www.cnblogs.com/cocowool/p/hexo-image-link.html')
+
+
+# 测试Tag替换
+# from bs4 import BeautifulSoup
+# markup = '<ul><li><img src="./a.jpg" /></li><li><img src="./b.jpg" /></li></ul>'
+# soup = BeautifulSoup(markup, 'html.parser')
+# a_tag = soup.find_all('img')
+
+
+# for i in a_tag:
+#     new_tag = soup.new_tag("img")
+#     new_tag['src'] = "example.net"
+#     i.replace_with(new_tag)
+
+# print(soup)

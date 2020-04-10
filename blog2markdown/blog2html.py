@@ -39,7 +39,7 @@ class blog2html():
     #     return True
 
     # 抓取cnblogs
-    def get_cnblogs(url):
+    def get_cnblogs(self, url):
         # 测试Ajax地址获取
         # html = get_html("https://www.cnblogs.com/cocowool/ajax/post/prevnext?postId=12507681")
         # print(html)
@@ -74,12 +74,10 @@ class blog2html():
         post_date = soup.find('span', attrs={'id':'post-date'}).contents[0].split(" ")[0]
         blog_file_name = post_date + "-" + blog_link.split("/")[-1]
 
-        # 解析文件中的图像并保存
-        img_links = soup.find_all('img')
-        self.save_images(img_links, blog_file_name)
-        print(img_links)
+        # 解析文件中的图像并保存，并将图片地址替换为相对地址
+        html_content = self.save_images(soup, blog_file_name)
 
-        self.save_html_file(blog_file_name, soup.prettify())
+        self.save_html_file(blog_file_name, html_content.prettify())
         print("DONE " + blog_link)
 
         # 进行Markdown格式转换
@@ -111,7 +109,7 @@ class blog2html():
         f.close()
 
     # 创建预定的目录结构
-    def mkdir_cnblogs():
+    def mkdir_cnblogs(self):
         html_path = "./cnblogs/htmls"
         markdown_path  = "./cnblogs/markdowns"
 
@@ -166,9 +164,14 @@ class blog2html():
         return response.text
 
     # 创建一个同名文件夹，用于存放图片
-    def save_images(self, img_list, blog_file_name):
+    def save_images(self, bs4_html, blog_file_name):
         html_path = "./cnblogs/htmls/" + blog_file_name.split('.')[0]
         markdown_path  = "./cnblogs/markdowns/" + blog_file_name.split('.')[0]
+
+        # 检查图片保存路径
+        if (not os.path.exists(html_path) ) and (not os.path.exists(markdown_path)):
+            os.makedirs(html_path)
+            os.makedirs(markdown_path)
 
         config = self.read_config()
 
@@ -180,17 +183,19 @@ class blog2html():
         if config['ua']:
             my_headers = config['ua']
 
-        # 检查图片保存路径
-        if (not os.path.exists(html_path) ) and (not os.path.exists(markdown_path)):
-            os.makedirs(html_path)
-            os.makedirs(markdown_path)
-
-        for img in img_list:
+        img_links = bs4_html.find_all('img')
+        for img in img_links:
             # print(img.get('src').split('/')[-1])
             if re.search(r'http', img.get('src')):
                 req = requests.get(img.get('src'), headers = my_headers, cookies = my_cookie)
                 with open(markdown_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
                     f.write(req.content)
+                # 替换图片
+                new_img = bs4_html.new_tag("img")
+                new_img['src'] = "./" + blog_file_name.split('.')[0] + "/" + img.get('src').split('/')[-1]
+                img.replace_with(new_img)
+
+        return bs4_html
 
     # 使用BeautifulSoup解析HTML，获取当前页面的链接信息
     def bs4_parse_link_lists(self, html):
