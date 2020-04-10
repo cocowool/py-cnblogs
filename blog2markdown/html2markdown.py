@@ -50,6 +50,7 @@ class html2markdown():
         'a'     : "[{}]({})",
         'span'  : ('', ''),
         'img'   : "![{}]({})"
+        # pre
         # style
         # ol
         # file
