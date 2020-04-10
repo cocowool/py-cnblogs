@@ -127,13 +127,13 @@ class blog2html():
             return False
 
     # 从博客园首页获取第一篇文章内容
-    def get_latest_link(bs4_soup):
+    def get_latest_link(self, bs4_soup):
         posts = bs4_soup.findAll('div', attrs={'class':'day'})
         return posts[0].find('a', attrs={'class':'postTitle2'})['href']
 
 
     # 解析列表
-    def parse_list(url):
+    def parse_list(self, url):
         all_posts = []
         html = get_html(url)
         next_page_link = ''
@@ -169,7 +169,6 @@ class blog2html():
     def save_images(self, img_list, blog_file_name):
         html_path = "./cnblogs/htmls/" + blog_file_name.split('.')[0]
         markdown_path  = "./cnblogs/markdowns/" + blog_file_name.split('.')[0]
-        print(html_path)
 
         config = self.read_config()
 
@@ -181,15 +180,20 @@ class blog2html():
         if config['ua']:
             my_headers = config['ua']
 
+        # 检查图片保存路径
+        if (not os.path.exists(html_path) ) and (not os.path.exists(markdown_path)):
+            os.makedirs(html_path)
+            os.makedirs(markdown_path)
+
         for img in img_list:
             # print(img.get('src').split('/')[-1])
             if re.search(r'http', img.get('src')):
                 req = requests.get(img.get('src'), headers = my_headers, cookies = my_cookie)
-                with open(markdown_path + img.get('src').split('/')[-1], 'wb') as f:
+                with open(markdown_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
                     f.write(req.content)
 
     # 使用BeautifulSoup解析HTML，获取当前页面的链接信息
-    def bs4_parse_link_lists(html):
+    def bs4_parse_link_lists(self, html):
         # 用来存放所有博客标题、链接和创建日期
         all_posts = []
         single_post = {}
@@ -212,7 +216,7 @@ class blog2html():
         return all_posts, next_page
 
     # 判断传入的是首页还是列表页，获取下一页链接地址
-    def parse_next_page_link(bs4_soup):
+    def parse_next_page_link(self, bs4_soup):
         next_page = bs4_soup.find('div', attrs={'id':'nav_next_page'})
         if next_page is not None and len(next_page) > 0:
             next_page = next_page.a['href']
