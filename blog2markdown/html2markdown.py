@@ -49,8 +49,6 @@ class html2markdown():
         'a'     : "[{}]({})",
         'span'  : ('', ''),
         'img'   : "![{}]({})"
-        # table
-        
     }
 
     # 分别处理每种支持的标签
@@ -86,6 +84,7 @@ class html2markdown():
 
         return md_string   
 
+    # Convert general element
     def _convertText(self, tag, md_string):
         text = re.compile(r'[\s]+').sub(' ', tag.string)
         # text = text.lstrip().rstrip()
@@ -93,6 +92,7 @@ class html2markdown():
 
         return md_string
 
+    # Convert Img element
     def _convertImg(self, tag, md_string):
         md_string += self.__rule_replacement['img'].format(tag.get('alt') or '', tag.get('src') or '')
 
@@ -111,6 +111,7 @@ class html2markdown():
         return md_string
 
     # 转换table元素，是否要考虑table的td中有样式的情况？
+    # Convert table element
     def _convertTable(self, tag, md_string):
         for child in tag.children:
             if child.name == 'tr':
@@ -146,6 +147,7 @@ class html2markdown():
         else:
             raise Exception("Unsupported Tag " + tag.name + " !")
 
+    # Convert html string entrance
     def convert(self, html_string, template = ''):
         soup = BeautifulSoup(html_string, 'html.parser')
 
@@ -159,6 +161,7 @@ class html2markdown():
         # print('----- Begin Convert ----')
         return self._traverseDom(container)
 
+    # Convert File entrance 
     def convertFile(self, income_file_path, outcome_file_path = ''):
         with open(income_file_path) as html_file:
             html_string = html_file.read()
