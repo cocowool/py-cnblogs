@@ -35,7 +35,7 @@ class html2markdown():
         'h4'    : ('#### ', '\n'),
         'h5'    : ('##### ', '\n'),
         'h6'    : ('###### ', '\n'),
-        'code'  : ('```', '```'),
+        'code'  : ('```', '```\n'),
         'em'  : ('**', '**'),
         'strong'  : ('**', '**'),
         'blockquote'  : ('> ', '\n'),
@@ -47,8 +47,8 @@ class html2markdown():
         'ul'    : ('\n','\n'),
         'li'    : ('* ', '\n'),
         'a'     : "[{}]({})",
-        'span'  : ('', '')
-        # img
+        'span'  : ('', ''),
+        'img'   : "![{}]({})"
         # table
         
     }
@@ -66,6 +66,8 @@ class html2markdown():
                     md_string = self._traverseDom(child, md_string)
             elif tag.name == 'a':
                 md_string = self._convertLink(tag, md_string)
+            elif tag.name == 'img':
+                md_string = self._convertImg(tag, md_string)
             elif tag.name == "table":
                 md_string += '\n' + self._convertTable(tag, '')
             # elif len(tag.contents) <= 1:
@@ -91,6 +93,13 @@ class html2markdown():
 
         return md_string
 
+    def _convertImg(self, tag, md_string):
+        md_string += self.__rule_replacement['img'].format(tag.get('alt') or '', tag.get('src') or '')
+
+        return md_string
+
+    # 转换链接 a 元素
+    # Convert Element A
     def _convertLink(self, tag, md_string):
         inner_string = ''
         for child in tag.children:
