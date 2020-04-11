@@ -14,11 +14,11 @@ h2m = html2markdown()
 # print("========= Convert Result ==========")
 # print(md_result)
 
-md = h2m.convertFile('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls/2020-01-15-docker-compose-elk-cluster.html')
-print(md)
+# md = h2m.convertFile('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls/2011-10-17-2215168.html')
+# print(md)
 
 # Conver Folder
-# h2m.convertFolder('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls', '/Users/shiqiang/Projects/py-cnblogs/cnblogs/markdowns')
+h2m.convertFolder('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls', '/Users/shiqiang/Projects/py-cnblogs/cnblogs/markdowns')
 
 # 示例
 # 

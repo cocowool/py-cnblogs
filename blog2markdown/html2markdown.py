@@ -49,22 +49,36 @@ class html2markdown():
         'li'    : ('', '\n'),
         'a'     : "[{}]({})",
         'span'  : ('', ''),
-        'img'   : "![{}]({})"
-        # pre
-        # style
-        # ol
-        # file
-        # strike
+        'img'   : "![{}]({})",
+        'strike': ('~~','~~'),
+        'file'  : ('',''),
+        'input'  : ('',''),
+        'clk'   : ('',''),
+        'nobr'  : ('',''),
+        'nodeport' : ('',''),
+        'nodeip' : ('',''),
+        'title' : ('',''),
+        'iframe' : ('',''),
+        'font'  : ('',''),
+        'sub'   : ('<sub>','</sub>'),
+        'sup'   : ('<sup>','</sup>'),
+        'dd'    : ('',''),
+        'dt'    : ('',''),
+        'tt'    : ('',''),
+        'object'    : ('',''),
+        'embed'    : ('',''),
+        'param'    : ('',''),
+        'bero@redhat.com'   : ('',''),
+        'hr'    : ('---',''),
+        'kbd'   : ('',''),
+        'var'   : ('',''),
+        'abbr'   : ('',''),
+        'u'   : ('',''),
+
         # var
-        # clk
-        # nobr
-        # nodeport
-        # title
-        # iframe
         # sub
         # tt
         # param
-        # font
         # kdb
         # meta
         # dd
@@ -86,7 +100,22 @@ class html2markdown():
         'language-python'  :   'python',
         'language-scala'  :   'scala',
         'language-javascript'  :   'javascript',
-        'language-yaml' :   'yaml'
+        'language-xml'  :   'xml',
+        'language-bat'  :   'bat',
+        'language-c'  :   'c',
+        'language-sql'  :   'sql',
+        'language-yaml' :   'yaml',
+        'language-bash' :   'bash',
+        'language-shell':   'bash',
+        'language-vue'  :   'javascript',
+        'language-powershell'   :   'powershell',
+        'language-mysql'    :   'sql',
+        'language-json' :   'json',
+        'language-html' :   'html',
+        'language-go' :   'go',
+        'language-dockerfile':'yaml',
+        'language-Dockerfile':'yaml',
+        'language-node':'javascript',
     }
 
     # 分别处理每种支持的标签
@@ -94,6 +123,8 @@ class html2markdown():
         try:
             # print(tag.name)
             if isinstance(tag, Comment):
+                pass
+            elif tag.name == 'style' or tag.name == 'script' or tag.name == 'base' or tag.name == 'meta':
                 pass
             elif isinstance(tag, NavigableString):
                 md_string = self._convertText(tag, md_string)
@@ -136,7 +167,7 @@ class html2markdown():
 
         if tag.get('class'):
             for cls in tag.get('class'):
-                if self.__support_languages[cls]: 
+                if cls in self.__support_languages: 
                     language = self.__support_languages[cls]
                     break
 
@@ -199,7 +230,10 @@ class html2markdown():
                     n = n - 1
                 md_string += "| \n"
             elif child.name == 'td':
-                md_string += self.__rule_replacement[child.name][0] + child.string + self.__rule_replacement[child.name][1]
+                if child.string:
+                    md_string += self.__rule_replacement[child.name][0] + child.string + self.__rule_replacement[child.name][1]
+                else:
+                    md_string += self.__rule_replacement[child.name][0] + self.__rule_replacement[child.name][1]
             
         return md_string
 
@@ -232,6 +266,7 @@ class html2markdown():
 
     # Convert File entrance 
     def convertFile(self, income_file_path, outcome_folder = ''):
+        print(income_file_path)
         with open(income_file_path) as html_file:
             html_string = html_file.read()
 
