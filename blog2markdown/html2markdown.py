@@ -35,7 +35,7 @@ class html2markdown():
         'h4'    : ('\n#### ', '\n'),
         'h5'    : ('\n##### ', '\n'),
         'h6'    : ('\n###### ', '\n'),
-        'code'  : ('```', '```\n'),
+        'code'  : ('```', '```'),
         'em'  : ('**', '**'),
         'b'   : ('**', '**'),
         'strong'  : ('**', '**'),
@@ -92,17 +92,15 @@ class html2markdown():
                 md_string = self._convertList(tag, md_string)
             elif tag.name == "table":
                 md_string += '\n' + self._convertTable(tag, '')
-            # elif len(tag.contents) <= 1:
-            #     md_string = self._convertElement(tag, md_string)
+            elif tag.name == 'pre':
+                md_string += self._convertPre(tag, md_string)
+                pass
             else:
-                # print(tag.contents)
                 for child in tag.children:
                     md_string += self._traverseDom(child, '')
 
                 tag.clear()
                 md_string = self._convertElement(tag, md_string)
-                # print(tag.name)
-                # print(md_string)
         except:
             traceback.print_exc()
 
@@ -116,11 +114,20 @@ class html2markdown():
 
         return md_string
 
+    # Convert pre code format
+    def _convertPre(self, tag, md_string):
+        # 'pre': '\n{}```{}\n{}\n{}```\n'
+        # lang_tag = ele.find(class_='hljs')
+        # if lang_tag: lang_tag['class'].remove('hljs')
+        # lang = ''.join(lang_tag['class']) if lang_tag else ''
+        # md += block_map['intent']['pre'].format(' ' * intent, lang, ele.text.strip().replace('\n', '\n' + ' ' * intent), ' ' * intent)
+
+        return md_string
+
     # Convrt UL or OL element
     def _convertList(self, tag, md_string):
-        # print("List Test")
         if tag.name == 'ul':
-            prefix = '*'
+            prefix = '* '
         elif tag.name == 'ol':
             prefix = 1
 
@@ -213,7 +220,6 @@ class html2markdown():
 
         if outcome_folder != '':
             with open(outcome_folder + "/" + income_file_path.split('/')[-1].split('.')[0] + ".md", 'w') as f:
-                # print(md_string)
                 f.write(md_string)
                 f.close()
         else:
