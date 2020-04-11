@@ -46,7 +46,7 @@ class html2markdown():
         'br'    : ('', '\n'),
         'pre'   : ('', ''),
         'ul'    : ('\n','\n'),
-        'li'    : ('* ', '\n'),
+        'li'    : ('', '\n'),
         'a'     : "[{}]({})",
         'span'  : ('', ''),
         'img'   : "![{}]({})"
@@ -88,6 +88,8 @@ class html2markdown():
                 md_string = self._convertLink(tag, md_string)
             elif tag.name == 'img':
                 md_string = self._convertImg(tag, md_string)
+            elif tag.name == 'ul' or tag.name == 'ol':
+                md_string = self._convertList(tag, md_string)
             elif tag.name == "table":
                 md_string += '\n' + self._convertTable(tag, '')
             # elif len(tag.contents) <= 1:
@@ -111,6 +113,25 @@ class html2markdown():
         text = re.compile(r'[\s]+').sub(' ', tag.string)
         # text = text.lstrip().rstrip()
         md_string += text
+
+        return md_string
+
+    # Convrt UL or OL element
+    def _convertList(self, tag, md_string):
+        print("List Test")
+        if tag.name == 'ul':
+            prefix = '*'
+        elif tag.name == 'ol':
+            prefix = 1
+
+        for child in tag.children:
+            if child.name != 'li':
+                pass
+            elif type(prefix) == int:
+                md_string += self._traverseDom(child, str(prefix) + ". ")
+                prefix += 1
+            else:
+                md_string += self._traverseDom(child, prefix)
 
         return md_string
 
