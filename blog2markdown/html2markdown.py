@@ -73,6 +73,22 @@ class html2markdown():
         # abbr
     }
 
+    __support_languages = {
+        'bash'          :   'bash',
+        'java'          :   'java',
+        'php'           :   'php',
+        'python'        :   'python',
+        'scala'         :   'scala',
+        'javascript'    :   'javascript',
+        'language-sh'   :   'bash',
+        'language-java' :   'java',
+        'language-php'  :   'php',
+        'language-python'  :   'python',
+        'language-scala'  :   'scala',
+        'language-javascript'  :   'javascript',
+        'language-yaml' :   'yaml'
+    }
+
     # 分别处理每种支持的标签
     def _traverseDom(self, tag, md_string = ''):
         try:
@@ -92,9 +108,8 @@ class html2markdown():
                 md_string = self._convertList(tag, md_string)
             elif tag.name == "table":
                 md_string += '\n' + self._convertTable(tag, '')
-            elif tag.name == 'pre':
-                md_string += self._convertPre(tag, md_string)
-                pass
+            elif tag.name == 'code':
+                md_string += self._convertCode(tag, md_string)
             else:
                 for child in tag.children:
                     md_string += self._traverseDom(child, '')
@@ -108,20 +123,24 @@ class html2markdown():
 
     # Convert general element
     def _convertText(self, tag, md_string):
-        text = re.compile(r'[\s]+').sub(' ', tag.string)
-        text = text.lstrip().rstrip()
+        # text = re.compile(r'[\s]+').sub(' ', tag.string)
+        text = tag.string.lstrip().rstrip()
         md_string += text
 
         return md_string
 
-    # Convert pre code format
-    def _convertPre(self, tag, md_string):
-        # 'pre': '\n{}```{}\n{}\n{}```\n'
-        # lang_tag = ele.find(class_='hljs')
-        # if lang_tag: lang_tag['class'].remove('hljs')
-        # lang = ''.join(lang_tag['class']) if lang_tag else ''
-        # md += block_map['intent']['pre'].format(' ' * intent, lang, ele.text.strip().replace('\n', '\n' + ' ' * intent), ' ' * intent)
+    # Convert code format
+    def _convertCode(self, tag, md_string):
+        code_format = '```{}\n{}\n```'
+        language = ''
 
+        if tag.get('class'):
+            for cls in tag.get('class'):
+                if self.__support_languages[cls]: 
+                    language = self.__support_languages[cls]
+                    break
+
+        md_string += code_format.format(language, tag.text.strip())
         return md_string
 
     # Convrt UL or OL element
