@@ -162,17 +162,30 @@ class html2markdown():
 
     # Convert code format
     def _convertCode(self, tag, md_string):
-        code_format = '```{}\n{}\n```'
+        code_format = '```{}{}```\n'
         language = ''
+        start_str = ''
+        end_str = ''
 
         if tag.get('class'):
             for cls in tag.get('class'):
                 if cls in self.__support_languages: 
                     language = self.__support_languages[cls]
                     break
+        
+        # print(tag.text)
+        if tag.text:
+            if str(tag.text).startswith('\n'):
+                start_str = '\n'
 
-        md_string += code_format.format(language, tag.text.strip())
-        return md_string
+            if str(tag.text).endswith('\n'):
+                end_str = '\n'
+
+            md_string += code_format.format(language, start_str + tag.text.strip() + end_str )
+
+            return md_string
+        else:
+            return md_string
 
     # Convrt UL or OL element
     def _convertList(self, tag, md_string):

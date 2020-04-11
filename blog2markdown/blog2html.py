@@ -77,7 +77,7 @@ class blog2html():
         # 解析文件中的图像并保存，并将图片地址替换为相对地址
         html_content = self.save_images(soup, blog_file_name)
 
-        self.save_html_file(blog_file_name, html_content.prettify())
+        self.save_html_file(blog_file_name, html)
         print("DONE " + blog_link)
 
         # 进行Markdown格式转换
