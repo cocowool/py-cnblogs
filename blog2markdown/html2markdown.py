@@ -111,14 +111,14 @@ class html2markdown():
     # Convert general element
     def _convertText(self, tag, md_string):
         text = re.compile(r'[\s]+').sub(' ', tag.string)
-        # text = text.lstrip().rstrip()
+        text = text.lstrip().rstrip()
         md_string += text
 
         return md_string
 
     # Convrt UL or OL element
     def _convertList(self, tag, md_string):
-        print("List Test")
+        # print("List Test")
         if tag.name == 'ul':
             prefix = '*'
         elif tag.name == 'ol':
