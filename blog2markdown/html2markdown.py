@@ -162,8 +162,9 @@ class html2markdown():
 
     # Convert code format
     def _convertCode(self, tag, md_string):
-        code_format = '```{}{}```\n'
+        code_format = '```{}{}{}```'
         language = ''
+        lang_break = ''
         start_str = ''
         end_str = ''
 
@@ -171,6 +172,7 @@ class html2markdown():
             for cls in tag.get('class'):
                 if cls in self.__support_languages: 
                     language = self.__support_languages[cls]
+                    lang_break = '\n'
                     break
         
         # print(tag.text)
@@ -181,7 +183,7 @@ class html2markdown():
             if str(tag.text).endswith('\n'):
                 end_str = '\n'
 
-            md_string += code_format.format(language, start_str + tag.text.strip() + end_str )
+            md_string += code_format.format(language, lang_break, start_str + tag.text.strip() + end_str )
 
             return md_string
         else:
