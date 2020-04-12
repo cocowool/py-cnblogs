@@ -193,7 +193,7 @@ class blog2html():
                         f.write(req.content)
                     # 替换图片
                     new_img = bs4_html.new_tag("img")
-                    new_img['src'] = "./" + blog_file_name.split('.')[0] + "/" + img.get('src').split('/')[-1]
+                    new_img['src'] = "" + blog_file_name.split('.')[0] + "/" + img.get('src').split('/')[-1]
                     img.replace_with(new_img)
                 except:
                     print("Get Image Error: " + img.get('src'))
