@@ -44,7 +44,7 @@ class html2markdown():
         'tr'    : ('',''),
         'td'    : ('', ' | '),
         'br'    : ('', '\n'),
-        'pre'   : ('', ''),
+        'pre'   : ('', '\n'),
         'ul'    : ('\n','\n'),
         'li'    : ('', '\n'),
         'a'     : "[{}]({})",
@@ -183,7 +183,7 @@ class html2markdown():
             if str(tag.text).endswith('\n'):
                 end_str = '\n'
 
-            md_string += code_format.format(language, lang_break, start_str + tag.text.strip() + end_str )
+            md_string += code_format.format(language, lang_break, start_str + tag.text.strip().replace('\u200b','') + end_str )
 
             return md_string
         else:
