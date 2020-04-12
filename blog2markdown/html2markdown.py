@@ -190,20 +190,29 @@ class html2markdown():
             return md_string
 
     # Convrt UL or OL element
+    # 判断LI中是否嵌套有UL
     def _convertList(self, tag, md_string):
         if tag.name == 'ul':
             prefix = '* '
         elif tag.name == 'ol':
             prefix = 1
 
+        n = 0;
+        tab_prefix = ''
+        for p in tag.parents:
+            if p.name == 'ul' or p.name == 'ol':
+                n += 1
+            if n >= 1:
+                tab_prefix += '  '
+
         for child in tag.children:
             if child.name != 'li':
                 pass
             elif type(prefix) == int:
-                md_string += self._traverseDom(child, str(prefix) + ". ")
+                md_string += tab_prefix + self._traverseDom(child, str(prefix) + ". ")
                 prefix += 1
             else:
-                md_string += self._traverseDom(child, prefix)
+                md_string += tab_prefix + self._traverseDom(child, prefix)
 
         return md_string
 
