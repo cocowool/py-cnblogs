@@ -203,9 +203,14 @@ class html2markdown():
             if p.name == 'ul' or p.name == 'ol':
                 n += 1
             if n >= 1:
-                tab_prefix += '  '
+                tab_prefix += ' '
 
+        first_line = False
         for child in tag.children:
+            if first_line == False:
+                md_string += '\n'
+                first_line = True
+                
             if child.name != 'li':
                 pass
             elif type(prefix) == int:
