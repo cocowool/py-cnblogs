@@ -275,6 +275,7 @@ class html2markdown():
             or soup.select_one('body') \
             or soup
 
+        container.find('div', class_='postDesc').clear()
         # print(container.prettify())
         # print('----- Begin Convert ----')
         return self._traverseDom(container)
