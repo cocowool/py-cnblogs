@@ -18,10 +18,11 @@ h2m = html2markdown()
 # print(md)
 
 # Conver Folder
+# 将文件夹下的html文件批量转换为markdown文件
 h2m.convertFolder('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls', '/Users/shiqiang/Projects/py-cnblogs/cnblogs/markdowns')
 
 # 示例
-# 
+# 输入博客的入口，则自动将所有博客文章下载到本地的 cnblogs/html 文件夹下
 # b2h = blog2html()
 # b2h.get_cnblogs('https://www.cnblogs.com/cocowool/')
 # b2h.get_all_posts('https://www.cnblogs.com/cocowool/archive/2012/01/17/macvpn.html')
