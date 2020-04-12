@@ -266,22 +266,35 @@ class html2markdown():
             raise Exception("Unsupported Tag " + tag.name + " !")
 
     # Convert html string entrance
-    def convert(self, html_string, template = ''):
+    # hexo_block 表示是否插入hexo的标题
+    def convert(self, html_string, template = '', hexo_block = True):
         soup = BeautifulSoup(html_string, 'html.parser')
 
         # id="post_detail" / cnblogs 模版
-        # 
         container = soup.select_one('#post_detail') \
             or soup.select_one('body') \
             or soup
 
         container.find('div', class_='postDesc').clear()
-        # print(container.prettify())
-        # print('----- Begin Convert ----')
-        return self._traverseDom(container)
+
+        md_string = ''
+        if hexo_block:
+            hexo_title = container.find('h1', class_='postTitle').get_text().strip()
+            hexo_date = re.search(r'<span id="post-date">(.*)</span>', html_string).group(1)
+            hexo_top = '''---
+title: {hexo_title}
+date: {hexo_date}
+tag: 
+---\n'''.format(hexo_title=hexo_title, hexo_date=hexo_date)
+            container.find('h1', class_='postTitle').extract()
+            md_string = hexo_top + md_string
+
+        md_string += self._traverseDom(container)
+
+        return md_string
 
     # Convert File entrance 
-    def convertFile(self, income_file_path, outcome_folder = ''):
+    def convertFile(self, income_file_path, outcome_folder = '', hexo_block = True):
         print(income_file_path)
         with open(income_file_path) as html_file:
             html_string = html_file.read()
