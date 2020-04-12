@@ -202,22 +202,23 @@ class html2markdown():
         for p in tag.parents:
             if p.name == 'ul' or p.name == 'ol':
                 n += 1
-            if n >= 1:
-                tab_prefix += ' '
+
+        if n >= 1:
+            tab_prefix += '  '
 
         first_line = False
         for child in tag.children:
             if first_line == False:
                 md_string += '\n'
                 first_line = True
-                
+
             if child.name != 'li':
                 pass
             elif type(prefix) == int:
-                md_string += tab_prefix + self._traverseDom(child, str(prefix) + ". ")
+                md_string += self._traverseDom(child, tab_prefix + str(prefix) + ". ")
                 prefix += 1
             else:
-                md_string += tab_prefix + self._traverseDom(child, prefix)
+                md_string += self._traverseDom(child, tab_prefix + prefix)
 
         return md_string
 
