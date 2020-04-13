@@ -1,10 +1,9 @@
-# py-cnblogs 抓取博客园文章并保存为Markdown
+# py-cnblogs 抓取博客园文章并保存为 Markdown 格式文档
 
-> 本项目目标有两个：
-> 1. 抓取自己的博客园文章，并持久化保存。
-> 2. 将本地文件转换为Hexo所用的Mardown 格式。
+> 本项目目标：抓取自己的博客园文章，转换为 Hexo 所用的Mardown格式，并且持久化保存。
 
 ## 用法
+
 
 
 ## 几个现有框架的对比
@@ -26,3 +25,4 @@
 6. [Github html.parser.HTMLParser](https://github.com/python/cpython/blob/3.7/Lib/html/parser.py)
 7. [Python使用urllib库、requests库下载图片的方法比较](https://baijiahao.baidu.com/s?id=1630594345004620959&wfr=spider&for=pc)
 8. [python 遍历文件夹下的所有文件](https://www.cnblogs.com/wt7018/p/11610286.html)
+9. [神奇的不可见空格<200b>导致代码异常](https://www.cnblogs.com/ichochy/p/11592881.html)
