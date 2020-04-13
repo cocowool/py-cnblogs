@@ -51,6 +51,7 @@ class html2markdown():
         'span'  : ('', ''),
         'img'   : "![{}]({})",
         'strike': ('~~','~~'),
+        'del'   : ('~~','~~'),
         'file'  : ('',''),
         'input'  : ('',''),
         'clk'   : ('',''),
@@ -74,6 +75,8 @@ class html2markdown():
         'var'   : ('',''),
         'abbr'   : ('',''),
         'u'   : ('',''),
+        'button' : ('',''),
+        
 
         # var
         # sub
@@ -123,6 +126,9 @@ class html2markdown():
         try:
             # print(tag.name)
             if isinstance(tag, Comment):
+                pass
+            # Do nothing to these elements
+            elif tag.name == 'audio' or tag.name == 'form':
                 pass
             elif tag.name == 'style' or tag.name == 'script' or tag.name == 'base' or tag.name == 'meta':
                 pass

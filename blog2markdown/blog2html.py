@@ -139,10 +139,13 @@ class blog2html():
 
     # 创建一个同名文件夹，用于存放图片
     def save_images(self, bs4_html, blog_file_name):
+        html_path = self.html_path + blog_file_name.split('.')[0]
+        markdown_path  = self.markdown_path + blog_file_name.split('.')[0]
+
         # 检查图片保存路径
-        if (not os.path.exists(self.html_path) ) and (not os.path.exists(self.markdown_path)):
-            os.makedirs(self.html_path)
-            os.makedirs(self.markdown_path)
+        if (not os.path.exists(html_path) ) and (not os.path.exists(markdown_path)):
+            os.makedirs(html_path)
+            os.makedirs(markdown_path)
 
         config = self.read_config()
 
@@ -160,11 +163,11 @@ class blog2html():
             if re.search(r'http', img.get('src')):
                 try:
                     req = requests.get(img.get('src'), headers = my_headers, cookies = my_cookie)
-                    with open(self.markdown_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
+                    with open(markdown_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
                         f.write(req.content)
                         f.close()
 
-                    with open(self.html_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
+                    with open(html_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
                         f.write(req.content)
                         f.close()
 
