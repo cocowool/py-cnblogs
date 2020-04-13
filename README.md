@@ -5,6 +5,9 @@
 ## 用法
 
 
+```python
+
+```
 
 ## 几个现有框架的对比
 * [html2markdown](https://github.com/dlon/html2markdown)：无法对整段的HTML进行解析，不支持table的解析和转换
@@ -12,6 +15,7 @@
 
 
 ## 修改记录
+* [2020-04-13] 完善了支持的元素，完善了生成md的格式
 * [2020-04-09] 最近几天调整了下递归方法，支持了 table\a\ul\li 等元素
 * [2020-03-30] 创建 blog2markdown 的包，将相关操作都封装到包中
 * [2020-03-16] 将Scrapy方式改为requests方式

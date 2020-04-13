@@ -1,10 +1,11 @@
 from blog2markdown import html2markdown
 from blog2markdown import blog2html
-# import html5lib
 
-# h = html5lib.HTMLParser(tree=html5lib.getTreeBuilder("dom"))
-# s = h.parse('<div><h1>hello world</h1><table><tr><td>xxxxx</td></tr></table></div>').toxml()
-# print(s)
+# 将博客文章和博客用到的图片保存到本地，文章保存为html格式，图片保存到markdown文件夹下
+# 输入博客的入口，则自动将所有博客文章下载到本地的 cnblogs-{blog-name}/html 文件夹下
+b2h = blog2html()
+b2h.get_cnblogs('https://www.cnblogs.com/coco1s/')
+# b2h.get_all_posts('https://www.cnblogs.com/cocowool/archive/2012/01/17/macvpn.html')
 
 h2m = html2markdown()
 # print( h2m.feed('<div><h1>hello world</h1><table><tr><td>xxxxx</td></tr></table></div>') )
@@ -19,13 +20,8 @@ h2m = html2markdown()
 
 # Conver Folder
 # 将文件夹下的html文件批量转换为markdown文件
-h2m.convertFolder('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls', '/Users/shiqiang/Projects/py-cnblogs/cnblogs/markdowns')
+# h2m.convertFolder('/Users/shiqiang/Projects/py-cnblogs/cnblogs/htmls', '/Users/shiqiang/Projects/py-cnblogs/cnblogs/markdowns')
 
-# 示例
-# 输入博客的入口，则自动将所有博客文章下载到本地的 cnblogs/html 文件夹下
-# b2h = blog2html()
-# b2h.get_cnblogs('https://www.cnblogs.com/cocowool/')
-# b2h.get_all_posts('https://www.cnblogs.com/cocowool/archive/2012/01/17/macvpn.html')
 
 
 # 测试Tag替换

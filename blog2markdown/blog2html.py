@@ -11,6 +11,9 @@ import json
 from bs4 import BeautifulSoup
 
 class blog2html():
+    html_path = ''
+    markdown_path = ''
+
     # 读取配置文件
     # TODO检查配置文件是否存在
     def read_config(self):
@@ -18,25 +21,6 @@ class blog2html():
             config = json.load(json_file)
 
         return config
-
-    # 入口函数，输入文章列表页地址后进行文件抓取
-    # def main(argv):
-    #     try :
-    #         opts,args = getopt.getopt(argv,"h:l:",["home=", "link="])
-    #     except getopt.GetoptError:
-    #         print("Usage: python3 main.py -l <blog_post_list_link>")
-
-    #     for opt, arg in opts:
-    #         if opt in ("-h", "--home"):
-    #             get_cnblogs(arg)
-    #             return True
-    #         elif opt in ("-l", "--link"):
-    #             get_all_posts(arg)
-    #             return True
-    #         # else:
-
-    #     print("Usage: python3 main.py -h <blog_homepage_link> -l <blog_post_list_link>")
-    #     return True
 
     # 抓取cnblogs
     def get_cnblogs(self, url):
@@ -50,9 +34,9 @@ class blog2html():
         soup = BeautifulSoup(html, 'html.parser')
 
         # 创建指定的目录
-        # 目录格式： cnblogs/htmls
-        #                 /markdowns
-        self.mkdir_cnblogs()
+        # 目录格式： cnblogs-{blog-title}/htmls
+        #                              /markdowns
+        self.mkdir_cnblogs(url)
 
         # 获取最新一篇文章链接
         lastest_blog_link = self.get_latest_link(soup)
@@ -60,12 +44,10 @@ class blog2html():
         # 递归获取链接内容，获取图片
         # 保存到指定目录和文件名格式
         # 文件名格式: yyyy-mm-dd-blog-name.html
-        self.get_all_posts(lastest_blog_link)
+        self.get_all_posts(lastest_blog_link, url)
             
-        # 转换为Markdown 文档
-
     # 遍历抓取cnblogs博客
-    def get_all_posts(self, blog_link):
+    def get_all_posts(self, blog_link, home_link):
         print("GET " + blog_link)
         html = self.get_html(blog_link)
         soup = BeautifulSoup(html, 'html.parser')
@@ -78,47 +60,39 @@ class blog2html():
         html_content = self.save_images(soup, blog_file_name)
 
         self.save_html_file(blog_file_name, str(html_content) )
-        print("DONE " + blog_link)
-
-        # 进行Markdown格式转换
-        # md = html2markdown(soup.prettify())
-        # return
+        print("DONE :" + blog_link)
 
         # 通过Ajax获取上一篇链接
         blog_entry_id = re.search(r'cb_entryId\s=\s(\d+)',html).group().split("=")[1].strip()
-        ajax_link = "https://www.cnblogs.com/cocowool/ajax/post/prevnext?postId=" + blog_entry_id
+        ajax_link = home_link + "ajax/post/prevnext?postId=" + blog_entry_id
         page_html = self.get_html(ajax_link)
         page_soup = BeautifulSoup(page_html, 'html.parser')
 
         if page_soup.a['href'] and len( page_soup.text.split("上一篇")) > 1:
-            # print(page_soup.text)
-            # print(len( page_soup.text.split("上一篇")) )
-            # return True
-            self.get_all_posts(page_soup.a['href'])
+            self.get_all_posts(page_soup.a['href'], home_link)
         else:
             print("The last blog finished !")
 
 
     # 保存HTML文件
     def save_html_file(self, filename, file_content):
-        html_path = "./cnblogs/htmls/"
-        markdown_path  = "./cnblogs/markdowns/"
-
-        f = open(html_path + filename, 'wb')
+        f = open(self.html_path + filename, 'wb')
         f.write(str.encode(file_content))
         f.close()
 
     # 创建预定的目录结构
-    def mkdir_cnblogs(self):
-        html_path = "./cnblogs/htmls"
-        markdown_path  = "./cnblogs/markdowns"
+    def mkdir_cnblogs(self, url):
+        blog_title = url.split('.com/')[1].split('/')[0]
 
-        isExists_html = os.path.exists(html_path)
-        isExists_markdown = os.path.exists(markdown_path)
+        self.html_path = "./cnblogs{}/htmls/".format('-'+blog_title)
+        self.markdown_path  = "./cnblogs{}/markdowns/".format('-'+blog_title)
+
+        isExists_html = os.path.exists(self.html_path)
+        isExists_markdown = os.path.exists(self.markdown_path)
         
         if (not isExists_html) and (not isExists_markdown):
-            os.makedirs(html_path)
-            os.makedirs(markdown_path)
+            os.makedirs(self.html_path)
+            os.makedirs(self.markdown_path)
 
             return True
         else:
@@ -165,13 +139,10 @@ class blog2html():
 
     # 创建一个同名文件夹，用于存放图片
     def save_images(self, bs4_html, blog_file_name):
-        html_path = "./cnblogs/htmls/" + blog_file_name.split('.')[0]
-        markdown_path  = "./cnblogs/markdowns/" + blog_file_name.split('.')[0]
-
         # 检查图片保存路径
-        if (not os.path.exists(html_path) ) and (not os.path.exists(markdown_path)):
-            os.makedirs(html_path)
-            os.makedirs(markdown_path)
+        if (not os.path.exists(self.html_path) ) and (not os.path.exists(self.markdown_path)):
+            os.makedirs(self.html_path)
+            os.makedirs(self.markdown_path)
 
         config = self.read_config()
 
@@ -189,8 +160,14 @@ class blog2html():
             if re.search(r'http', img.get('src')):
                 try:
                     req = requests.get(img.get('src'), headers = my_headers, cookies = my_cookie)
-                    with open(markdown_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
+                    with open(self.markdown_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
                         f.write(req.content)
+                        f.close()
+
+                    with open(self.html_path + "/" + img.get('src').split('/')[-1], 'wb') as f:
+                        f.write(req.content)
+                        f.close()
+
                     # 替换图片
                     new_img = bs4_html.new_tag("img")
                     new_img['src'] = "" + blog_file_name.split('.')[0] + "/" + img.get('src').split('/')[-1]
