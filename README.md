@@ -1,15 +1,34 @@
-# py-cnblogs 抓取博客园文章并保存为 Markdown 格式文档
+# 抓取博客园文章并保存为 Markdown 格式文档
 
 > 本项目目标：抓取自己的博客园文章，转换为 Hexo 所用的Mardown格式，并且持久化保存。
 
+## 功能介绍
+本项目具有以下功能：
+* 支持将博客园的文章保存为html文件
+* 支持将文章中的图片也保存下来
+* 支持将html文件批量转换为mardown格式的文档
+* 保存博客的图片到同名的文件夹下，这能能够在typora中实现图片预览
+
 ## 用法
 
-
 ```python
+from blog2markdown import html2markdown
+from blog2markdown import blog2html
 
+# 将博客文章和博客用到的图片保存到本地，文章保存为html格式，图片保存到markdown文件夹下
+# 输入博客的入口，则自动将所有博客文章下载到本地的 cnblogs-{blog-name}/html 文件夹下
+b2h = blog2html()
+b2h.get_cnblogs('https://www.cnblogs.com/ityouknow/')
+
+# 将文件夹下的html文件批量转换为markdown文件
+h2m = html2markdown()
+h2m.convertFolder('html-path', 'markdown-path')
 ```
 
-## 几个现有框架的对比
+## 几个现有框架对比
+
+在做这个项目之前，试着查找了一些现有的文档，但是都没有办法成功的实现我的目标
+
 * [html2markdown](https://github.com/dlon/html2markdown)：无法对整段的HTML进行解析，不支持table的解析和转换
 * [h2md](https://github.com/canovie/h2md)：能够解析整段的HTML，不支持table
 
