@@ -63,6 +63,7 @@ class html2markdown():
         'font'  : ('',''),
         'sub'   : ('<sub>','</sub>'),
         'sup'   : ('<sup>','</sup>'),
+        'str'   : ('',''),
         'dd'    : ('',''),
         'dt'    : ('',''),
         'tt'    : ('',''),
