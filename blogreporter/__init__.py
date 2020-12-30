@@ -5,9 +5,10 @@
 __author__ = "Wang Shiqiang"
 __version__ = "0.0.1"
 
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 import re
 import sys
+from .generate import generate
 
 def main():
-    print("html2markdown Main()")
+    print("Welcome use cnblogs report generator!")
