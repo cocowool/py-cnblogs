@@ -9,6 +9,8 @@ import json
 from bs4 import BeautifulSoup
 
 class generate():
+    blog_title = ''
+
     def __init__(self, blog_url, year = 2020):
         self.blog_url = blog_url
         self.year = year
@@ -19,6 +21,8 @@ class generate():
 
         html = requests.get(self.blog_url).text
         soup = BeautifulSoup(html, 'html.parser')
+
+        self.blog_title = soup.find('a', attrs={'id':'Header1_HeaderTitle'}).text.strip()
 
         # 获取下一页链接地址
         next_page = soup.find('div', attrs={'id':'nav_next_page'})
@@ -111,6 +115,27 @@ class generate():
 
         return stat_data
 
+    def _render_md(self, stat_data):
+        md_string = "## " + self.blog_title + " 的博客园年度报告\n"
+        md_string += "Hi " + self.blog_title + '  '
+        md_string += "你在博客园已经发表了**" + str(stat_data['total_post']) + "**篇文章\n" 
+        md_string += "2020年你一共写了**" + str(stat_data['year_post']) + "**篇文章\n" 
+
+        md_string += "\n"
+        md_string += "你在博客园中的文章已经获得了**" + str(stat_data['total_view']) + "**次阅读\n" 
+        md_string += "**" + str(stat_data['total_comment']) + "**评论以及**" + str(stat_data['total_digg']) + "**\n" 
+
+        md_string += "\n"
+        md_string += "你阅读量最高的一篇文章是 **" + stat_data['max_view']['post_title'] + "**，共有 **" + str(stat_data['max_view']['view_count']) + "** 次阅读\n"
+
+        md_string += "\n"
+        md_string += "**" + stat_data['late_post']['post_title'] + "** 是你在 **" + stat_data['late_post']['post_time'] + "** 写下的，夜已深注意休息\n"
+
+        md_string += "\n"
+        md_string += "新的一年，希望你继续笔耕不辍，在博客园发表更多的文章\n"
+
+        return md_string
+
     def run(self):
 
         blog_data = self._get_post_lists()
@@ -119,6 +144,6 @@ class generate():
         
         stat_data = self._calc_stat(blog_data)
 
-        print(stat_data)
+        print(self._render_md(stat_data))
 
         pass
