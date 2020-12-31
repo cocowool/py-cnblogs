@@ -2,17 +2,6 @@
 # Author: Wang Shiqiang
 # Date: 2020/12/30
 
-# 报告的指标
-# * 文章总数量
-# * 文章阅读总量
-# * 最高阅读量
-# * 推荐总量
-# * 最高推荐的文章
-# * 评论的数量
-# * 最多评论的文章
-# * 最早发文的时间与文章名称
-# * 最晚发文的时间与文章名称
-
 import os, sys, getopt
 import re
 import requests
@@ -63,23 +52,73 @@ class generate():
             post_data['post_date'] = re.search(r'\d{4}-\d{2}-\d{2}', item.find('div', attrs={'class':'postDesc'}).contents[0]).group()
             post_data['post_time'] = re.search(r'\d{2}:\d{2}', item.find('div', attrs={'class':'postDesc'}).contents[0]).group()
             post_data['view_count'] = int(re.search(r'\d+', item.find('span', attrs={'class':'post-view-count'}).text.strip()).group())
+            post_data['digg_count'] = int(re.search(r'\d+', item.find('span', attrs={'class':'post-digg-count'}).text.strip()).group())
             post_data['comment_count'] = int(re.search(r'\d+', item.find('span', attrs={'class':'post-comment-count'}).text.strip()).group())
-
 
             stat_data.append(post_data)
             post_data = {}
 
-        # print(stat_data)
+        return stat_data
+
+    # 计算统计指标
+    # 报告的指标
+    # * 文章总数量
+    # * 文章阅读总量
+    # * 最高阅读量
+    # * 推荐总量
+    # * 最高推荐的文章
+    # * 评论的数量
+    # * 最多评论的文章
+    # * 最晚发文的时间与文章名称
+    def _calc_stat(self, blog_data):
+        stat_data = {}
+
+        stat_data['total_post'] = len(blog_data)
+        stat_data['year_post'] = 0
+        stat_data['total_view'] = 0
+        stat_data['total_comment'] = 0
+        stat_data['total_digg'] = 0
+        stat_data['max_view'] = {"view_count":0,"post_title":""}
+        stat_data['max_comment'] = {"comment_count":0,"post_title":""}
+        stat_data['max_digg'] = {"digg_count":0,"post_title":""}
+        # stat_data['early_post'] = {}
+        stat_data['late_post'] = {"post_time":"00:00", "post_title":""}
+
+        for item in blog_data:
+            stat_data['total_view'] += item['view_count']
+            stat_data['total_comment'] += item['comment_count']
+            stat_data['total_digg'] += item['digg_count']
+
+            if item['view_count'] > stat_data['max_view']['view_count']:
+                stat_data['max_view']['view_count'] = item['view_count']
+                stat_data['max_view']['post_title'] = item['post_title']
+
+            if item['comment_count'] > stat_data['max_comment']['comment_count']:
+                stat_data['max_comment']['comment_count'] = item['comment_count']
+                stat_data['max_comment']['post_title'] = item['post_title']
+
+            if item['digg_count'] > stat_data['max_digg']['digg_count']:
+                stat_data['max_digg']['digg_count'] = item['digg_count']
+                stat_data['max_digg']['post_title'] = item['post_title']
+
+            if item['post_date'] > '2019-12-31':
+                stat_data['year_post'] += 1
+
+            # 只考虑了0点以后发文的问题
+            if item['post_time'] < '05:00' and item['post_time'] > stat_data['late_post']['post_time']:
+                stat_data['late_post']['post_time'] = item['post_time']
+                stat_data['late_post']['post_title'] = item['post_title']
 
         return stat_data
 
     def run(self):
-        print("Hello World")
 
         blog_data = self._get_post_lists()
 
-        stat_data = self._prepare_data(blog_data)
+        blog_data = self._prepare_data(blog_data)
         
+        stat_data = self._calc_stat(blog_data)
+
         print(stat_data)
 
         pass
