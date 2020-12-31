@@ -52,6 +52,10 @@ class generate():
 
         return blog_data
 
+    # 将抓取的数据准备统计所需的格式
+    def _prepare_data(self, blog_data):
+        pass
+
     def run(self):
         print("Hello World")
 
