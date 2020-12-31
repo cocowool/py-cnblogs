@@ -54,13 +54,32 @@ class generate():
 
     # 将抓取的数据准备统计所需的格式
     def _prepare_data(self, blog_data):
-        pass
+        stat_data = []
+        post_data = {}
+        for item in blog_data:
+            # print(item)
+            post_data['post_title'] = item.find('div', attrs={'class':'postTitle'}).text.strip()
+            # post_data['post_desc'] = item.find('div', attrs={'class':'c_b_p_desc'}).text.strip()
+            post_data['post_date'] = re.search(r'\d{4}-\d{2}-\d{2}', item.find('div', attrs={'class':'postDesc'}).contents[0]).group()
+            post_data['post_time'] = re.search(r'\d{2}:\d{2}', item.find('div', attrs={'class':'postDesc'}).contents[0]).group()
+            post_data['view_count'] = int(re.search(r'\d+', item.find('span', attrs={'class':'post-view-count'}).text.strip()).group())
+            post_data['comment_count'] = int(re.search(r'\d+', item.find('span', attrs={'class':'post-comment-count'}).text.strip()).group())
+
+
+            stat_data.append(post_data)
+            post_data = {}
+
+        # print(stat_data)
+
+        return stat_data
 
     def run(self):
         print("Hello World")
 
         blog_data = self._get_post_lists()
-        print(blog_data)
-        print(len(blog_data))
+
+        stat_data = self._prepare_data(blog_data)
+        
+        print(stat_data)
 
         pass
