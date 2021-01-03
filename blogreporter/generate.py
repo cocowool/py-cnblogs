@@ -123,7 +123,7 @@ class generate():
 
         md_string += "\n"
         md_string += "你在博客园中的文章已经获得了**" + str(stat_data['total_view']) + "**次阅读\n" 
-        md_string += "**" + str(stat_data['total_comment']) + "**评论以及**" + str(stat_data['total_digg']) + "**\n" 
+        md_string += "**" + str(stat_data['total_comment']) + "**评论以及**" + str(stat_data['total_digg']) + "**次推荐\n" 
 
         md_string += "\n"
         md_string += "你阅读量最高的一篇文章是 **" + stat_data['max_view']['post_title'] + "**，共有 **" + str(stat_data['max_view']['view_count']) + "** 次阅读\n"
